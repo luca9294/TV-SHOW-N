@@ -5,9 +5,9 @@
     android:orientation="horizontal" >
 
     <LinearLayout
-        android:layout_width="147dp"
-        android:layout_height="76dp"
-        android:layout_weight="1"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.29"
         android:orientation="vertical" >
 
         <TextView
@@ -16,36 +16,29 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:text="TITLE"
-            android:textStyle="bold" >
-
-            <requestFocus />
-        </TextView>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/year"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:text="year" >
-
-            <requestFocus />
-        </TextView>
+            android:text="year" />
 
         <TextView
             android:id="@+id/nation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:text="nation" >
-
-            <requestFocus />
-        </TextView>
+            android:text="nation" />
     </LinearLayout>
 
     <WebView
         android:id="@+id/web"
-        android:layout_width="39dp"
-        android:layout_height="75dp"
+        android:layout_width="94dp"
+        android:layout_height="173dp"
+        android:layout_gravity="right"
+        android:layout_weight="0.35"
         android:scrollbars="none" />
 
 </LinearLayout>

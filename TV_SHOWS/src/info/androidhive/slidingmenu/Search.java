@@ -16,8 +16,8 @@ public class Search {
 	String toSearch;
 	Context context;
 	TraktAPI api;
-	JSONArray data;
-	Vector<Search_result> vector;
+	public JSONArray data;
+	public Vector<Search_result> vector;
 	
 	
 	
@@ -31,15 +31,15 @@ public class Search {
 	
 	
 	public void makeVector() throws JSONException {
-
+vector = new Vector<Search_result>();
 		for (int i = 0; i< data.length(); i++){
 		JSONObject object = data.getJSONObject(i);
 		String title_n = object.getString("title");
 		String country = object.getString("country");
 		String year = object.getString("year");
 		String poster = object.getJSONObject("images").getString("poster");
-		
-		Search_result result = new  Search_result(title_n,year,country,poster);
+		poster = poster.replace(".jpg", "-300.jpg");
+		Search_result result = new  Search_result(title_n,country,year,poster);
 		
 		vector.add(result);
 				
@@ -82,7 +82,7 @@ public class Search {
 				//	"show/summary.json/361cd031c2473b06997c87c25ec9c057/" + id,
 					//true);
 
-			 data = api.getDataArrayFromJSON("search/shows.json/%k?query= " + toSearch,true);
+			 data = api.getDataArrayFromJSON("search/shows.json/%k?query=" + toSearch,true);
 
 			return data;
 
