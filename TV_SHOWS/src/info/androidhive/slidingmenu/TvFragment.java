@@ -38,6 +38,7 @@ public class TvFragment extends Fragment {
 		TextView runtime = (TextView) rootView.findViewById(R.id.runtime);
 		TextView genre = (TextView) rootView.findViewById(R.id.genre);
 		TextView overview = (TextView) rootView.findViewById(R.id.overview);
+		TextView seasons = (TextView) rootView.findViewById(R.id.season_n);
 		WebView image = (WebView) rootView.findViewById(R.id.image);
 
 		try {
@@ -49,6 +50,7 @@ public class TvFragment extends Fragment {
 			country.setText(prova.country);
 			runtime.setText(prova.runtime + "m");
 			genre.setText(prova.genre);
+			seasons.setText(prova.seasons_n);
 			percentage.setText(prova.percentage + "%");
 			overview.setText(prova.overview);
 			overview.setMovementMethod(new ScrollingMovementMethod());

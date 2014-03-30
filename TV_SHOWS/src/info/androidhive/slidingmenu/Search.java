@@ -40,14 +40,14 @@ vector = new Vector<Search_result>();
 		String poster = object.getJSONObject("images").getString("poster");
 		boolean ended = object.getBoolean("ended");
 		JSONArray array = object.getJSONArray("genres");
-	
+	    String id = object.getString("tvdb_id");
 		
 		
 		
 		
 		
 		poster = poster.replace(".jpg", "-300.jpg");
-		Search_result result = new  Search_result(title_n,year,country,poster, array, ended);
+		Search_result result = new  Search_result(title_n,year,country,poster, array,id, ended);
 		
 		vector.add(result);
 				

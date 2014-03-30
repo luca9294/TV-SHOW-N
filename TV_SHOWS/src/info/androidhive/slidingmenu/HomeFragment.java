@@ -97,7 +97,7 @@ for (int i = 0; i < 30; i++) {
 	JSONObject object = array.getJSONObject(i);
 	String URL = object.getString("poster");
 	URL = URL.replace(".jpg", "-300.jpg");
-	String title = object.getString("title");
+	String title = object.getString("tvdb_id");
 	Vector<String> singola = new Vector<String>();
 	singola.add(URL);
 	singola.add(title);

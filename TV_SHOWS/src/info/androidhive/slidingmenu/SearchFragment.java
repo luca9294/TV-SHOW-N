@@ -48,7 +48,7 @@ public class SearchFragment extends Fragment {
 					Fragment fragment = new TvFragment();
 					FragmentManager fm = getFragmentManager();
 					Bundle args = new Bundle();
-					args.putString("toSearch",  search.getResults().get(arg2).title);
+					args.putString("toSearch",  search.getResults().get(arg2).id);
 					fragment.setArguments(args);
 					fm.beginTransaction().replace(R.id.frame_container, fragment).commit();;
 					
