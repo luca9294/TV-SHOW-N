@@ -24,8 +24,12 @@ public class SearchFragment extends Fragment {
         
         try {
 			
+        	 Bundle bundle = getArguments();
+
+     		String toSearch = bundle.getString("toSearch");
+        	
         	ListView list = (ListView) rootView.findViewById(R.id.list);
-        	Search search = new Search ("Revenge", this.getActivity().getApplicationContext());
+        	Search search = new Search (toSearch, this.getActivity().getApplicationContext());
         	SearchAdapter adapter = new SearchAdapter (search.getResults(), this.getActivity().getApplicationContext(), this.getFragmentManager());
 			list.setAdapter(adapter);
 			

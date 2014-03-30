@@ -146,7 +146,7 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
 		  SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-	      searchView.setOnQueryTextListener(this);
+		  searchView.setOnQueryTextListener(this);
 
 		return true;
 	}
@@ -198,7 +198,7 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 			fragment = new HomeFragment();
 			break;
 		case 1:
-			fragment = new SearchFragment();
+			fragment = new PhotosFragment();
 			break;
 		case 2:
 			fragment = new PhotosFragment();
@@ -269,10 +269,13 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		
 			FragmentManager fragmentManager = getFragmentManager();
 			Fragment fragment1;
-			fragment1 = new PagesFragment();
-			fragmentManager.beginTransaction().replace(R.id.frame_container, fragment1).commit();
-		
-		
+			fragment1 = new SearchFragment();
+			Bundle args = new Bundle();
+			args.putString("toSearch", query.replace(" ", "+"));
+			fragment1.setArguments(args);
+			fragmentManager.beginTransaction().replace(R.id.frame_container, fragment1).commit();;
+			
+
 		
 		return false;
 	}

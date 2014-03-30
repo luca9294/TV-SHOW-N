@@ -38,8 +38,16 @@ vector = new Vector<Search_result>();
 		String country = object.getString("country");
 		String year = object.getString("year");
 		String poster = object.getJSONObject("images").getString("poster");
+		boolean ended = object.getBoolean("ended");
+		JSONArray array = object.getJSONArray("genres");
+	
+		
+		
+		
+		
+		
 		poster = poster.replace(".jpg", "-300.jpg");
-		Search_result result = new  Search_result(title_n,country,year,poster);
+		Search_result result = new  Search_result(title_n,year,country,poster, array, ended);
 		
 		vector.add(result);
 				

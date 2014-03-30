@@ -93,7 +93,7 @@ e.execute();
 JSONArray array = e.get();
 Vector<Vector<String>> list = new Vector<Vector<String>>();
 
-for (int i = 0; i < 50; i++) {
+for (int i = 0; i < 30; i++) {
 	JSONObject object = array.getJSONObject(i);
 	String URL = object.getString("poster");
 	URL = URL.replace(".jpg", "-300.jpg");

@@ -85,7 +85,8 @@ id.setInitialScale(108);
 
 id.setFocusable(false);
 id.setClickable(false);
-id.setVisibility(View.VISIBLE);
+
+
 
 
 
@@ -97,9 +98,38 @@ TextView year =  (TextView) view.findViewById(R.id.year);
 year.setText(vector.get(index).year);
 
 
-TextView country =  (TextView) view.findViewById(R.id.country);
-year.setText(vector.get(index).nation);
+TextView country =  (TextView) view.findViewById(R.id.nation);
 
+String str = vector.get(index).nation;
+if (str.equals("null")){
+	str = "";
+	
+	
+}
+country.setText(str);
+
+
+
+TextView genres =  (TextView) view.findViewById(R.id.genres);
+genres.setText(vector.get(index).genres.toString().replace("\"", "").replace("[", "").replace("]", "").replace(",", ", "));
+
+
+
+TextView ended =  (TextView) view.findViewById(R.id.ended);
+
+if (vector.get(index).ended){
+	ended.setText("ENDED");
+	ended.setTextColor(context.getResources().getColor(R.color.red));
+	
+	
+}
+
+else{
+	ended.setText("ON AIR");
+	ended.setTextColor(context.getResources().getColor(R.color.green));
+	
+	
+}
 
 
 
