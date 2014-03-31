@@ -1,5 +1,6 @@
 package info.androidhive.slidingmenu;
 
+import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONArray;
@@ -19,6 +20,8 @@ public class Tv_Show {
 	JSONArray season;
 	TraktAPI api;
 	Context context;
+	
+	Vector<Season> seasons;
 
 	public Tv_Show(String title, Context context) throws InterruptedException,
 			ExecutionException, JSONException {
@@ -56,7 +59,7 @@ public class Tv_Show {
 
 	}
 
-	public void getTvShowJSON() throws InterruptedException, ExecutionException {
+	public void getTvShowJSON() throws InterruptedException, ExecutionException, JSONException {
 		api = new TraktAPI(context);
 		String title_c = title.replace(" ", "-");
 		title_c = title_c.toLowerCase();
@@ -69,7 +72,45 @@ public class Tv_Show {
 		DataGrabber2 d = new DataGrabber2(context, title_c);
 		d.execute();
 		season = d.get();
+		seasons = new Vector<Season>();
+		
+		for (int i = 0; i < season.length();i++){
+			JSONObject object = season.getJSONObject(i);
+			String id = object.getString("season");
+			String episodes = object.getString("episodes");
+			String image = object.getJSONObject("images").getString("poster");
+			Season s = new Season(id,episodes,image);
+			
+			seasons.add(s);
+		
+			
+			
+			
+		}
+		
+		
+		
+		
+		
 	}
+	
+	
+	
+	public Vector<Season> getSeasons(){
+		
+		return seasons;
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	private class DataGrabber extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
@@ -136,6 +177,10 @@ public class Tv_Show {
 		}
 
 	}
+	
+	
+
+	
 	
 	
 	

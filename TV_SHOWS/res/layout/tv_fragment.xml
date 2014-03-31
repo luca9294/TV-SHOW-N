@@ -165,7 +165,7 @@
     <TextView
         android:id="@+id/overview"
         android:layout_width="342dp"
-        android:layout_height="146dp"
+        android:layout_height="200dp"
         android:layout_marginLeft="5sp"
         android:layout_marginRight="15sp"
         android:layout_marginTop="5sp"
@@ -174,10 +174,54 @@
         android:text="overview"
         android:textSize="16dp" />
     
-     
-    <Spinner android:id="@+id/spinner" android:layout_width="match_parent"
-		android:layout_height="wrap_content"></Spinner>
- 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" 
+        android:layout_gravity="center"
+       android:gravity="bottom"
+        >
+
+        <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" 
+        android:layout_gravity="center"
+       android:gravity="bottom"
+           android:background="@drawable/selec"
+        >
+        
+        
+        <TextView
+      	android:gravity="center"
+      	android:layout_gravity="center" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="15sp"
+        android:layout_marginTop="5sp"
+        android:maxLines="10000"
+        android:scrollbars="vertical"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:text="Select a Season:"
+        android:textSize="25dp" />
+    
+    
     
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         />
+    
+
+
+</LinearLayout>
+    
+
+
+    </LinearLayout>
+ 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package info.androidhive.slidingmenu;
 
+import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
@@ -32,6 +33,8 @@ public class TvFragment extends Fragment {
         Bundle bundle = getArguments();
 
 		String toSearch = bundle.getString("toSearch");
+		String[] strings;
+		Tv_Show prova;
 
 		// TextView title =(TextView)findViewById(R.id.title);
 		TextView premiere = (TextView) rootView.findViewById(R.id.premiere);
@@ -45,7 +48,7 @@ public class TvFragment extends Fragment {
 
 		try {
 
-			Tv_Show prova = new Tv_Show(toSearch, getActivity().getApplicationContext());
+			 prova = new Tv_Show(toSearch, getActivity().getApplicationContext());
 
 			getActivity().setTitle(prova.title_n);
 			premiere.setText(prova.first_aired_iso);
@@ -60,6 +63,19 @@ public class TvFragment extends Fragment {
 			image.setInitialScale(157);
 			image.setFocusable(false);
 			image.setClickable(false);
+		     
+			Vector<Season> vector = prova.getSeasons();
+			strings = new String[vector.size()];
+			
+			for (int i = 0; i<prova.getSeasons().size(); i++){
+				strings[i] = vector.get(i).toString();
+			
+			}
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity().getApplicationContext(),R.layout.single_spinner,R.id.text1, strings);
+
+			Spinner spinner = (Spinner)rootView.findViewById(R.id.spinner);
+	        spinner.setAdapter(adapter);
+	
 
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -72,12 +88,10 @@ public class TvFragment extends Fragment {
 			e.printStackTrace();
 		}
 
-        
+   
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity().getApplicationContext(),R.layout.single_spinner,R.id.text1, new String[]{"pippo","pluto","paperino","topolino"});
-
-		Spinner spinner = (Spinner)rootView.findViewById(R.id.spinner);
-        spinner.setAdapter(adapter);
+		
+		
         
         return rootView;
         
