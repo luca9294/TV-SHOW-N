@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class TvFragment extends Fragment {
@@ -72,7 +74,10 @@ public class TvFragment extends Fragment {
 
         
 
-        
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity().getApplicationContext(),R.layout.single_spinner,R.id.text1, new String[]{"pippo","pluto","paperino","topolino"});
+
+		Spinner spinner = (Spinner)rootView.findViewById(R.id.spinner);
+        spinner.setAdapter(adapter);
         
         return rootView;
         
