@@ -66,7 +66,7 @@
                     android:layout_height="28dp"
                     android:layout_weight="0.27"
                     android:gravity="left|center"
-                    android:text="Premiere"
+                    android:text="Country"
                     android:textSize="15dp" />
             </LinearLayout>
 
@@ -89,7 +89,7 @@
                     android:layout_height="28dp"
                     android:layout_weight="0.27"
                     android:gravity="left|center"
-                    android:text="Premiere"
+                    android:text="tot min"
                     android:textSize="15dp" />
             </LinearLayout>
 
@@ -112,7 +112,7 @@
                     android:layout_height="28dp"
                     android:layout_weight="0.27"
                     android:gravity="left|center"
-                    android:text="Premiere"
+                    android:text="Genre"
                     android:textSize="15dp" />
             </LinearLayout>
 
@@ -135,7 +135,7 @@
                     android:layout_height="28dp"
                     android:layout_weight="0.27"
                     android:gravity="left|center"
-                    android:text="3"
+                    android:text="#seasons"
                     android:textSize="15dp" />
             </LinearLayout>
 
