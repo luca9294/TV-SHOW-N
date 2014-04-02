@@ -79,7 +79,7 @@ public class Tv_Show {
 			String id = object.getString("season");
 			String episodes = object.getString("episodes");
 			String image = object.getJSONObject("images").getString("poster");
-			Season s = new Season(id,episodes,image);
+			Season s = new Season(id,episodes,image,title, context);
 			
 			seasons.add(s);
 		
