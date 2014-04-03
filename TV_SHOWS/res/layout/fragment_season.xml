@@ -32,12 +32,13 @@
             android:layout_height="wrap_content" >
 
             <TextView
-                android:id="@+id/country"
-                android:layout_width="98dp"
+                android:id="@+id/season"
+                android:layout_width="314dp"
                 android:layout_height="match_parent"
                 android:gravity="left|center"
-                android:text="Country"
+                android:text="Season &lt;number> - &lt;nr> episodes"
                 android:textSize="15dp" />
+
         </LinearLayout>
 
        

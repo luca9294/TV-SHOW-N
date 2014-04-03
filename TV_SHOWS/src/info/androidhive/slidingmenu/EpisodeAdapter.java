@@ -33,61 +33,95 @@ import java.util.concurrent.ExecutionException;
 import org.json.JSONException;
 
 /**
-* Created with IntelliJ IDEA. User: Shahab Date: 8/22/12 Time: 11:37 AM To
-* change this template use File | Settings | File Templates.
-*/
+ * Created with IntelliJ IDEA. User: Shahab Date: 8/22/12 Time: 11:37 AM To
+ * change this template use File | Settings | File Templates.
+ */
 public class EpisodeAdapter extends BaseAdapter {
 
-private static final String TAG = EpisodeAdapter.class.getSimpleName();
+	private static final String TAG = EpisodeAdapter.class.getSimpleName();
 
-Vector<Episode> episodes;
-Context context;
-FragmentManager fm;
+	Vector<Episode> episodes;
+	Context context;
+	FragmentManager fm;
 
-public EpisodeAdapter(Vector<Episode> episodes,
-Context context, FragmentManager fm) {
-this.episodes = episodes;
-this.context = context;
-this.fm = fm;
+	public EpisodeAdapter(Vector<Episode> episodes, Context context,
+			FragmentManager fm) {
+		this.episodes = episodes;
+		this.context = context;
+		this.fm = fm;
 
-}
+	}
 
-@Override
-public int getCount() {
-return episodes.size(); // total number of elements in the list
-}
+	@Override
+	public int getCount() {
+		return episodes.size(); // total number of elements in the list
+	}
 
-@Override
-public Object getItem(int i) {
-return episodes.get(i); // single item in the list
-}
+	@Override
+	public Object getItem(int i) {
+		return episodes.get(i); // single item in the list
+	}
 
-@Override
-public long getItemId(int i) {
-return i; // index number
-}
+	@Override
+	public long getItemId(int i) {
+		return i; // index number
+	}
 
-@Override
-public View getView(final int index, View view, final ViewGroup parent) {
+	@Override
+	public View getView(final int index, View view, final ViewGroup parent) {
 
-if (view == null) {
-LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-view = inflater.inflate(R.layout.episode_view, parent, false);
+		if (view == null) {
+			LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+			view = inflater.inflate(R.layout.episode_view, parent, false);
 
-}
+		}
 
+		TextView number = (TextView) view.findViewById(R.id.number);
+		number.setText(episodes.get(index).id);
 
-TextView number =  (TextView) view.findViewById(R.id.number);
-number.setText(episodes.get(index).id);
+		TextView title = (TextView) view.findViewById(R.id.title);
+		title.setText(episodes.get(index).title);
 
-TextView title =  (TextView) view.findViewById(R.id.title);
-title.setText(episodes.get(index).title);
+		TextView air_date = (TextView) view.findViewById(R.id.air_date);
+		title.setText(episodes.get(index).first_aired);
 
-TextView air_date =  (TextView) view.findViewById(R.id.air_date);
-title.setText(episodes.get(index).first_aired);
+		return view;
 
-return view;
+	}
 
-}
+	
+	WebView id = (WebView) view.findViewById(R.id.web);
+	id.loadUrl(urls1.get(index).get(0));
+	id.setInitialScale(160);
+	id.setFocusable(false);
+	id.setClickable(false);
+	id.setVisibility(View.VISIBLE);
+	id.setOnTouchListener(new OnTouchListener() {
 
+		@Override
+		public boolean onTouch(View arg0, MotionEvent arg1) {
+			int action = arg1.getAction();
+
+			switch (action) {
+			case MotionEvent.ACTION_CANCEL:
+				return true;
+			case MotionEvent.ACTION_UP:
+
+				Fragment fragment = new TvFragment();
+				Bundle args = new Bundle();
+				args.putString("toSearch", urls1.get(index).get(1));
+				fragment.setArguments(args);
+				fm.beginTransaction()
+						.replace(R.id.frame_container, fragment).commit();
+				;
+
+				return true;
+
+			}
+
+			return false;
+		}
+	});
+
+	
 }

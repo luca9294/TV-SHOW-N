@@ -32,129 +32,130 @@ import java.util.concurrent.ExecutionException;
 import org.json.JSONException;
 
 /**
-* Created with IntelliJ IDEA. User: Shahab Date: 8/22/12 Time: 11:37 AM To
-* change this template use File | Settings | File Templates.
-*/
+ * Created with IntelliJ IDEA. User: Shahab Date: 8/22/12 Time: 11:37 AM To
+ * change this template use File | Settings | File Templates.
+ */
 public class CustomAdapter extends BaseAdapter {
 
-private static final String TAG = CustomAdapter.class.getSimpleName();
+	private static final String TAG = CustomAdapter.class.getSimpleName();
 
-List<Vector<String>> urls1;
-List<Vector<String>> urls2;
-Context context;
-FragmentManager fm;
+	List<Vector<String>> urls1;
+	List<Vector<String>> urls2;
+	Context context;
+	FragmentManager fm;
 
-public CustomAdapter(List<Vector<String>> list, List<Vector<String>> list2,
-Context context, FragmentManager fm) {
-this.urls1 = list;
-this.urls2 = list2;
-this.context = context;
-this.fm = fm;
+	public CustomAdapter(List<Vector<String>> list, List<Vector<String>> list2,
+			Context context, FragmentManager fm) {
+		this.urls1 = list;
+		this.urls2 = list2;
+		this.context = context;
+		this.fm = fm;
 
-}
+	}
 
-@Override
-public int getCount() {
-return urls1.size(); // total number of elements in the list
-}
+	@Override
+	public int getCount() {
+		return urls1.size(); // total number of elements in the list
+	}
 
-@Override
-public Object getItem(int i) {
-return urls1.get(i); // single item in the list
-}
+	@Override
+	public Object getItem(int i) {
+		return urls1.get(i); // single item in the list
+	}
 
-@Override
-public long getItemId(int i) {
-return i; // index number
-}
+	@Override
+	public long getItemId(int i) {
+		return i; // index number
+	}
 
-@Override
-public View getView(final int index, View view, final ViewGroup parent) {
+	@Override
+	public View getView(final int index, View view, final ViewGroup parent) {
 
-if (view == null) {
-LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-view = inflater.inflate(R.layout.single_item, parent, false);
+		if (view == null) {
+			LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+			view = inflater.inflate(R.layout.single_item, parent, false);
 
-}
+		}
 
-// {summary, keywords, status,
-// resolution,type,version,milestone,reporter};
+		// {summary, keywords, status,
+		// resolution,type,version,milestone,reporter};
 
-WebView id = (WebView) view.findViewById(R.id.web);
-id.loadUrl(urls1.get(index).get(0));
-id.setInitialScale(160);
-id.setFocusable(false);
-id.setClickable(false);
-id.setVisibility(View.VISIBLE);
-id.setOnTouchListener(new OnTouchListener() {
+		WebView id = (WebView) view.findViewById(R.id.web);
+		id.loadUrl(urls1.get(index).get(0));
+		id.setInitialScale(160);
+		id.setFocusable(false);
+		id.setClickable(false);
+		id.setVisibility(View.VISIBLE);
+		id.setOnTouchListener(new OnTouchListener() {
 
-@Override
-public boolean onTouch(View arg0, MotionEvent arg1) {
-int action = arg1.getAction();
-
-switch (action) {
-case MotionEvent.ACTION_CANCEL:
-return true;
-case MotionEvent.ACTION_UP:
-
-	Fragment fragment = new TvFragment();
-	Bundle args = new Bundle();
-	args.putString("toSearch", urls1.get(index).get(1));
-	fragment.setArguments(args);
-	  fm.beginTransaction().replace(R.id.frame_container, fragment).commit();;
-	
-return true;
-
-}
-
-return false;
-}
-});
-
-
-// (new OnClickListener(){
-
-
-WebView id1 = (WebView) view.findViewById(R.id.web1);
-id1.loadUrl(urls2.get(index).get(0));
-id1.setInitialScale(160);
-id1.setFocusable(false);
-id1.setClickable(false);
-id1.setVisibility(View.VISIBLE);
-id1.setOnTouchListener(new OnTouchListener() {
-
-@Override
-public boolean onTouch(View arg0, MotionEvent arg1) {
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
 				int action = arg1.getAction();
 
-switch (action) {
-case MotionEvent.ACTION_CANCEL:
-return true;
-case MotionEvent.ACTION_UP:
+				switch (action) {
+				case MotionEvent.ACTION_CANCEL:
+					return true;
+				case MotionEvent.ACTION_UP:
 
-/*Intent intent = new Intent(arg0.getContext(),
-HomeFragment.class);
-intent.putExtra("toSearch", urls2.get(index).get(1));
-arg0.getContext().startActivity(intent);*/
-	Fragment fragment = new TvFragment();
-	Bundle args = new Bundle();
-	args.putString("toSearch", urls2.get(index).get(1));
-	fragment.setArguments(args);
-	fm.beginTransaction().replace(R.id.frame_container, fragment).commit();;
-	
+					Fragment fragment = new TvFragment();
+					Bundle args = new Bundle();
+					args.putString("toSearch", urls1.get(index).get(1));
+					fragment.setArguments(args);
+					fm.beginTransaction()
+							.replace(R.id.frame_container, fragment).commit();
+					;
 
-return true;
+					return true;
 
-}
+				}
 
-return false;
-}
-});
+				return false;
+			}
+		});
 
+		// (new OnClickListener(){
 
+		WebView id1 = (WebView) view.findViewById(R.id.web1);
+		id1.loadUrl(urls2.get(index).get(0));
+		id1.setInitialScale(160);
+		id1.setFocusable(false);
+		id1.setClickable(false);
+		id1.setVisibility(View.VISIBLE);
+		id1.setOnTouchListener(new OnTouchListener() {
 
-return view;
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				int action = arg1.getAction();
 
-}
+				switch (action) {
+				case MotionEvent.ACTION_CANCEL:
+					return true;
+				case MotionEvent.ACTION_UP:
+
+					/*
+					 * Intent intent = new Intent(arg0.getContext(),
+					 * HomeFragment.class); intent.putExtra("toSearch",
+					 * urls2.get(index).get(1));
+					 * arg0.getContext().startActivity(intent);
+					 */
+					Fragment fragment = new TvFragment();
+					Bundle args = new Bundle();
+					args.putString("toSearch", urls2.get(index).get(1));
+					fragment.setArguments(args);
+					fm.beginTransaction()
+							.replace(R.id.frame_container, fragment).commit();
+					;
+
+					return true;
+
+				}
+
+				return false;
+			}
+		});
+
+		return view;
+
+	}
 
 }

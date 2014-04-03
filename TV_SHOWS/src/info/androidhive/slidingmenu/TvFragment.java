@@ -5,32 +5,35 @@ import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnTouchListener;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 public class TvFragment extends Fragment {
-	
-	public TvFragment(){}
-	
+
+	public TvFragment() {
+	}
+
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-		
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
 		this.getActivity().setTitle("SUGGESTIONS");
- 
-        View rootView = inflater.inflate(R.layout.tv_fragment, container, false);
-        Bundle bundle = getArguments();
+
+		View rootView = inflater
+				.inflate(R.layout.tv_fragment, container, false);
+		Bundle bundle = getArguments();
 
 		String toSearch = bundle.getString("toSearch");
 		String[] strings;
@@ -48,7 +51,7 @@ public class TvFragment extends Fragment {
 
 		try {
 
-			 prova = new Tv_Show(toSearch, getActivity().getApplicationContext());
+			prova = new Tv_Show(toSearch, getActivity().getApplicationContext());
 
 			getActivity().setTitle(prova.title_n);
 			premiere.setText(prova.first_aired_iso);
@@ -63,19 +66,20 @@ public class TvFragment extends Fragment {
 			image.setInitialScale(157);
 			image.setFocusable(false);
 			image.setClickable(false);
-		     
+
 			Vector<Season> vector = prova.getSeasons();
 			strings = new String[vector.size()];
-			
-			for (int i = 0; i<prova.getSeasons().size(); i++){
-				strings[i] = vector.get(i).toString();
-			
-			}
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity().getApplicationContext(),R.layout.single_spinner,R.id.text1, strings);
 
-			Spinner spinner = (Spinner)rootView.findViewById(R.id.spinner);
-	        spinner.setAdapter(adapter);
-	
+			for (int i = 0; i < prova.getSeasons().size(); i++) {
+				strings[i] = vector.get(i).toString();
+
+			}
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this
+					.getActivity().getApplicationContext(),
+					R.layout.single_spinner, R.id.text1, strings);
+
+			Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
+			spinner.setAdapter(adapter);
 
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -88,17 +92,53 @@ public class TvFragment extends Fragment {
 			e.printStackTrace();
 		}
 
-   
+		
+		WebView id1 = (WebView) rootView.findViewById(R.id.web1);
+		//id1.loadUrl(urls2.get(index).get(0));
+		id1.setInitialScale(160);
+		id1.setFocusable(false);
+		id1.setClickable(false);
+		id1.setVisibility(View.VISIBLE);
+		id1.setOnTouchListener(new OnTouchListener() {
 
+			@Override
+			public boolean onTouch(View arg0, MotionEvent arg1) {
+				int action = arg1.getAction();
+
+				switch (action) {
+				case MotionEvent.ACTION_CANCEL:
+					return true;
+				case MotionEvent.ACTION_UP:
+
+					/*
+					 * Intent intent = new Intent(arg0.getContext(),
+					 * HomeFragment.class); intent.putExtra("toSearch",
+					 * urls2.get(index).get(1));
+					 * arg0.getContext().startActivity(intent);
+					 */
+					Fragment fragment = new TvFragment();
+					Bundle args = new Bundle();
+					//args.putString("toSearch", urls2.get(index).get(1));
+					fragment.setArguments(args);
+					fm.beginTransaction()
+							.replace(R.id.frame_container, fragment).commit();
+					;
+
+					return true;
+
+				}
+
+				return false;
+			}
+		});
 		
 		
-        
-        return rootView;
-        
-        
-    }
-	
-	
-	
+		return rootView;
 
+		
+	}
+
+	public void getSeasonOverview(View view){
+	}
+	
 }
