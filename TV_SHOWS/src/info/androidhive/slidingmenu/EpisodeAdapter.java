@@ -77,7 +77,7 @@ public class EpisodeAdapter extends BaseAdapter {
 		}
 
 		TextView number = (TextView) view.findViewById(R.id.number);
-		number.setText(episodes.get(index).id);
+		number.setText("#"+episodes.get(index).id);
 
 		TextView title = (TextView) view.findViewById(R.id.title);
 		title.setText(episodes.get(index).title);
@@ -90,38 +90,7 @@ public class EpisodeAdapter extends BaseAdapter {
 	}
 
 	
-	WebView id = (WebView) view.findViewById(R.id.web);
-	id.loadUrl(urls1.get(index).get(0));
-	id.setInitialScale(160);
-	id.setFocusable(false);
-	id.setClickable(false);
-	id.setVisibility(View.VISIBLE);
-	id.setOnTouchListener(new OnTouchListener() {
-
-		@Override
-		public boolean onTouch(View arg0, MotionEvent arg1) {
-			int action = arg1.getAction();
-
-			switch (action) {
-			case MotionEvent.ACTION_CANCEL:
-				return true;
-			case MotionEvent.ACTION_UP:
-
-				Fragment fragment = new TvFragment();
-				Bundle args = new Bundle();
-				args.putString("toSearch", urls1.get(index).get(1));
-				fragment.setArguments(args);
-				fm.beginTransaction()
-						.replace(R.id.frame_container, fragment).commit();
-				;
-
-				return true;
-
-			}
-
-			return false;
-		}
-	});
+	
 
 	
 }

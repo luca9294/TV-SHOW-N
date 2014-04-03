@@ -7,16 +7,20 @@ import org.json.JSONException;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.View.OnTouchListener;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -48,7 +52,7 @@ public class TvFragment extends Fragment {
 		TextView overview = (TextView) rootView.findViewById(R.id.overview);
 		TextView seasons = (TextView) rootView.findViewById(R.id.season_n);
 		WebView image = (WebView) rootView.findViewById(R.id.image);
-
+		final Vector<Season> vector;
 		try {
 
 			prova = new Tv_Show(toSearch, getActivity().getApplicationContext());
@@ -67,7 +71,7 @@ public class TvFragment extends Fragment {
 			image.setFocusable(false);
 			image.setClickable(false);
 
-			Vector<Season> vector = prova.getSeasons();
+		     vector = prova.getSeasons();
 			strings = new String[vector.size()];
 
 			for (int i = 0; i < prova.getSeasons().size(); i++) {
@@ -78,8 +82,38 @@ public class TvFragment extends Fragment {
 					.getActivity().getApplicationContext(),
 					R.layout.single_spinner, R.id.text1, strings);
 
-			Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
+			final Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
 			spinner.setAdapter(adapter);
+			
+			
+			Button confirm = (Button) rootView.findViewById(R.id.button1);
+			
+			confirm.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View arg0) {
+			int pos = spinner.getSelectedItemPosition();
+			Season season = vector.get(pos);
+			Fragment fragment = new SeasonFragment();
+			Bundle args = new Bundle();
+			args.putString("id", season.id);
+			args.putString("n_episode", season.n_episode);
+			args.putString("image", season.image);
+			args.putString("code", season.code);
+			fragment.setArguments(args);
+			FragmentManager fm = getFragmentManager();
+			fm.beginTransaction().replace(R.id.frame_container, fragment).commit();
+		
+				}
+				
+				
+				
+			});
+			
+			
+			
+			
+			
 
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -91,32 +125,13 @@ public class TvFragment extends Fragment {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	
+		
+		
 
 		
-		WebView id1 = (WebView) rootView.findViewById(R.id.web1);
-		//id1.loadUrl(urls2.get(index).get(0));
-		id1.setInitialScale(160);
-		id1.setFocusable(false);
-		id1.setClickable(false);
-		id1.setVisibility(View.VISIBLE);
-		id1.setOnTouchListener(new OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				int action = arg1.getAction();
-
-				switch (action) {
-				case MotionEvent.ACTION_CANCEL:
-					return true;
-				case MotionEvent.ACTION_UP:
-
-					/*
-					 * Intent intent = new Intent(arg0.getContext(),
-					 * HomeFragment.class); intent.putExtra("toSearch",
-					 * urls2.get(index).get(1));
-					 * arg0.getContext().startActivity(intent);
-					 */
-					Fragment fragment = new TvFragment();
+				/*	Fragment fragment = new TvFragment();
 					Bundle args = new Bundle();
 					//args.putString("toSearch", urls2.get(index).get(1));
 					fragment.setArguments(args);
@@ -130,7 +145,7 @@ public class TvFragment extends Fragment {
 
 				return false;
 			}
-		});
+		});*/
 		
 		
 		return rootView;
