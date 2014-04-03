@@ -65,8 +65,6 @@ public class Season {
 		}
 	
 	
-	Log.e("INFO", code);
-	Log.e("INFO2", id);
 	}
 	
 	

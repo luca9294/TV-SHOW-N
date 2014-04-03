@@ -125,7 +125,7 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 
 		if (savedInstanceState == null) {
 			// on first time display view for first nav item
-			displayView(0);
+			displayView(1);
 		}
 	}
 
@@ -195,16 +195,16 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		Fragment fragment = null;
 		switch (position) {
 		case 0:
-			fragment = new HomeFragment();
+			//fragment = new HomeFragment();
 			break;
 		case 1:
-			fragment = new SeasonFragment();
+			fragment = new HomeFragment();
 			break;
 		case 2:
-			fragment = new SeasonFragment();
+			//fragment = new SeasonFragment();
 			break;
 		case 3:
-			fragment = new CommunityFragment();
+			//fragment = new CommunityFragment();
 			break;
 		case 4:
 			fragment = new PagesFragment();
