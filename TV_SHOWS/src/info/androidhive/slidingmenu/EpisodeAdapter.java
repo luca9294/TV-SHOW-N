@@ -83,7 +83,7 @@ public class EpisodeAdapter extends BaseAdapter {
 		title.setText(episodes.get(index).title);
 
 		TextView air_date = (TextView) view.findViewById(R.id.air_date);
-		title.setText(episodes.get(index).first_aired);
+		air_date.setText(episodes.get(index).first_aired);
 
 		return view;
 

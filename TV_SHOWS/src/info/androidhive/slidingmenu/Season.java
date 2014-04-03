@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class Season {
 
@@ -40,7 +41,7 @@ public class Season {
 		
 		api = new TraktAPI(parent);
 		
-		DataGrabber dg = new DataGrabber(parent, code);
+		DataGrabber dg = new DataGrabber(parent);
 		JSONArray array = new JSONArray();
 		dg.execute();
 		array = dg.get();
@@ -59,19 +60,25 @@ public class Season {
 			Episode e = new Episode(id, title, first_aired, overview, image, percentage);
 			episodes.add(e);
 			
+			
+			
 		}
+	
+	
+	Log.e("INFO", code);
+	Log.e("INFO2", id);
 	}
 	
 	
 	private class DataGrabber extends AsyncTask<String, Void, JSONArray> {
 		private ProgressDialog progressdialog;
 		private Context parent;
-		private String id;
+
 		private JSONArray data;
 
-		public DataGrabber(Context parent, String id) {
+		public DataGrabber(Context parent) {
 			this.parent = parent;
-			this.id = id;
+		
 		}
 
 		@Override
