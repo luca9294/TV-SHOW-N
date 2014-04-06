@@ -1,4 +1,8 @@
-package info.androidhive.slidingmenu;
+package fragments;
+
+import info.androidhive.slidingmenu.R;
+import info.androidhive.slidingmenu.R.id;
+import info.androidhive.slidingmenu.R.layout;
 
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
@@ -7,6 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import engine.TraktAPI;
+
+import adapters.CustomAdapter;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;

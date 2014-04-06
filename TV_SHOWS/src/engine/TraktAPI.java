@@ -1,4 +1,4 @@
-package info.androidhive.slidingmenu;
+package engine;
 
 /*******************************************************************************
  * Copyright 2011 EscAbe

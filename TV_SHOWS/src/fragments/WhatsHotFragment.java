@@ -1,23 +1,23 @@
-package info.androidhive.slidingmenu;
+package fragments;
 
+import info.androidhive.slidingmenu.R;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class LoginFragment extends Fragment {
+public class WhatsHotFragment extends Fragment {
 	
-	public LoginFragment(){}
+	public WhatsHotFragment(){}
+	
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
  
-        View rootView = inflater.inflate(R.layout.fragment_login, container, false);
-        this.getActivity().setTitle("LOGIN"); 
-        
-        
+        View rootView = inflater.inflate(R.layout.fragment_whats_hot, container, false);
+         
         return rootView;
     }
 }

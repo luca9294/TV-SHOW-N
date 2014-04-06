@@ -1,4 +1,4 @@
-package info.androidhive.slidingmenu;
+package adapters;
 
 import android.R.color;
 import android.app.Fragment;
@@ -24,12 +24,16 @@ import android.widget.LinearLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import info.androidhive.slidingmenu.R;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
+
+import fragments.TvFragment;
 
 /**
  * Created with IntelliJ IDEA. User: Shahab Date: 8/22/12 Time: 11:37 AM To

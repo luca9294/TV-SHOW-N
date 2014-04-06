@@ -1,4 +1,4 @@
-package info.androidhive.slidingmenu;
+package engine;
 
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
@@ -12,9 +12,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 public class Tv_Show {
-	String title, first_aired_iso, country, overview;
-	String year, runtime, image, genre, percentage, loves, hate, status,
-			title_n, seasons_n;
+	public String title, first_aired_iso, country, overview;
+	public String year, runtime, image, genre, percentage, loves, hate, status;
+	public String title_n;
+	public String seasons_n;
 
 	JSONObject summary;
 	JSONArray season;

@@ -1,10 +1,16 @@
-package info.androidhive.slidingmenu;
+package fragments;
+
+
+import info.androidhive.slidingmenu.R;
 
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
+import engine.Season;
+
+import adapters.EpisodeAdapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;

@@ -1,5 +1,10 @@
-package info.androidhive.slidingmenu;
+package engine;
 
+import fragments.HomeFragment;
+import fragments.LoginFragment;
+import fragments.SearchFragment;
+import fragments.WhatsHotFragment;
+import info.androidhive.slidingmenu.R;
 import info.androidhive.slidingmenu.R.menu;
 import info.androidhive.slidingmenu.adapter.NavDrawerListAdapter;
 import info.androidhive.slidingmenu.model.NavDrawerItem;

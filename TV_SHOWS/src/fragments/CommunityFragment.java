@@ -1,5 +1,7 @@
-package info.androidhive.slidingmenu;
+package fragments;
 
+import info.androidhive.slidingmenu.R;
+import info.androidhive.slidingmenu.R.layout;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;

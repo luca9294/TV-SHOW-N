@@ -1,6 +1,8 @@
-package info.androidhive.slidingmenu;
+package engine;
 
 
+
+import info.androidhive.slidingmenu.R;
 
 import java.util.concurrent.ExecutionException;
 

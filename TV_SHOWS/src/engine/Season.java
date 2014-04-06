@@ -1,4 +1,4 @@
-package info.androidhive.slidingmenu;
+package engine;
 
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
@@ -17,7 +17,7 @@ public class Season {
 	private TraktAPI api;
 	public String id, n_episode,image, code;
 	public Context parent;
-	Vector<Episode> episodes;
+	public Vector<Episode> episodes;
 	
 	public Season(String id, String n_episode, String image, String code, Context parent) throws InterruptedException, ExecutionException, JSONException{
 		this.id = id;

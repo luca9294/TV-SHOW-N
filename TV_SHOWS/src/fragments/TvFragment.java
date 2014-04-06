@@ -1,28 +1,27 @@
-package info.androidhive.slidingmenu;
+package fragments;
+
+import info.androidhive.slidingmenu.R;
 
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.View.OnTouchListener;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import engine.Season;
+import engine.Tv_Show;
 
 public class TvFragment extends Fragment {
 

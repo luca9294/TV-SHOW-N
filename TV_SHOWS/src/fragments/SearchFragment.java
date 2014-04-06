@@ -1,9 +1,16 @@
-package info.androidhive.slidingmenu;
+package fragments;
+
+import info.androidhive.slidingmenu.R;
+import info.androidhive.slidingmenu.R.id;
+import info.androidhive.slidingmenu.R.layout;
 
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
+import engine.Search;
+
+import adapters.SearchAdapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
