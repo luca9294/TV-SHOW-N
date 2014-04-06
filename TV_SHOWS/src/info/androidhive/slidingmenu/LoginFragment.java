@@ -6,16 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class PagesFragment extends Fragment {
+public class LoginFragment extends Fragment {
 	
-	public PagesFragment(){}
+	public LoginFragment(){}
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
  
-        View rootView = inflater.inflate(R.layout.fragment_pages, container, false);
-         
+        View rootView = inflater.inflate(R.layout.fragment_login, container, false);
+        this.getActivity().setTitle("LOGIN"); 
+        
+        
         return rootView;
     }
 }

@@ -195,7 +195,7 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		Fragment fragment = null;
 		switch (position) {
 		case 0:
-			//fragment = new HomeFragment();
+			fragment = new LoginFragment();
 			break;
 		case 1:
 			fragment = new HomeFragment();
@@ -207,7 +207,7 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 			//fragment = new CommunityFragment();
 			break;
 		case 4:
-			fragment = new PagesFragment();
+			fragment = new LoginFragment();
 			break;
 		case 5:
 			fragment = new WhatsHotFragment();

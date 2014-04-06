@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="162dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/trakt_01" />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="53dp" />
+
+    <GridLayout
+        android:id="@+id/GridLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/imageView1"
+        android:columnCount="2"
+        android:orientation="horizontal"
+        android:rowCount="2" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Username: "
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal|top"
+            android:text="Insert your username" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Password: "
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/passwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal|top"
+            android:text="Insert your password" />
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:text="LOGIN" 
+        android:textColor="#FFFFFF"
+        android:background="@drawable/selec"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        />
+    
+    <LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:gravity="bottom"
+    >
+    
+    
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:gravity="center"
+             android:text="Haven&apos;t you an account yet?"
+             android:textSize="20dp"
+             android:textStyle="bold" />
+         
+              <Button
+                  android:layout_width="match_parent"
+                  android:layout_height="66dp"
+                  android:layout_gravity="center"
+                  android:text="SIGN UP"
+                  android:textColor="#FFFFFF"
+                  android:background="@drawable/selec"
+                  android:textSize="20dp"
+                  android:textStyle="bold" />
+</LinearLayout>
+</LinearLayout>
