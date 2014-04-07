@@ -90,7 +90,7 @@ vector = new Vector<Search_result>();
 				//	"show/summary.json/361cd031c2473b06997c87c25ec9c057/" + id,
 					//true);
 
-			 data = api.getDataArrayFromJSON("search/shows.json/%k?query=" + toSearch,true);
+			 data = api.getDataArrayFromJSON("search/shows.json/%k?query=" + toSearch,false);
 
 			return data;
 

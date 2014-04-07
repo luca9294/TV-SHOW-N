@@ -78,7 +78,7 @@ public class TraktAPI {
 	public TraktAPI(Context c) {
 		// Get preferences object and retrieve username and password
 		context = c;
-		prefs = PreferenceManager.getDefaultSharedPreferences(c);
+		prefs = PreferenceManager.getDefaultSharedPreferences(c);		
 		username = "luca9294";
 		password = "Aa30011992";
 	}

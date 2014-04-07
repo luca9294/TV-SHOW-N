@@ -89,7 +89,7 @@ public class Season {
 		protected JSONArray doInBackground(String... params) {
 			data = api.getDataArrayFromJSON(
 					"show/season.json/%k/" + code + "/" + id,
-					true);
+					false);
 
 			// data2 = api.getDataArrayFromJSON("show/season.json/%k/revenge/3",
 			// true);
