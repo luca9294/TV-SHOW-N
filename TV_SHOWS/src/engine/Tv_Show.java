@@ -134,7 +134,7 @@ public class Tv_Show {
 		protected JSONObject doInBackground(String... params) {
 			data = api.getDataObjectFromJSON(
 					"show/summary.json/361cd031c2473b06997c87c25ec9c057/" + id,
-					true);
+					false);
 
 			// data2 = api.getDataArrayFromJSON("show/season.json/%k/revenge/3",
 			// true);

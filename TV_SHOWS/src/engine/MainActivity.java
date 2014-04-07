@@ -10,6 +10,9 @@ import info.androidhive.slidingmenu.adapter.NavDrawerListAdapter;
 import info.androidhive.slidingmenu.model.NavDrawerItem;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
+import org.json.JSONException;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -52,7 +55,7 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		setContentView(R.layout.activity_main);
 
 		mTitle = mDrawerTitle = getTitle();
-
+	
 		// load slide menu items
 		navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
 

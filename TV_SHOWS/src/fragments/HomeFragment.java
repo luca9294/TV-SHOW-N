@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment {
 		protected JSONArray doInBackground(String... params) {
 			data2 = api.getDataArrayFromJSON(
 					"shows/trending.json/361cd031c2473b06997c87c25ec9c057",
-					true);
+					false);
 
 			// data2 = api.getDataArrayFromJSON("show/season.json/%k/revenge/3",
 			// true);

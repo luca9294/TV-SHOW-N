@@ -50,13 +50,7 @@ import android.widget.Toast;
 public class TraktAPI {
 	private static final String TAG = "TraktAPI";
 
-	public enum ShowMovie {
-		Show, Movie
-	};
 
-	public enum MarkMode {
-		Watched, Unwatched, Loved, Unloved, Hated, Unhated
-	};
 
 	private Context context;
 
@@ -64,8 +58,8 @@ public class TraktAPI {
 	private String apikey = "361cd031c2473b06997c87c25ec9c057";
 	private String baseurl = "http://api.trakt.tv/";
 
-	private String username;
-	private String password;
+	 String username;
+	 String password;
 	private SharedPreferences prefs;
 
 	/**
@@ -79,10 +73,23 @@ public class TraktAPI {
 		// Get preferences object and retrieve username and password
 		context = c;
 		prefs = PreferenceManager.getDefaultSharedPreferences(c);		
-		username = "luca9294";
-		password = "Aa30011992";
+	//	username = "luca9295";
+	//	password = "Aa30011992";
 	}
 
+	
+	
+	public void setCred(String user, String passwd){
+		username = user;
+		password = passwd;
+		
+	}
+	
+	
+	
+	
+	
+	
 	public String ResizePoster(String image, int size) {
 
 		String p = image.replaceAll("/(\\d*)(\\.?\\d*?)?\\.jpg",
@@ -137,10 +144,10 @@ public class TraktAPI {
 		 */
 	}
 
-	public void Mark(Activity parent, Object... params) {
+	/*public void Mark(Activity parent, Object... params) {
 		Marker m = new Marker(parent);
 		m.execute(params);
-	}
+	}*/
 
 	public boolean LoggedIn() {
 		JSONObject result = getDataObjectFromJSON("account/test/%k", true);
@@ -153,194 +160,7 @@ public class TraktAPI {
 		return false;
 	}
 
-	public void Shout(View parent, Object... params) {
-		Shouter s = new Shouter(parent);
-		s.execute(params);
-	}
-
-	public class Shouter extends AsyncTask<Object, Void, Boolean> {
-		View parent;
-		ProgressDialog progressdialog;
-
-		public Shouter(View parent) {
-			this.parent = parent;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			progressdialog = ProgressDialog.show(context, "",
-					String.format("Shouting..."), true);
-		}
-
-		@Override
-		protected Boolean doInBackground(Object... params) {
-			String type = (String) params[0];
-			String shout = (String) params[1];
-			if (type.equals("movie")) {
-				try {
-					String url = "shout/movie/%k";
-					JSONObject post = new JSONObject();
-					post.put("imdb_id", (String) params[2]);
-					post.put("shout", shout);
-					JSONObject data = getDataObjectFromJSON(url, true, post);
-					return data != null;
-				} catch (JSONException e) {
-					Log.e(TAG, "Shouting failed", e);
-				}
-			} else if (type.equals("show")) {
-				try {
-					String url = "shout/show/%k";
-					JSONObject post = new JSONObject();
-					post.put("tvdb_id", (String) params[2]);
-					post.put("shout", shout);
-					JSONObject data = getDataObjectFromJSON(url, true, post);
-					return data != null;
-				} catch (JSONException e) {
-					Log.e(TAG, "Shouting failed", e);
-				}
-			} else if (type.equals("episode")) {
-				try {
-					String url = "shout/episode/%k";
-					JSONObject post = new JSONObject();
-					post.put("season", (Integer) params[3]);
-					post.put("episode", (Integer) params[4]);
-					post.put("tvdb_id", (String) params[2]);
-					post.put("shout", shout);
-					JSONObject data = getDataObjectFromJSON(url, true, post);
-					return data != null;
-				} catch (JSONException e) {
-					Log.e(TAG, "Shouting failed", e);
-				}
-
-			}
-			return false;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) {
-			String message;
-			if (result) {
-				message = "Shouting succeeded";
-			} else {
-				message = "Shouting failed";
-			}
-			progressdialog.dismiss();
-			Toast.makeText(context.getApplicationContext(), message,
-					Toast.LENGTH_SHORT).show();
-			// ((ActivityWithUpdate)parent).DoUpdate();
-		}
-
-	}
-
-	public class Marker extends AsyncTask<Object, Void, Boolean> {
-		Activity parent;
-		ProgressDialog progressdialog;
-
-		public Marker(Activity parent) {
-			this.parent = parent;
-		}
-
-		@Override
-		protected void onPreExecute() {
-			progressdialog = ProgressDialog.show(context, "",
-					String.format("Marking..."), true);
-		}
-
-		@Override
-		protected Boolean doInBackground(Object... params) {
-			String type = (String) params[0];
-			String status = (String) params[1];
-			if (status.equals("seen") || status.equals("unseen")
-					|| status.equals("watchlist")
-					|| status.equals("unwatchlist")) {
-				if (type.equals("movie") || type.equals("show")) {
-					try {
-						String url = type + "/";
-						JSONObject post = new JSONObject();
-						// Movies Array
-						JSONArray ms = new JSONArray();
-						// Movie Element
-						JSONObject m = new JSONObject();
-
-						m.put("imdb_id", (String) params[2]);
-						ms.put(m);
-						post.put(type + "s", ms);
-						url += status + "/%k";
-						JSONObject data = getDataObjectFromJSON(url, true, post);
-						return data != null;
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						Log.w(TAG, "Marking failed", e);
-					}
-				} else if (type.equals("episode")) {
-					try {
-						String url = "show/episode/";
-						JSONObject post = new JSONObject();
-						// Episodes Array
-						JSONArray es = new JSONArray();
-						// Episode Element
-						JSONObject e = new JSONObject();
-						e.put("season", (Integer) params[3]);
-						e.put("episode", (Integer) params[4]);
-						es.put(e);
-						post.put("episodes", es);
-						post.put("tvdb_id", (String) params[2]);
-						url += status + "/%k";
-						JSONObject data = getDataObjectFromJSON(url, true, post);
-						return data != null;
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						Log.w(TAG, "Marking failed", e);
-					}
-
-				}
-			} else {
-				if (type.equals("movie") || type.equals("show")) {
-					try {
-						String url = "rate/" + type + "/%k";
-						JSONObject post = new JSONObject();
-						post.put("imdb_id", (String) params[2]);
-						post.put("rating", status);
-						JSONObject data = getDataObjectFromJSON(url, true, post);
-						return data != null;
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						Log.e(TAG, "Marking failed", e);
-					}
-				} else if (type.equals("episode")) {
-					try {
-						String url = "rate/" + type + "/%k";
-						JSONObject post = new JSONObject();
-						post.put("tvdb_id", (String) params[2]);
-						post.put("season", (Integer) params[3]);
-						post.put("episode", (Integer) params[4]);
-						post.put("rating", status);
-						JSONObject data = getDataObjectFromJSON(url, true, post);
-						return data != null;
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						Log.e(TAG, "Marking failed", e);
-					}
-				}
-			}
-			return false;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) {
-			String message;
-			if (result) {
-				message = "Marking succeeded";
-			} else {
-				message = "Marking failed";
-			}
-			progressdialog.dismiss();
-			Toast.makeText(parent.getApplicationContext(), message,
-					Toast.LENGTH_SHORT).show();
-			// ((ActivityWithUpdate)parent).DoUpdate();
-		}
-
-	}
+	
 
 	/**
 	 * Encodes p as SHA1 Hash.
@@ -386,7 +206,7 @@ public class TraktAPI {
 	 *            "array" or "object" specifying return type.
 	 * @return JSONObject or JSONArray which was returned by the server.
 	 */
-	Object getDataFromJSON(String url, boolean login, String type,
+	public Object getDataFromJSON(String url, boolean login, String type,
 			JSONObject postdata) {
 		// Build URL. URLS may contain certain tags which will be replaced
 		url = baseurl + url;
@@ -419,13 +239,13 @@ public class TraktAPI {
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
-				Log.e(TAG, "getDataFromJSON with login failed", e);
+				Log.e(TAG, "getDataFromJSON with login failed 1", e);
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
-				Log.e(TAG, "getDataFromJSON with login failed", e);
+				Log.e(TAG, "getDataFromJSON with login failed 2", e);
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
-				Log.e(TAG, "getDataFromJSON with login failed", e);
+				Log.e(TAG, "getDataFromJSON with login failed 3", e);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				Toast.makeText(

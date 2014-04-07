@@ -5,15 +5,16 @@
     android:layout_height="match_parent">
 
     <!-- Framelayout to display Fragments -->
+
     <FrameLayout
         android:id="@+id/frame_container"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent" >
-
 
     </FrameLayout>
 
     <!-- Listview to display slider menu -->
+
 
     <ListView
         android:id="@+id/list_slidermenu"
