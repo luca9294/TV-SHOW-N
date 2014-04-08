@@ -12,6 +12,7 @@ import info.androidhive.slidingmenu.R.layout;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
@@ -54,7 +55,8 @@ public class LoginFragment extends Fragment {
 						}
 						
 						else{
-							
+
+							new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
 						Log.e("","GIUSTO");
 						}
 				} catch (InterruptedException e) {
@@ -99,26 +101,27 @@ public class LoginFragment extends Fragment {
     }
 	
 	
-	protected Dialog onCreateDialog(int id) {
-		  switch (id) {
-		    case 1:
-		    Builder builder = new AlertDialog.Builder(this.getActivity().getApplicationContext());
-		    builder.setMessage("This will end the activity");
-		    builder.setCancelable(true);
-		    builder.setPositiveButton("I agree",null);
-		    builder.setNegativeButton("No, no", null);
-		    AlertDialog dialog = builder.create();
-		    dialog.show();
-		  }
-		  
-		return this.onCreateDialog(id);
-		//  return super.onCreateDialog(id);
-		}
+	public class MyDialogFragment extends DialogFragment {
 
+	    @Override
+	    public Dialog onCreateDialog(Bundle savedInstanceState) {
+	        return new AlertDialog.Builder(getActivity())
+	                .setMessage("Authentication failed!\nPlease retry.").setPositiveButton("Ok", null).create();
+	    }
 
+	}
 	
 	
 	
+	public class MyDialogFragment2 extends DialogFragment {
+
+	    @Override
+	    public Dialog onCreateDialog(Bundle savedInstanceState) {
+	        return new AlertDialog.Builder(getActivity())
+	                .setMessage("Authentication done successfully!\n").setPositiveButton("Ok", null).create();
+	    }
+
+	}
 	
 	
 	
