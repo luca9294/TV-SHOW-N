@@ -41,6 +41,7 @@ public class Season {
 		
 		api = new TraktAPI(parent);
 		
+		
 		DataGrabber dg = new DataGrabber(parent);
 		JSONArray array = new JSONArray();
 		dg.execute();
@@ -50,17 +51,16 @@ public class Season {
 		for (int i = 0; i<array.length();i++){
 			JSONObject object = array.getJSONObject(i);
 			
-			String id = object.getString("episode");
+			String id_e = object.getString("episode");
+			//String s_n = season_n;
 			String title = object.getString("title");
 			String first_aired = object.getString("first_aired_iso").replace("T", " ");
 			String overview = object.getString("overview");
 			String image = object.getJSONObject("images").getString("screen");
 			String percentage = object.getJSONObject("ratings").getString("percentage");
 			
-			Episode e = new Episode(id, title, first_aired, overview, image, percentage);
+			Episode e = new Episode(id_e, id, title, first_aired, overview, image, percentage, code, parent);
 			episodes.add(e);
-			
-			
 			
 		}
 	

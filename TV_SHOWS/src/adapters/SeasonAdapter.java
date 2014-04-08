@@ -40,15 +40,15 @@ import engine.Episode;
  * Created with IntelliJ IDEA. User: Shahab Date: 8/22/12 Time: 11:37 AM To
  * change this template use File | Settings | File Templates.
  */
-public class EpisodeAdapter extends BaseAdapter {
+public class SeasonAdapter extends BaseAdapter {
 
-	private static final String TAG = EpisodeAdapter.class.getSimpleName();
+	private static final String TAG = SeasonAdapter.class.getSimpleName();
 
 	Vector<Episode> episodes;
 	Context context;
 	FragmentManager fm;
 
-	public EpisodeAdapter(Vector<Episode> episodes, Context context,
+	public SeasonAdapter(Vector<Episode> episodes, Context context,
 			FragmentManager fm) {
 		this.episodes = episodes;
 		this.context = context;
@@ -87,7 +87,7 @@ public class EpisodeAdapter extends BaseAdapter {
 		title.setText(episodes.get(index).title);
 
 		TextView air_date = (TextView) view.findViewById(R.id.air_date);
-		air_date.setText(episodes.get(index).first_aired);
+		air_date.setText(episodes.get(index).first_aired_date);
 
 		return view;
 
