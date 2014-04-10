@@ -3,17 +3,20 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".TVShowActivity" >
+    tools:context=".TVShowActivity" 
+    >
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" 
+        android:gravity="center">
 
         <WebView
             android:id="@+id/imageSeason"
-            android:layout_width="match_parent"
-            android:layout_height="255dp" />
+            android:layout_width="176dp"
+            android:layout_height="255dp"
+            />
 
         <View
             android:layout_width="5dp"
@@ -37,7 +40,9 @@
                 android:layout_height="match_parent"
                 android:gravity="left|center"
                 android:text="Season &lt;number> - &lt;nr> episodes"
-                android:textSize="15dp" />
+                android:textColor="#1569C7"
+                android:textSize="23dp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

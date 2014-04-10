@@ -26,7 +26,7 @@ public class Season {
 		this.code = code;
 		this.parent=parent;
 		
-		getEpisodes();
+		//getEpisodes();
 	}
 	
 	
@@ -54,7 +54,7 @@ public class Season {
 			String id_e = object.getString("episode");
 			//String s_n = season_n;
 			String title = object.getString("title");
-			String first_aired = object.getString("first_aired_iso").replace("T", " ");
+			String first_aired = object.getString("first_aired_iso").substring(0, 10);
 			String overview = object.getString("overview");
 			String image = object.getJSONObject("images").getString("screen");
 			String percentage = object.getJSONObject("ratings").getString("percentage");

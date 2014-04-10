@@ -45,13 +45,15 @@ public class SeasonFragment extends Fragment {
 		try {
 			final Season season = new Season(id, n_episode, image, code, this
 					.getActivity().getApplicationContext());
+			
+			season.getEpisodes();
 
 			TextView seasonTitle = (TextView) rootView
 					.findViewById(R.id.season);
 			seasonTitle.setText(season.toString());
 			WebView web = (WebView) rootView.findViewById(R.id.imageSeason);
-			web.loadUrl(season.image);
-			web.setInitialScale(160);
+			web.loadUrl((season.image).replace(".jpg", "-300.jpg"));
+			web.setInitialScale(170);
 			web.setFocusable(false);
 			web.setClickable(false);
 			web.setVisibility(View.VISIBLE);
