@@ -1,5 +1,9 @@
 package engine;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
@@ -179,6 +183,20 @@ public class Tv_Show {
 
 	}
 	
+	
+	public Date dateParser(String dateString){
+		String dateExample= "2009-10-29T22:30:00-05:00"; //just a reminder for the format, will be deleted once work has been completed
+		Date airDate = new Date();
+		//String dateExample2 = "2001-07-04T12:08:56.235-0700";
+		DateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		try {
+			airDate = df.parse(dateString);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return airDate;
+	}
 	
 
 	
