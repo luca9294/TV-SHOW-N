@@ -54,7 +54,9 @@ public class Season {
 			String id_e = object.getString("episode");
 			//String s_n = season_n;
 			String title = object.getString("title");
-			String first_aired = object.getString("first_aired_iso").substring(0, 10);
+			String first_aired = object.getString("first_aired_iso");
+					if (first_aired.length() > 10){ 
+						first_aired= 	first_aired.substring(0, 10);}
 			String overview = object.getString("overview");
 			String image = object.getJSONObject("images").getString("screen");
 			String percentage = object.getJSONObject("ratings").getString("percentage");
