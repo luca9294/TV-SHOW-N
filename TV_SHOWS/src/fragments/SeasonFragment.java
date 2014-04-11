@@ -70,13 +70,25 @@ public class SeasonFragment extends Fragment {
 				public void onItemClick(AdapterView<?> arg0, View arg1,
 						int arg2, long arg3) {
 					Fragment fragment = new EpisodeFragment();
-					FragmentManager fm = getFragmentManager();
+			
 					Bundle args = new Bundle();
 					args.putString("id", season.episodes.get(arg2).id);
 					args.putString("season_n", season.episodes.get(arg2).season_n);
 					args.putString("code", code);
 					fragment.setArguments(args);
-					fm.beginTransaction().replace(R.id.frame_container, fragment).commit();
+										 
+					FragmentManager fragmentManager = getFragmentManager();
+					android.app.FragmentTransaction ft = fragmentManager.beginTransaction();
+					 ft.replace(R.id.frame_container, fragment);
+					 ft.addToBackStack("");
+					 ft.commit();
+					
+					
+					
+					
+					//fm.beginTransaction().addToBackStack("");
+					//fm.beginTransaction().replace(R.id.frame_container, fragment).commit();
+					
 				}});
 
 		} catch (InterruptedException e) {

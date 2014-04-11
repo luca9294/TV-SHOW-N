@@ -9,6 +9,7 @@ import info.androidhive.slidingmenu.adapter.NavDrawerListAdapter;
 import info.androidhive.slidingmenu.model.NavDrawerItem;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -16,7 +17,9 @@ import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.provider.SyncStateContract.Constants;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +31,7 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 
 public class MainActivity extends Activity implements OnQueryTextListener  {
+
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -88,17 +92,7 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 				navDrawerItems);
 		mDrawerList.setAdapter(adapter);
 		
-		
-		
-		
-		
 
-		
-		
-		
-		
-		
-		
 		
 		
 		
@@ -153,6 +147,13 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 
 		return true;
 	}
+	
+	
+	
+
+	
+	
+	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -222,9 +223,10 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 
 		if (fragment != null) {
 			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, fragment).commit();
-
+			 android.app.FragmentTransaction ft = fragmentManager.beginTransaction();
+			 ft.replace(R.id.frame_container, fragment);
+			 ft.addToBackStack("");
+		  ft.commit();
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);
 			mDrawerList.setSelection(position);
@@ -233,6 +235,7 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		} else {
 			// error in creating fragment
 			Log.e("MainActivity", "Error in creating fragment");
+
 		}
 	}
 
@@ -260,6 +263,8 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		// Pass any configuration change to the drawer toggls
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
+	
+	
 
 	@Override
 	public boolean onQueryTextChange(String newText) {
@@ -276,8 +281,11 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 			Bundle args = new Bundle();
 			args.putString("toSearch", query.replace(" ", "+"));
 			fragment1.setArguments(args);
-			fragmentManager.beginTransaction().replace(R.id.frame_container, fragment1).commit();;
 			
+			android.app.FragmentTransaction ft = fragmentManager.beginTransaction();
+			 ft.replace(R.id.frame_container, fragment1);
+			 ft.addToBackStack("");
+			 ft.commit();
 
 		
 		return false;

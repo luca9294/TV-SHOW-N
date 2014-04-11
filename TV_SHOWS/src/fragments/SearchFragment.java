@@ -57,7 +57,13 @@ public class SearchFragment extends Fragment {
 					Bundle args = new Bundle();
 					args.putString("toSearch",  search.getResults().get(arg2).id);
 					fragment.setArguments(args);
-					fm.beginTransaction().replace(R.id.frame_container, fragment).commit();;
+					//fm.beginTransaction().replace(R.id.frame_container, fragment).commit();;
+					
+					android.app.FragmentTransaction ft = fm.beginTransaction();
+					 ft.replace(R.id.frame_container, fragment);
+					 ft.addToBackStack("");
+					 ft.commit();
+					
 					
 					
 				}

@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -86,7 +87,7 @@ public class TvFragment extends Fragment {
 			
 			
 			Button confirm = (Button) rootView.findViewById(R.id.button1);
-			
+				
 			confirm.setOnClickListener(new OnClickListener(){
 
 				@Override
@@ -100,9 +101,19 @@ public class TvFragment extends Fragment {
 			args.putString("image", season.image);
 			args.putString("code", season.code);
 			fragment.setArguments(args);
-			FragmentManager fm = getFragmentManager();
-			fm.beginTransaction().replace(R.id.frame_container, fragment).commit();
-		
+			
+			
+			FragmentManager fragmentManager = getFragmentManager();
+			android.app.FragmentTransaction ft = fragmentManager.beginTransaction();
+			 ft.replace(R.id.frame_container, fragment);
+			 ft.addToBackStack("");
+			 ft.commit();
+			
+			
+	
+			//fm.beginTransaction().replace(R.id.frame_container, fragment).commit();
+			
+			
 				}
 				
 				

@@ -10,6 +10,8 @@ import info.androidhive.slidingmenu.adapter.NavDrawerListAdapter;
 import info.androidhive.slidingmenu.model.NavDrawerItem;
 
 import java.util.ArrayList;
+import java.util.Stack;
+import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
@@ -21,6 +23,7 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +36,10 @@ import android.widget.SearchView.OnQueryTextListener;
 
 public class MainActivity extends Activity implements OnQueryTextListener  {
 	private DrawerLayout mDrawerLayout;
+	public  Vector<Fragment> prova;
+	
+	//public static Stack<Fragment> mFragmentStack = new Stack<Fragment>();
+	
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 
@@ -55,7 +62,7 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		setContentView(R.layout.activity_main);
 
 		mTitle = mDrawerTitle = getTitle();
-	
+		prova = new  Vector<Fragment>();
 		// load slide menu items
 		navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
 
@@ -149,6 +156,36 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 			displayView(position);
 		}
 	}
+	
+	
+/*	@Override
+	public void onBackPressed() {
+	if (prova.size() == 0){
+		Fragment fragment = new HomeFragment();
+		//prova.remove(prova.size()-1);
+		FragmentManager fragmentManager = getFragmentManager();
+	//	fragmentManager.beginTransaction().addToBackStack("");
+		prova.add(fragment);
+	
+		fragmentManager.beginTransaction()
+				.replace(R.id.frame_container, fragment).commit();
+		
+		
+		
+	}
+	else{
+		Fragment fragment = prova.get(0);
+		prova.remove(0);
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction().addToBackStack("");
+		fragmentManager.beginTransaction()
+				.replace(R.id.frame_container, fragment).commit();
+		
+		
+		
+	}
+		
+	}*/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -183,6 +220,10 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 			return super.onOptionsItemSelected(item);
 		}
 	}
+	
+	
+
+
 
 	/* *
 	 * Called when invalidateOptionsMenu() is triggered
@@ -227,9 +268,11 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 
 		if (fragment != null) {
 			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction().addToBackStack("");
 			fragmentManager.beginTransaction()
 					.replace(R.id.frame_container, fragment).commit();
-
+		
+			
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);
 			mDrawerList.setSelection(position);
@@ -240,12 +283,29 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 			Log.e("MainActivity", "Error in creating fragment");
 		}
 	}
+	
+	
+
+	
+	
+	
+	
 
 	@Override
 	public void setTitle(CharSequence title) {
 		mTitle = title;
 		getActionBar().setTitle(mTitle);
 	}
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
 
 	/**
 	 * When using the ActionBarDrawerToggle, you must call it during
@@ -275,13 +335,23 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 	@Override
 	public boolean onQueryTextSubmit(String query) {
 		
-			FragmentManager fragmentManager = getFragmentManager();
+		//	FragmentManager fragmentManager = getFragmentManager();
 			Fragment fragment1;
 			fragment1 = new SearchFragment();
 			Bundle args = new Bundle();
 			args.putString("toSearch", query.replace(" ", "+"));
 			fragment1.setArguments(args);
-			fragmentManager.beginTransaction().replace(R.id.frame_container, fragment1).commit();;
+			//fragmentManager.beginTransaction().replace(R.id.frame_container, fragment1).commit();;
+			
+			
+			
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction().addToBackStack("");
+			fragmentManager.beginTransaction()
+					.replace(R.id.frame_container, fragment1).commit();
+			
+			
+			
 			
 
 		
