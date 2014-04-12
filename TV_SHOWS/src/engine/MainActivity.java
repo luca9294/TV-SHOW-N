@@ -19,9 +19,13 @@ import org.json.JSONException;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -32,6 +36,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.SearchView.OnQueryTextListener;
 
 public class MainActivity extends Activity implements OnQueryTextListener  {
@@ -153,39 +158,31 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			// display view for selected nav drawer item
+			
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(getBaseContext());
+		
+			
+		
+			
+			String user = prefs.getString("user", "");
+			String pass = prefs.getString("passed", "");
+			
+	  
+		if (!user.isEmpty() && position == 0){
+				
+				
+				
+				
+			}
+		else {
+			
 			displayView(position);
-		}
+		}}
 	}
 	
 	
-/*	@Override
-	public void onBackPressed() {
-	if (prova.size() == 0){
-		Fragment fragment = new HomeFragment();
-		//prova.remove(prova.size()-1);
-		FragmentManager fragmentManager = getFragmentManager();
-	//	fragmentManager.beginTransaction().addToBackStack("");
-		prova.add(fragment);
-	
-		fragmentManager.beginTransaction()
-				.replace(R.id.frame_container, fragment).commit();
-		
-		
-		
-	}
-	else{
-		Fragment fragment = prova.get(0);
-		prova.remove(0);
-		FragmentManager fragmentManager = getFragmentManager();
-		fragmentManager.beginTransaction().addToBackStack("");
-		fragmentManager.beginTransaction()
-				.replace(R.id.frame_container, fragment).commit();
-		
-		
-		
-	}
-		
-	}*/
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -204,13 +201,6 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		}
 		// Handle action bar actions click
 		switch (item.getItemId()) {
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		
@@ -259,7 +249,19 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 			fragment = new LoginFragment();
 			break;
 		case 5:
-			fragment = new WhatsHotFragment();
+			
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(this.getApplicationContext());
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.remove("user");
+			editor.remove("pass");
+			editor.remove("logged");
+			editor.clear();
+			editor.commit();
+			Intent intent = new Intent(this.getApplicationContext(),
+					MainActivity.class);
+			
+			startActivity(intent);
 			break;
 
 		default:

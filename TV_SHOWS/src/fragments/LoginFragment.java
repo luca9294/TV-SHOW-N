@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 import org.json.JSONException;
 
 import engine.Login;
+import engine.MainActivity;
 import info.androidhive.slidingmenu.R;
 import info.androidhive.slidingmenu.R.layout;
 import android.app.Activity;
@@ -16,6 +17,8 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class LoginFragment extends Fragment {
-	
+	 private Context contextN;
 	public LoginFragment(){}
 	
 	@Override
@@ -39,7 +42,7 @@ public class LoginFragment extends Fragment {
         final EditText pass = (EditText) rootView.findViewById(R.id.passwd);
         Button button = (Button)rootView.findViewById(R.id.login);
         final Context context = this.getActivity().getApplicationContext();
-             
+        contextN = this.getActivity().getApplicationContext();;
         button.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -57,6 +60,8 @@ public class LoginFragment extends Fragment {
 						else{
 
 							new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
+						
+							
 						Log.e("","GIUSTO");
 						}
 				} catch (InterruptedException e) {
@@ -118,7 +123,16 @@ public class LoginFragment extends Fragment {
 	    @Override
 	    public Dialog onCreateDialog(Bundle savedInstanceState) {
 	        return new AlertDialog.Builder(getActivity())
-	                .setMessage("Authentication done successfully!\n").setPositiveButton("Ok", null).create();
+	                .setMessage("Authentication done successfully!\n").setPositiveButton("Ok", new  DialogInterface.OnClickListener(){
+
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							Intent intent = new Intent(contextN,
+									MainActivity.class);
+						
+							startActivity(intent);
+							
+						}}).create();
 	    }
 
 	}

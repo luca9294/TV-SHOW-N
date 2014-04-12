@@ -7,6 +7,9 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,11 +49,38 @@ public class NavDrawerListAdapter extends BaseAdapter {
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.drawer_list_item, null);
         }
+		
+		
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+	
+		
+	
+		
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("passed", "");
+		
+		
+	
+		
+		
+		
          
        // ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
         TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
      //   TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
          
+        
+	if (!user.isEmpty() && position == 0){
+			
+			txtTitle.setText("LOGGED as " + user);
+			txtTitle.setTypeface(null, Typeface.BOLD);
+			
+		}
+	
+	else{
+        
+        
        // imgIcon.setImageResource(navDrawerItems.get(position).getIcon());        
         txtTitle.setText(navDrawerItems.get(position).getTitle());
         
@@ -62,7 +92,7 @@ public class NavDrawerListAdapter extends BaseAdapter {
         	// hide the counter view
         	//txtCount.setVisibility(View.GONE);
         }
-        
+	}
         return convertView;
 	}
 

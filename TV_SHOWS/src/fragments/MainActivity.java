@@ -10,13 +10,16 @@ import info.androidhive.slidingmenu.model.NavDrawerItem;
 
 import java.util.ArrayList;
 import java.util.Vector;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.SyncStateContract.Constants;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
@@ -35,7 +38,7 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-
+	Context context = this.getApplicationContext();
 	// nav drawer title
 	private CharSequence mDrawerTitle;
 
@@ -134,8 +137,25 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+			
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(context);
+			
+		
+			
+		
+			
+			String user = prefs.getString("user", "");
+			String pass = prefs.getString("passed", "");
+			
+			if (!user.isEmpty() && position == 0){
+			
+			}
+			
+			else{
+			
 			// display view for selected nav drawer item
-			displayView(position);
+			displayView(position);}
 		}
 	}
 
@@ -214,7 +234,22 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 			fragment = new LoginFragment();
 			break;
 		case 5:
-			//fragment = new WhatsHotFragment();
+			SharedPreferences prefs = PreferenceManager
+			.getDefaultSharedPreferences(this.getApplicationContext());
+	SharedPreferences.Editor editor = prefs.edit();
+	// put your value
+			editor.remove("user");
+			editor.remove("pass");
+			editor.remove("logged");
+			editor.clear();
+			editor.commit();
+
+			
+			
+			Intent intent = new Intent(getApplicationContext(),
+					MainActivity.class);
+		
+			startActivity(intent);
 			break;
 
 		default:

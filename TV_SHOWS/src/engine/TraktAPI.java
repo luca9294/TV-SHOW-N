@@ -31,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -215,7 +216,22 @@ public class TraktAPI {
 
 		// Construct HttpClient
 		HttpClient httpclient = new DefaultHttpClient();
-		if (login) {
+		
+		
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+	
+		
+	
+		
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("passed", "");
+	
+		
+		
+		
+		
+		if (user.isEmpty()) {
 			// If login add login information to a JSONObject
 			HttpPost httppost = new HttpPost(url);
 			JSONObject jsonpost;
@@ -225,8 +241,8 @@ public class TraktAPI {
 				jsonpost = postdata;
 			}
 			try {
-				jsonpost.put("username", username);
-				jsonpost.put("password", password);
+				jsonpost.put("username", user);
+				jsonpost.put("password", pass);
 				httppost.setEntity(new StringEntity(jsonpost.toString()));
 				// Perform POST
 				String response = httpclient.execute(httppost,
