@@ -17,6 +17,7 @@ import adapters.CustomAdapter;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -43,6 +44,9 @@ public class HomeFragment extends Fragment {
 		CustomAdapter customAdapter;
 		
 		this.getActivity().setTitle("SUGGESTIONS");
+		
+		
+		
 		
 		try {
 

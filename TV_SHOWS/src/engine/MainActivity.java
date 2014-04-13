@@ -3,7 +3,7 @@ package engine;
 import fragments.HomeFragment;
 import fragments.LoginFragment;
 import fragments.SearchFragment;
-import fragments.WhatsHotFragment;
+import fragments.CommentsFragment;
 import info.androidhive.slidingmenu.R;
 import info.androidhive.slidingmenu.R.menu;
 import info.androidhive.slidingmenu.adapter.NavDrawerListAdapter;

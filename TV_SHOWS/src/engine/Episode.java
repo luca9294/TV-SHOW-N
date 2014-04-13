@@ -1,5 +1,6 @@
 package engine;
 
+import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 import org.json.*;
@@ -7,12 +8,18 @@ import org.json.*;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class Episode {
 
 	private TraktAPI api;
 	public String id, season_n, title, first_aired_date, overview, image,
 			percentage, code;
+	
+	public Vector <Comment> comments = new Vector<Comment>();
+	
+	
+	
 	public Context parent;
 
 	public Episode(String id, String season_n, String title,
@@ -88,5 +95,65 @@ public class Episode {
 		}
 
 	}
+	
+	
+	
+	public void getComments() throws InterruptedException, ExecutionException,
+	JSONException {
+api = new TraktAPI(parent);
+DataGrabber2 dg = new DataGrabber2(parent);
+dg.execute();
+
+JSONArray array = dg.get();
+
+for (int i = 0; i < array.length(); i++){
+JSONObject object = array.getJSONObject(i);
+	
+String user = object.getJSONObject("user").getString("username");
+String text = object.getString("text_html");
+	
+String date = object.getString("inserted");
+Log.e("PROVA", user);
+Log.e("PROVA", text);
+Log.e("PROVA", date);
+
+Comment comment = new Comment(user,text,date);
+
+comments.add(comment);
+
+
+}
+}
+
+private class DataGrabber2 extends AsyncTask<String, Void, JSONArray> {
+private ProgressDialog progressdialog;
+private Context parent;
+
+private JSONArray data;
+
+public DataGrabber2 (Context parent) {
+	this.parent = parent;
+
+}
+
+@Override
+protected void onPreExecute() {
+	// progressdialog = ProgressDialog.show(parent,"",
+	// "Retrieving data ...", true);
+}
+
+@Override
+protected JSONArray doInBackground(String... params) {
+	data = api.getDataArrayFromJSON("show/episode/comments.json/%k/"
+			+ code + "/" + season_n + "/" + id, false);
+
+	// data2 = api.getDataArrayFromJSON("show/season.json/%k/revenge/3",
+	// true);
+
+	return data;
+
+}
+
+}
 
 }

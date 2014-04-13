@@ -164,8 +164,7 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		getMenuInflater().inflate(R.menu.main, menu);
 		  SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
 		  searchView.setOnQueryTextListener(this);
-
-		return true;
+				return true;
 	}
 	
 	

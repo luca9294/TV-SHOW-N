@@ -8,13 +8,23 @@ import org.json.JSONException;
 
 import adapters.SeasonAdapter;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import engine.Season;
 import engine.Episode;
@@ -23,7 +33,12 @@ import engine.Episode;
 ;
 
 public class EpisodeFragment extends Fragment {
-
+	private ShareActionProvider mShareActionProvider;
+	String id; 
+	String season_n; 
+	String code; 
+	
+	
 	public EpisodeFragment(){
 		
 	}
@@ -34,17 +49,19 @@ public class EpisodeFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_episode, container,
 				false);
 		
-	
-
+		
+	   setHasOptionsMenu(true);
+	 ;
 		Bundle bundle = getArguments();
 
-		String id = bundle.getString("id");
-		String season_n = bundle.getString("season_n");
-		String code = bundle.getString("code");
+		id = bundle.getString("id");
+		 season_n = bundle.getString("season_n");
+		code = bundle.getString("code");
 
 		
 		try {
 			Episode episode = new Episode(id, code, season_n, this.getActivity().getApplicationContext());
+			episode.getComments();
 			
 			TextView season_n_e = (TextView) rootView.findViewById(R.id.season_n);
 			TextView id_e = (TextView) rootView.findViewById(R.id.id);
@@ -78,8 +95,38 @@ public class EpisodeFragment extends Fragment {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
+		Button button =  (Button) rootView.findViewById(R.id.viewComments);
+		button.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Fragment fragment = new CommentsFragment();
+				
+				Bundle args = new Bundle();
+				args.putString("id", id);
+				args.putString("season_n", season_n);
+				args.putString("code", code);
+				fragment.setArguments(args);
+									 
+				FragmentManager fragmentManager = getFragmentManager();
+				android.app.FragmentTransaction ft = fragmentManager.beginTransaction();
+				 ft.replace(R.id.frame_container, fragment);
+				 ft.addToBackStack("");
+				 ft.commit();
+				
+				
+			}
+		});
 
 		return rootView;
 
 	}
+	
+	
+
+
+	
+
 }
