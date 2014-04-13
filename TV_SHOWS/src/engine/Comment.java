@@ -14,10 +14,10 @@ this.id = id;
 this.text = text;
 this.date = date;
 
-/*final Calendar cal = Calendar.getInstance();
-cal.setTimeInMillis(Long.parseLong(date));
-Date dateN = cal.getTime();
-this.date = dateN.toString();*/
+Date dateN  = new Date(Long.parseLong(date)*1000);
+this.date = dateN.toString();
+
+
 }
 
 

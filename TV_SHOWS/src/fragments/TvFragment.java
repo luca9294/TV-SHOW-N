@@ -141,21 +141,7 @@ public class TvFragment extends Fragment {
 		
 
 		
-				/*	Fragment fragment = new TvFragment();
-					Bundle args = new Bundle();
-					//args.putString("toSearch", urls2.get(index).get(1));
-					fragment.setArguments(args);
-					fm.beginTransaction()
-							.replace(R.id.frame_container, fragment).commit();
-					;
-
-					return true;
-
-				}
-
-				return false;
-			}
-		});*/
+				
 		
 		
 		return rootView;
