@@ -1,5 +1,7 @@
 package engine;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -15,9 +17,11 @@ this.text = text;
 this.date = date;
 
 Date dateN  = new Date(Long.parseLong(date)*1000);
-this.date = dateN.toString();
 
 
+DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+
+this.date = dateN.toGMTString();
 }
 
 

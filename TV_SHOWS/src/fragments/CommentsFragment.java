@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class CommentsFragment extends Fragment {
 	
@@ -31,17 +32,29 @@ public class CommentsFragment extends Fragment {
         Bundle bundle = getArguments();
 
 		String id = bundle.getString("id");
-		 String season_n = bundle.getString("season_n");
+		String season_n = bundle.getString("season_n");
 		String code = bundle.getString("code");
+		
+		
+		
 		
 		
 		Episode episode;
 		try {
 			episode = new Episode(id,code,season_n, this.getActivity().getApplicationContext());
+			episode.getEpisode();
 			episode.getComments();
 			Log.e("", episode.comments.toString());
 			
 			ListView list = (ListView) rootView.findViewById(R.id.list);
+			
+			TextView title = (TextView) rootView.findViewById(R.id.car);
+			title.setText("Episode "+ id + " Season " + season_n );
+			
+			TextView title_ = (TextView) rootView.findViewById(R.id.title);
+			title_.setText(episode.title);
+			
+			
 	    	
 	    	CommentAdapter adapter = new CommentAdapter (episode.comments, this.getActivity().getApplicationContext(), this.getFragmentManager());
 			list.setAdapter(adapter);

@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -88,7 +89,7 @@ public class CommentAdapter extends BaseAdapter {
 		date.setText(comments.get(index).date);
 
 		TextView text = (TextView) view.findViewById(R.id.comment);
-		text.setText(comments.get(index).text);
+		text.setText(Html.fromHtml(comments.get(index).text));
 
 		return view;
 
