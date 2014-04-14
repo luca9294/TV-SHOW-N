@@ -14,7 +14,7 @@
 
         <WebView
             android:id="@+id/imageSeason"
-            android:layout_width="176dp"
+            android:layout_width="178dp"
             android:layout_height="255dp"
             />
 
@@ -52,7 +52,12 @@
     <ListView
         android:id="@+id/listEpisodes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent" 
+        android:divider="#FFF"
+    	android:dividerHeight="2dp"
+        android:background="#36a9ec"
+        android:textSize="18dp"
+        android:textColor="#fff">
     </ListView>
  
 </LinearLayout>

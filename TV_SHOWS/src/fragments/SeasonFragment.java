@@ -45,7 +45,7 @@ public class SeasonFragment extends Fragment {
 		try {
 			final Season season = new Season(id, n_episode, image, code, this
 					.getActivity().getApplicationContext());
-			
+
 			season.getEpisodes();
 
 			TextView seasonTitle = (TextView) rootView
@@ -64,32 +64,33 @@ public class SeasonFragment extends Fragment {
 					.getActivity().getApplicationContext(),
 					getFragmentManager());
 			view.setAdapter(adapter);
-			view.setOnItemClickListener(new OnItemClickListener(){
+			view.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1,
 						int arg2, long arg3) {
 					Fragment fragment = new EpisodeFragment();
-			
+
 					Bundle args = new Bundle();
 					args.putString("id", season.episodes.get(arg2).id);
-					args.putString("season_n", season.episodes.get(arg2).season_n);
+					args.putString("season_n",
+							season.episodes.get(arg2).season_n);
 					args.putString("code", code);
 					fragment.setArguments(args);
-										 
+
 					FragmentManager fragmentManager = getFragmentManager();
-					android.app.FragmentTransaction ft = fragmentManager.beginTransaction();
-					 ft.replace(R.id.frame_container, fragment);
-					 ft.addToBackStack("");
-					 ft.commit();
-					
-					
-					
-					
-					//fm.beginTransaction().addToBackStack("");
-					//fm.beginTransaction().replace(R.id.frame_container, fragment).commit();
-					
-				}});
+					android.app.FragmentTransaction ft = fragmentManager
+							.beginTransaction();
+					ft.replace(R.id.frame_container, fragment);
+					ft.addToBackStack("");
+					ft.commit();
+
+					// fm.beginTransaction().addToBackStack("");
+					// fm.beginTransaction().replace(R.id.frame_container,
+					// fragment).commit();
+
+				}
+			});
 
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

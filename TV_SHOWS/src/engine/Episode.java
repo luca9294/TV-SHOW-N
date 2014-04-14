@@ -15,11 +15,9 @@ public class Episode {
 	private TraktAPI api;
 	public String id, season_n, title, first_aired_date, overview, image,
 			percentage, code;
-	
-	public Vector <Comment> comments = new Vector<Comment>();
-	
-	
-	
+
+	public Vector<Comment> comments = new Vector<Comment>();
+
 	public Context parent;
 
 	public Episode(String id, String season_n, String title,
@@ -57,6 +55,9 @@ public class Episode {
 		title = object.getJSONObject("episode").getString("title");
 		first_aired_date = object.getJSONObject("episode")
 				.getString("first_aired_iso").replace("T", " ");
+		if (first_aired_date.length() > 10) {
+			first_aired_date = first_aired_date.substring(0, 10);
+		}
 		overview = object.getJSONObject("episode").getString("overview");
 		image = object.getJSONObject("episode").getJSONObject("images")
 				.getString("screen");
@@ -95,65 +96,62 @@ public class Episode {
 		}
 
 	}
-	
-	
-	
+
 	public void getComments() throws InterruptedException, ExecutionException,
-	JSONException {
-api = new TraktAPI(parent);
-DataGrabber2 dg = new DataGrabber2(parent);
-dg.execute();
+			JSONException {
+		api = new TraktAPI(parent);
+		DataGrabber2 dg = new DataGrabber2(parent);
+		dg.execute();
 
-JSONArray array = dg.get();
+		JSONArray array = dg.get();
 
-for (int i = 0; i < array.length(); i++){
-JSONObject object = array.getJSONObject(i);
-	
-String user = object.getJSONObject("user").getString("username");
-String text = object.getString("text_html");
-	
-String date = object.getString("inserted");
-Log.e("PROVA", user);
-Log.e("PROVA", text);
-Log.e("PROVA", date);
+		for (int i = 0; i < array.length(); i++) {
+			JSONObject object = array.getJSONObject(i);
 
-Comment comment = new Comment(user,text,date);
+			String user = object.getJSONObject("user").getString("username");
+			String text = object.getString("text_html");
 
-comments.add(comment);
+			String date = object.getString("inserted");
+			Log.e("PROVA", user);
+			Log.e("PROVA", text);
+			Log.e("PROVA", date);
 
+			Comment comment = new Comment(user, text, date);
 
-}
-}
+			comments.add(comment);
 
-private class DataGrabber2 extends AsyncTask<String, Void, JSONArray> {
-private ProgressDialog progressdialog;
-private Context parent;
+		}
+	}
 
-private JSONArray data;
+	private class DataGrabber2 extends AsyncTask<String, Void, JSONArray> {
+		private ProgressDialog progressdialog;
+		private Context parent;
 
-public DataGrabber2 (Context parent) {
-	this.parent = parent;
+		private JSONArray data;
 
-}
+		public DataGrabber2(Context parent) {
+			this.parent = parent;
 
-@Override
-protected void onPreExecute() {
-	// progressdialog = ProgressDialog.show(parent,"",
-	// "Retrieving data ...", true);
-}
+		}
 
-@Override
-protected JSONArray doInBackground(String... params) {
-	data = api.getDataArrayFromJSON("show/episode/comments.json/%k/"
-			+ code + "/" + season_n + "/" + id, false);
+		@Override
+		protected void onPreExecute() {
+			// progressdialog = ProgressDialog.show(parent,"",
+			// "Retrieving data ...", true);
+		}
 
-	// data2 = api.getDataArrayFromJSON("show/season.json/%k/revenge/3",
-	// true);
+		@Override
+		protected JSONArray doInBackground(String... params) {
+			data = api.getDataArrayFromJSON("show/episode/comments.json/%k/"
+					+ code + "/" + season_n + "/" + id, false);
 
-	return data;
+			// data2 = api.getDataArrayFromJSON("show/season.json/%k/revenge/3",
+			// true);
 
-}
+			return data;
 
-}
+		}
+
+	}
 
 }

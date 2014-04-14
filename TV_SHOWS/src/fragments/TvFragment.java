@@ -71,7 +71,7 @@ public class TvFragment extends Fragment {
 			image.setFocusable(false);
 			image.setClickable(false);
 
-		     vector = prova.getSeasons();
+			vector = prova.getSeasons();
 			strings = new String[vector.size()];
 
 			for (int i = 0; i < prova.getSeasons().size(); i++) {
@@ -82,48 +82,39 @@ public class TvFragment extends Fragment {
 					.getActivity().getApplicationContext(),
 					R.layout.single_spinner, R.id.text1, strings);
 
-			final Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
+			final Spinner spinner = (Spinner) rootView
+					.findViewById(R.id.spinner);
 			spinner.setAdapter(adapter);
-			
-			
+
 			Button confirm = (Button) rootView.findViewById(R.id.button1);
-				
-			confirm.setOnClickListener(new OnClickListener(){
+
+			confirm.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View arg0) {
-			int pos = spinner.getSelectedItemPosition();
-			Season season = vector.get(pos);
-			Fragment fragment = new SeasonFragment();
-			Bundle args = new Bundle();
-			args.putString("id", season.id);
-			args.putString("n_episode", season.n_episode);
-			args.putString("image", season.image);
-			args.putString("code", season.code);
-			fragment.setArguments(args);
-			
-			
-			FragmentManager fragmentManager = getFragmentManager();
-			android.app.FragmentTransaction ft = fragmentManager.beginTransaction();
-			 ft.replace(R.id.frame_container, fragment);
-			 ft.addToBackStack("");
-			 ft.commit();
-			
-			
-	
-			//fm.beginTransaction().replace(R.id.frame_container, fragment).commit();
-			
-			
+					int pos = spinner.getSelectedItemPosition();
+					Season season = vector.get(pos);
+					Fragment fragment = new SeasonFragment();
+					Bundle args = new Bundle();
+					args.putString("id", season.id);
+					args.putString("n_episode", season.n_episode);
+					args.putString("image", season.image);
+					args.putString("code", season.code);
+					fragment.setArguments(args);
+
+					FragmentManager fragmentManager = getFragmentManager();
+					android.app.FragmentTransaction ft = fragmentManager
+							.beginTransaction();
+					ft.replace(R.id.frame_container, fragment);
+					ft.addToBackStack("");
+					ft.commit();
+
+					// fm.beginTransaction().replace(R.id.frame_container,
+					// fragment).commit();
+
 				}
-				
-				
-				
+
 			});
-			
-			
-			
-			
-			
 
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -135,21 +126,12 @@ public class TvFragment extends Fragment {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	
-		
-		
 
-		
-				
-		
-		
 		return rootView;
 
-		
 	}
 
-	public void getSeasonOverview(View view){
+	public void getSeasonOverview(View view) {
 	}
-	
+
 }
