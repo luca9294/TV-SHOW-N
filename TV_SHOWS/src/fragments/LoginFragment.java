@@ -120,20 +120,24 @@ public class LoginFragment extends Fragment {
 	
 	public class MyDialogFragment2 extends DialogFragment {
 
-	    @Override
-	    public Dialog onCreateDialog(Bundle savedInstanceState) {
-	        return new AlertDialog.Builder(getActivity())
-	                .setMessage("Authentication done successfully!\n").setPositiveButton("Ok", new  DialogInterface.OnClickListener(){
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+					.setMessage("Authentication done successfully!\n")
+					.setPositiveButton("Ok",
+							new DialogInterface.OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-							Intent intent = new Intent(contextN,
-									MainActivity.class);
-						
-							startActivity(intent);
-							
-						}}).create();
-	    }
+								@Override
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+									Intent intent = new Intent(contextN,
+											MainActivity.class);
+
+									startActivity(intent);
+
+								}
+							}).create();
+		}
 
 	}
 	

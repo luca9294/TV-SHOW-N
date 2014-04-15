@@ -31,7 +31,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -51,16 +50,14 @@ import android.widget.Toast;
 public class TraktAPI {
 	private static final String TAG = "TraktAPI";
 
-
-
 	private Context context;
 
 	// "Constants"
 	private String apikey = "361cd031c2473b06997c87c25ec9c057";
 	private String baseurl = "http://api.trakt.tv/";
 
-	 String username;
-	 String password;
+	String username;
+	String password;
 	private SharedPreferences prefs;
 
 	/**
@@ -73,24 +70,17 @@ public class TraktAPI {
 	public TraktAPI(Context c) {
 		// Get preferences object and retrieve username and password
 		context = c;
-		prefs = PreferenceManager.getDefaultSharedPreferences(c);		
-	//	username = "luca9295";
-	//	password = "Aa30011992";
+		prefs = PreferenceManager.getDefaultSharedPreferences(c);
+		// username = "luca9295";
+		// password = "Aa30011992";
 	}
 
-	
-	
-	public void setCred(String user, String passwd){
+	public void setCred(String user, String passwd) {
 		username = user;
 		password = passwd;
-		
+
 	}
-	
-	
-	
-	
-	
-	
+
 	public String ResizePoster(String image, int size) {
 
 		String p = image.replaceAll("/(\\d*)(\\.?\\d*?)?\\.jpg",
@@ -145,10 +135,10 @@ public class TraktAPI {
 		 */
 	}
 
-	/*public void Mark(Activity parent, Object... params) {
-		Marker m = new Marker(parent);
-		m.execute(params);
-	}*/
+	/*
+	 * public void Mark(Activity parent, Object... params) { Marker m = new
+	 * Marker(parent); m.execute(params); }
+	 */
 
 	public boolean LoggedIn() {
 		JSONObject result = getDataObjectFromJSON("account/test/%k", true);
@@ -160,8 +150,6 @@ public class TraktAPI {
 				Toast.LENGTH_SHORT).show();
 		return false;
 	}
-
-	
 
 	/**
 	 * Encodes p as SHA1 Hash.
@@ -216,21 +204,13 @@ public class TraktAPI {
 
 		// Construct HttpClient
 		HttpClient httpclient = new DefaultHttpClient();
-		
-		
+
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(context);
-	
-		
-	
-		
+
 		String user = prefs.getString("user", "");
 		String pass = prefs.getString("passed", "");
-	
-		
-		
-		
-		
+
 		if (user.isEmpty()) {
 			// If login add login information to a JSONObject
 			HttpPost httppost = new HttpPost(url);

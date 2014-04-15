@@ -55,7 +55,8 @@
         android:layout_height="match_parent" 
         android:divider="#FFF"
     	android:dividerHeight="2dp"
-        android:background="#36a9ec"
+    	
+        android:background="@drawable/selec"
         android:textSize="18dp"
         android:textColor="#fff">
     </ListView>

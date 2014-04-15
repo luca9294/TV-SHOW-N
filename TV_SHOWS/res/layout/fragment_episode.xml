@@ -210,7 +210,7 @@
                  
                  
                       <Button
-                android:id="@+id/imageView3"
+                android:id="@+id/sendComment"
                 android:gravity="left|center"
                 android:layout_width="61dp"
             

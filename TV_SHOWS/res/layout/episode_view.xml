@@ -5,32 +5,33 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/number"
-            android:layout_width="wrap_content"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:text="TextView" />
+            android:text="#12"
+            android:textSize="20dp"
+            android:textStyle="bold" 
+            android:textColor="#FFFFFF"
+            />
 
         <TextView
-            
             android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            />
-        
+            android:layout_height="wrap_content" />
+
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:text="TextView" />
-
+            android:text="TextView"
+            android:textSize="20dp"
+  
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
     </LinearLayout>
     
     <LinearLayout
@@ -38,12 +39,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
     
-
 	    <TextView
-	        
-	        android:layout_width="wrap_content"
+	        android:layout_width="110dp"
 	        android:layout_height="wrap_content"
-	        android:text="First Air Date" />
+	        android:text="First Air Date"
+			android:textStyle="bold"
+	        android:textSize="16dp"
+	       
+	         />
 	    
 	    <TextView
             android:layout_width="20dp"
@@ -54,7 +57,10 @@
         android:id="@+id/air_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:text="TextView"
+        
+android:textSize="18dp"
+         />
 	    
     
     </LinearLayout>

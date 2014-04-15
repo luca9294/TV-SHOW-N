@@ -12,7 +12,7 @@
         android:text="SSS"
         android:textSize="30dp"
         android:textStyle="bold"
-        android:textColor="#2E9AFE" >
+        android:textColor="#1569C7" >
         
     </TextView>
     
@@ -23,7 +23,7 @@
         android:text="SSS"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:textColor="#2E9AFE" >
+        android:textColor="#1569C7" >
         
     </TextView>
     
