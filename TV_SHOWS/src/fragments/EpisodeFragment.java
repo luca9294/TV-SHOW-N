@@ -5,6 +5,7 @@ import info.androidhive.slidingmenu.R;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import adapters.SeasonAdapter;
 import android.app.AlertDialog;
@@ -35,6 +36,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
+import engine.Comment;
 import engine.MainActivity;
 import engine.Season;
 import engine.Episode;
@@ -60,6 +62,13 @@ public class EpisodeFragment extends Fragment {
 				false);
 		context = this.getActivity().getApplicationContext();
 
+	
+		
+		
+		
+		
+		
+		
 		setHasOptionsMenu(true);
 		;
 		Bundle bundle = getArguments();
@@ -126,9 +135,6 @@ public class EpisodeFragment extends Fragment {
 				}
 
 				else {
-					
-
-					
 
 					new MyDialogFragment3().show(getFragmentManager(),
 							"MyDialog");
@@ -161,6 +167,46 @@ public class EpisodeFragment extends Fragment {
 
 			}
 		});
+		
+		
+		/*
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("passed", "");
+		JSONObject prova = new  JSONObject();
+		try {
+			prova.accumulate("username", user);
+			prova.accumulate("password", pass);
+			prova.accumulate("tvdb_id", code);
+			prova.accumulate("season", season_n);
+			prova.accumulate("episode", id);
+			prova.accumulate("comment", "SAU GEIL");
+			prova.accumulate("spoiler", "SAU GEIL");
+			prova.accumulate("review", "SAU GEIL");
+			 
+			
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		Comment com = new Comment (prova);
+		try {
+			com.send();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		*/
+		
 
 		return rootView;
 
@@ -177,45 +223,25 @@ public class EpisodeFragment extends Fragment {
 		}
 
 	}
-	
-	
+
 	public class MyDialogFragment3 extends DialogFragment {
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-			LayoutInflater layoutInflater = LayoutInflater
-					.from(context);
+			LayoutInflater layoutInflater = LayoutInflater.from(context);
 
-			View promptView = layoutInflater.inflate(R.layout.prompts,
-					null);
+			View promptView = layoutInflater.inflate(R.layout.prompts, null);
 			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 					context);
 			alertDialogBuilder.setView(promptView);
-			
-			
-			
-			
-			
-			
-			
+
 			return new AlertDialog.Builder(getActivity())
 
-			
-			
-			.setMessage("PROVA")
-					.setPositiveButton("Ok", null)
-					.setView(promptView)
-					.create();
-			
+			.setMessage("PROVA").setPositiveButton("Ok", null)
+					.setView(promptView).create();
+
 		}
 
 	}
-	
-	
-	
-	
-	
-	
-	
 
 }

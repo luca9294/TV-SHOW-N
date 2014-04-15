@@ -116,7 +116,7 @@ public class Episode {
 			Log.e("PROVA", text);
 			Log.e("PROVA", date);
 
-			Comment comment = new Comment(user, text, date);
+			Comment comment = new Comment(user, text, date, parent);
 
 			comments.add(comment);
 
