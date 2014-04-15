@@ -2,46 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
-    
+    android:orientation="vertical" >
+
     <TextView
-            android:id="@+id/car"
+        android:id="@+id/car"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="SSS"
+        android:textColor="#1569C7"
         android:textSize="30dp"
-        android:textStyle="bold"
-        android:textColor="#1569C7" >
-        
+        android:textStyle="bold" >
     </TextView>
-    
-        <TextView
-            android:id="@+id/title"
+
+    <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="SSS"
+        android:textColor="#1569C7"
         android:textSize="25dp"
-        android:textStyle="bold"
-        android:textColor="#1569C7" >
-        
+        android:textStyle="bold" >
     </TextView>
-    
+
     <View
         android:layout_width="wrap_content"
         android:layout_height="22dp" >
-        
-        </View>
-    
-    
-<ListView
-        android:id="@+id/list"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    </View>
 
-</ListView>
-    
-    
-    
-    
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:divider="#FFF"
+        android:dividerHeight="2dp" >
+    </ListView>
+
 </LinearLayout>

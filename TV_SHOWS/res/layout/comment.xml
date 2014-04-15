@@ -8,6 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#79bbf5"
         android:orientation="horizontal" >
 
         <View
@@ -18,6 +19,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+           
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="6dp"
+            android:layout_weight="0.98"
             android:orientation="vertical" >
 
             <LinearLayout
@@ -28,7 +33,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:text="User: "
-                    android:textColor="#1569C7"
+                    android:textColor="#fff"
                     android:textSize="17dp"
                     android:textStyle="bold" />
 
@@ -39,7 +44,6 @@
                     android:gravity="left|top"
                     android:text="Premiere"
                     android:textSize="17dp" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -51,7 +55,7 @@
                     android:layout_height="40dp"
                     android:layout_gravity="left|bottom"
                     android:text="Date: "
-                    android:textColor="#1569C7"
+                    android:textColor="#fff"
                     android:textSize="17dp"
                     android:textStyle="bold" />
 
@@ -62,22 +66,16 @@
                     android:gravity="left|top"
                     android:text="Country"
                     android:textSize="17dp" />
-
             </LinearLayout>
 
-         
-                
-
-                <TextView
-                    android:id="@+id/comment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="left|top"
-                    android:text="tot min"
-                    android:textSize="17dp" />
-            </LinearLayout>
-
-          
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left|top"
+                android:text="comment"
+                android:textSize="17dp" />
         </LinearLayout>
     </LinearLayout>
- 
+
+</LinearLayout>
