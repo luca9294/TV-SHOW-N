@@ -209,7 +209,7 @@ public class TraktAPI {
 				.getDefaultSharedPreferences(context);
 
 		String user = prefs.getString("user", "");
-		String pass = prefs.getString("passed", "");
+		String pass = prefs.getString("pass", "");
 
 		if (user.isEmpty()) {
 			// If login add login information to a JSONObject

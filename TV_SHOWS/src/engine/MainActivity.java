@@ -106,19 +106,6 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		mDrawerList.setAdapter(adapter);
 		
 		
-		
-		
-		
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
 
 		// enabling action bar app icon and behaving it as toggle button
 		getActionBar().setDisplayHomeAsUpEnabled(true);

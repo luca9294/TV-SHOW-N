@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_root"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="60000dp"
     android:orientation="vertical"
     android:padding="10dp" >
  
@@ -10,18 +10,32 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Insert a comment for the Episode:\n"
+        android:textColor="#000"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+    
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="PROVA"
-        
-        android:textAppearance="?android:attr/textAppearanceLarge" />
- 
+        android:textColor="#1569C7"
+        android:textStyle="bold"
+         android:textSize="25dp"
+       />
+    
     <EditText
         android:id="@+id/userInput"
         android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:background="#FFF"
+        android:height="5000dp"
+        android:layout_gravity="top"
+        android:gravity="top"
         android:inputType="text"
-        
-        android:text="CIAOOOOOOO"
         android:textColor="#000000"
-        android:layout_height="wrap_content" >
+        android:width="3000dp" >
  
         <requestFocus />
  

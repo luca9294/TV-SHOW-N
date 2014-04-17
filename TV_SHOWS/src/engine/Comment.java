@@ -66,13 +66,27 @@ public Comment (JSONObject object) {
 
 
 public void send() throws InterruptedException, ExecutionException {
-	api = new TraktAPI(context);
-
 	DataGrabber e = new DataGrabber(context, "");
 	e.execute();
 	object = e.get();
-	Log.e("PROVA", object.toString());
+	Log.e("PROVA:C", object.toString());
 }
+
+
+
+public boolean isOK() throws JSONException{
+	if (object.getString("status").equals("success")){
+		return true;
+		
+		
+	}
+	else {return false;}
+	
+	
+}
+
+
+
 
 
 
@@ -116,64 +130,50 @@ class DataGrabber extends AsyncTask<String, Void, JSONObject> {
 
 		return data;
 
-	}}
-
-
-
-
-public JSONObject getDataFromJSON(String url, boolean login,
-		String type, JSONObject postdata) throws JSONException,
-		ClientProtocolException, IOException {
-
-	// Construct HttpClient
-	HttpClient httpclient = new DefaultHttpClient();
-	// If login add login information to a JSONObject
-	HttpPost httppost = new HttpPost(url);
-	JSONObject jsonpost;
-	if (postdata == null) {
-		jsonpost = new JSONObject();
-	} else {
-		jsonpost = postdata;
 	}
 
-	/*SharedPreferences prefs = PreferenceManager
-			.getDefaultSharedPreferences(context);
+	public JSONObject getDataFromJSON(String url, boolean login,
+			String type, JSONObject postdata) throws JSONException,
+			ClientProtocolException, IOException {
 
-	String user = prefs.getString("user", "");
-	String pass = prefs.getString("passed", "");
-	
-	
-	jsonpost.accumulate("username", user);
-	jsonpost.accumulate("password", pass);*/
+		// Construct HttpClient
+		HttpClient httpclient = new DefaultHttpClient();
+		// If login add login information to a JSONObject
+		HttpPost httppost = new HttpPost(url);
+		JSONObject jsonpost;
+		if (postdata == null) {
+			jsonpost = new JSONObject();
+		} else {
+			jsonpost = postdata;
+		}
 
-	httppost.setEntity(new StringEntity(jsonpost.toString()));
-	// Perform POST
-	HttpResponse response = httpclient.execute(httppost);
-	// Return the data in the requested format
-	InputStream inputStream = response.getEntity().getContent();
+		
+		httppost.setEntity(new StringEntity(jsonpost.toString()));
+		// Perform POST
+		HttpResponse response = httpclient.execute(httppost);
+		// Return the data in the requested format
+		InputStream inputStream = response.getEntity().getContent();
 
-	String result = convertInputStreamToString(inputStream);
+		String result = convertInputStreamToString(inputStream);
 
-	return new JSONObject(result);
+		return new JSONObject(result);
+
+	}
+
+	private String convertInputStreamToString(InputStream inputStream)
+			throws IOException {
+		BufferedReader bufferedReader = new BufferedReader(
+				new InputStreamReader(inputStream));
+		String line = "";
+		String result = "";
+		while ((line = bufferedReader.readLine()) != null)
+			result += line;
+
+		inputStream.close();
+		return result;
+
+	}
 
 }
 
-private String convertInputStreamToString(InputStream inputStream)
-		throws IOException {
-	BufferedReader bufferedReader = new BufferedReader(
-			new InputStreamReader(inputStream));
-	String line = "";
-	String result = "";
-	while ((line = bufferedReader.readLine()) != null)
-		result += line;
-
-	inputStream.close();
-	return result;
-
 }
-
-
-
-}
-
-

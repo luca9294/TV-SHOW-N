@@ -50,7 +50,7 @@ public class EpisodeFragment extends Fragment {
 	String season_n;
 	String code;
 	Context context;
-
+	Episode episode;
 	public EpisodeFragment() {
 
 	}
@@ -62,11 +62,7 @@ public class EpisodeFragment extends Fragment {
 				false);
 		context = this.getActivity().getApplicationContext();
 
-	
-		
-		
-		
-		
+
 		
 		
 		setHasOptionsMenu(true);
@@ -78,7 +74,7 @@ public class EpisodeFragment extends Fragment {
 		code = bundle.getString("code");
 
 		try {
-			Episode episode = new Episode(id, code, season_n, this
+			 episode = new Episode(id, code, season_n, this
 					.getActivity().getApplicationContext());
 			episode.getComments();
 
@@ -223,6 +219,44 @@ public class EpisodeFragment extends Fragment {
 		}
 
 	}
+	
+	
+	
+	public class MyDialogFragment4 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("Comment inserted with success")
+					.setPositiveButton("Ok", null).create();
+		}
+
+	}
+	
+	
+	
+	
+	public class MyDialogFragment5 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("You must be logged in order to comment!")
+					.setPositiveButton("Ok", null).create();
+		}
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	public class MyDialogFragment3 extends DialogFragment {
 
@@ -234,11 +268,55 @@ public class EpisodeFragment extends Fragment {
 			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 					context);
 			alertDialogBuilder.setView(promptView);
+			TextView title = (TextView) promptView.findViewById(R.id.title);
+			title.setText(episode.title+"\n");			
+			
+			final EditText edit = (EditText) promptView.findViewById(R.id.userInput);
+			
+			edit.setSelection(0);
+			
+			
+			Dialog dialog = new AlertDialog.Builder(getActivity())
+			.setPositiveButton("Cancel", null)
+					.setNegativeButton("Ok", new DialogInterface.OnClickListener(){
 
-			return new AlertDialog.Builder(getActivity())
+				
 
-			.setMessage("PROVA").setPositiveButton("Ok", null)
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+							try {
+								if (episode.makeAComment(edit.getText().toString())){;
+								
+								new MyDialogFragment4().show(getFragmentManager(),
+										"MyDialog");
+								}
+								
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ExecutionException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+						}
+						
+						
+						
+						
+						
+						
+					})
+					
 					.setView(promptView).create();
+			
+			
+			dialog.getWindow().setLayout(600, 400);
+			
+			return dialog;
 
 		}
 

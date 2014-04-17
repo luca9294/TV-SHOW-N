@@ -7,7 +7,9 @@ import org.json.*;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class Episode {
@@ -65,6 +67,56 @@ public class Episode {
 				.getString("percentage");
 
 	}
+	
+	public boolean makeAComment(String str) throws JSONException, InterruptedException, ExecutionException{
+		JSONObject jsonpost = new JSONObject();
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(parent);
+
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("pass", "");
+		
+		Log.e("user", user);	
+		Log.e("pass", pass);		
+		
+		jsonpost.put("username", user);
+		jsonpost.put("password", pass);
+		jsonpost.put("tvdb_id", code);
+	//	jsonpost.put("title", "Revenge");
+		jsonpost.put("season", season_n);
+		jsonpost.put("episode", id);
+		jsonpost.put("comment", str);
+		
+		
+		Comment comment = new Comment(jsonpost) ;
+		
+		comment.send();
+		
+		
+		if (comment.isOK()){
+			
+			return true;
+			
+		}
+		
+		else{
+			return false;
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
 
 	private class DataGrabber extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
@@ -112,9 +164,6 @@ public class Episode {
 			String text = object.getString("text_html");
 
 			String date = object.getString("inserted");
-			Log.e("PROVA", user);
-			Log.e("PROVA", text);
-			Log.e("PROVA", date);
 
 			Comment comment = new Comment(user, text, date, parent);
 
