@@ -211,7 +211,7 @@ public class TraktAPI {
 		String user = prefs.getString("user", "");
 		String pass = prefs.getString("pass", "");
 
-		if (user.isEmpty()) {
+		if (!user.isEmpty()) {
 			// If login add login information to a JSONObject
 			HttpPost httppost = new HttpPost(url);
 			JSONObject jsonpost;

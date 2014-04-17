@@ -16,7 +16,9 @@ public class Episode {
 
 	private TraktAPI api;
 	public String id, season_n, title, first_aired_date, overview, image,
-			percentage, code;
+			percentage, code, rating;
+	
+	public boolean love, hate;
 
 	public Vector<Comment> comments = new Vector<Comment>();
 
@@ -34,6 +36,8 @@ public class Episode {
 		this.percentage = percentage;
 		this.code = code;
 		this.parent = parent;
+		love = false;
+		hate = false;
 	}
 
 	public Episode(String id, String code, String season_n, Context parent)
@@ -44,6 +48,9 @@ public class Episode {
 		this.parent = parent;
 
 		getEpisode();
+		
+		love = false;
+		hate = false;
 	}
 
 	public void getEpisode() throws InterruptedException, ExecutionException,
@@ -53,7 +60,20 @@ public class Episode {
 		dg.execute();
 
 		JSONObject object = dg.get();
+		 rating = object.getJSONObject("episode").getString("rating");
 
+		if (rating.equals("love")){
+			love = true;
+			
+		}
+		
+		else if (rating.equals("hate")){
+			hate = true;
+			
+		}
+		
+		
+			
 		title = object.getJSONObject("episode").getString("title");
 		first_aired_date = object.getJSONObject("episode")
 				.getString("first_aired_iso").replace("T", " ");
@@ -65,7 +85,7 @@ public class Episode {
 				.getString("screen");
 		percentage = object.getJSONObject("episode").getJSONObject("ratings")
 				.getString("percentage");
-
+		
 	}
 	
 	public boolean makeAComment(String str) throws JSONException, InterruptedException, ExecutionException{

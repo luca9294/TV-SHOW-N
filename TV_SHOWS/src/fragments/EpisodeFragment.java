@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +33,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.ShareActionProvider;
@@ -51,6 +53,12 @@ public class EpisodeFragment extends Fragment {
 	String code;
 	Context context;
 	Episode episode;
+	
+	
+	boolean love; 
+	boolean hate; 
+	
+	
 	public EpisodeFragment() {
 
 	}
@@ -77,7 +85,7 @@ public class EpisodeFragment extends Fragment {
 			 episode = new Episode(id, code, season_n, this
 					.getActivity().getApplicationContext());
 			episode.getComments();
-
+	
 			TextView season_n_e = (TextView) rootView
 					.findViewById(R.id.season_n);
 			TextView id_e = (TextView) rootView.findViewById(R.id.id);
@@ -101,7 +109,108 @@ public class EpisodeFragment extends Fragment {
 			first_aired_date.setText(episode.first_aired_date);
 			percentage.setText(episode.percentage + "%");
 			overview.setText(episode.overview);
+			
+			final ImageView positive = (ImageView) rootView.findViewById(R.id.imageView1);
+			final ImageView negative = (ImageView) rootView.findViewById(R.id.imageView3);
+			
+			if(episode.rating.equals("love")){
+			positive.setImageResource(R.drawable.ic_action_good_dark);
+			love = true;
+			}
+		
+			else if (episode.rating.equals("hate"))
+			{
+				hate = true;
+				negative.setImageResource(R.drawable.ic_action_bad_dark);}
+			
+			
+			
+			positive.setOnClickListener(new OnClickListener(){
+				
+				
+				@Override
+				public void onClick(View v) {
+					
+					
+					
+					
+					
+					if (!love && !hate){
+						positive.setImageResource(R.drawable.ic_action_good_dark);
+						love = true;
+						Log.e("", "PRIMO");
+						new MyDialogFragment6().show(getFragmentManager(),
+								"MyDialog");
+					
+					
+					}
+					
+					
+					
+					else if (love && !hate){
+						positive.setImageResource(R.drawable.ic_action_good);
+						love  = false;
+						Log.e("", "SECONDO");
+					}
+					
+					
+					
+					
+					else if (hate && !love){
+						positive.setImageResource(R.drawable.ic_action_good_dark);
+						negative.setImageResource(R.drawable.ic_action_bad);
+						hate = false;
+						love = true;
+						Log.e("", "TERZO");
+						new MyDialogFragment6().show(getFragmentManager(),
+								"MyDialog");
+					
+					}
+					
+				}
+				
+				
+				
+			});
+			
+			
+			negative.setOnClickListener(new View.OnClickListener(){
 
+				@Override
+				public void onClick(View v) {
+					if (!love && !hate){
+						negative.setImageResource(R.drawable.ic_action_bad_dark);
+						hate = true;
+						new MyDialogFragment7().show(getFragmentManager(),
+								"MyDialog");
+					}
+					
+					
+					else if (hate && !love){
+						negative.setImageResource(R.drawable.ic_action_bad);
+						hate = false;
+					}
+					
+					
+					
+					else if (love && !hate){
+						positive.setImageResource(R.drawable.ic_action_good);
+						negative.setImageResource(R.drawable.ic_action_bad_dark);
+						love = false;
+					    hate = true;
+					    new MyDialogFragment7().show(getFragmentManager(),
+								"MyDialog");
+					
+					}
+					
+				}
+				
+				
+				
+			});
+				
+			
+			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -244,6 +353,34 @@ public class EpisodeFragment extends Fragment {
 			return new AlertDialog.Builder(getActivity())
 
 			.setMessage("You must be logged in order to comment!")
+					.setPositiveButton("Ok", null).create();
+		}
+
+	}
+	
+	
+	
+	
+	public class MyDialogFragment6 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("You LOVE this episode!")
+					.setPositiveButton("Ok", null).create();
+		}
+
+	}
+	
+	
+	public class MyDialogFragment7 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("You hate this episode!")
 					.setPositiveButton("Ok", null).create();
 		}
 
