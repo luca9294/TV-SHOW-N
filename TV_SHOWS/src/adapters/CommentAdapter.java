@@ -81,7 +81,7 @@ public class CommentAdapter extends BaseAdapter {
 			view = inflater.inflate(R.layout.comment, parent, false);
 
 		}
-		
+
 		TextView user = (TextView) view.findViewById(R.id.user);
 		user.setText(comments.get(index).id);
 
@@ -89,14 +89,11 @@ public class CommentAdapter extends BaseAdapter {
 		date.setText(comments.get(index).date);
 
 		TextView text = (TextView) view.findViewById(R.id.comment);
-		text.setText(Html.fromHtml(comments.get(index).text.replaceAll("[\n\r]", "")));
+		text.setText(Html.fromHtml(comments.get(index).text.replaceAll(
+				"[\n\r]", "")));
 
 		return view;
 
 	}
 
-	
-	
-
-	
 }

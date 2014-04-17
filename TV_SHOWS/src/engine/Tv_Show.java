@@ -25,7 +25,7 @@ public class Tv_Show {
 	JSONArray season;
 	TraktAPI api;
 	Context context;
-	
+
 	Vector<Season> seasons;
 
 	public Tv_Show(String title, Context context) throws InterruptedException,
@@ -45,7 +45,6 @@ public class Tv_Show {
 		percentage = summary.getJSONObject("ratings").getString("percentage");
 		genre = summary.getJSONArray("genres").getString(0);
 		seasons_n = season.getJSONObject(0).getString("season");
-		
 
 	}
 
@@ -64,7 +63,8 @@ public class Tv_Show {
 
 	}
 
-	public void getTvShowJSON() throws InterruptedException, ExecutionException, JSONException {
+	public void getTvShowJSON() throws InterruptedException,
+			ExecutionException, JSONException {
 		api = new TraktAPI(context);
 		String title_c = title.replace(" ", "-");
 		title_c = title_c.toLowerCase();
@@ -72,50 +72,30 @@ public class Tv_Show {
 		DataGrabber e = new DataGrabber(context, title_c);
 		e.execute();
 		summary = e.get();
-		
-		
+
 		DataGrabber2 d = new DataGrabber2(context, title_c);
 		d.execute();
 		season = d.get();
 		seasons = new Vector<Season>();
-		
-		for (int i = 0; i < season.length();i++){
+
+		for (int i = 0; i < season.length(); i++) {
 			JSONObject object = season.getJSONObject(i);
 			String id = object.getString("season");
 			String episodes = object.getString("episodes");
 			String image = object.getJSONObject("images").getString("poster");
-			Season s = new Season(id,episodes,image,title, context);
-			
+			Season s = new Season(id, episodes, image, title, context);
+
 			seasons.add(s);
-		
-			
-			
-			
+
 		}
-		
-		
-		
-		
-		
+
 	}
-	
-	
-	
-	public Vector<Season> getSeasons(){
-		
+
+	public Vector<Season> getSeasons() {
+
 		return seasons;
-		
-		
+
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	private class DataGrabber extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
@@ -148,9 +128,7 @@ public class Tv_Show {
 		}
 
 	}
-	
-	
-	
+
 	private class DataGrabber2 extends AsyncTask<String, Void, JSONArray> {
 		private ProgressDialog progressdialog;
 		private Context parent;
@@ -182,13 +160,16 @@ public class Tv_Show {
 		}
 
 	}
-	
-	
-	public Date dateParser(String dateString){
-		String dateExample= "2009-10-29T22:30:00-05:00"; //just a reminder for the format, will be deleted once work has been completed
+
+	public Date dateParser(String dateString) {
+		String dateExample = "2009-10-29T22:30:00-05:00"; // just a reminder for
+															// the format, will
+															// be deleted once
+															// work has been
+															// completed
 		Date airDate = new Date();
-		//String dateExample2 = "2001-07-04T12:08:56.235-0700";
-		DateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		// String dateExample2 = "2001-07-04T12:08:56.235-0700";
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 		try {
 			airDate = df.parse(dateString);
 		} catch (ParseException e) {
@@ -197,11 +178,5 @@ public class Tv_Show {
 		}
 		return airDate;
 	}
-	
-
-	
-	
-	
-	
 
 }

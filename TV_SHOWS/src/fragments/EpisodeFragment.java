@@ -53,12 +53,10 @@ public class EpisodeFragment extends Fragment {
 	String code;
 	Context context;
 	Episode episode;
-	
-	
-	boolean love; 
-	boolean hate; 
-	
-	
+
+	boolean love;
+	boolean hate;
+
 	public EpisodeFragment() {
 
 	}
@@ -70,9 +68,6 @@ public class EpisodeFragment extends Fragment {
 				false);
 		context = this.getActivity().getApplicationContext();
 
-
-		
-		
 		setHasOptionsMenu(true);
 		;
 		Bundle bundle = getArguments();
@@ -82,10 +77,10 @@ public class EpisodeFragment extends Fragment {
 		code = bundle.getString("code");
 
 		try {
-			 episode = new Episode(id, code, season_n, this
-					.getActivity().getApplicationContext());
+			episode = new Episode(id, code, season_n, this.getActivity()
+					.getApplicationContext());
 			episode.getComments();
-	
+
 			TextView season_n_e = (TextView) rootView
 					.findViewById(R.id.season_n);
 			TextView id_e = (TextView) rootView.findViewById(R.id.id);
@@ -109,54 +104,68 @@ public class EpisodeFragment extends Fragment {
 			first_aired_date.setText(episode.first_aired_date);
 			percentage.setText(episode.percentage + "%");
 			overview.setText(episode.overview);
-			
-			final ImageView positive = (ImageView) rootView.findViewById(R.id.imageView1);
-			final ImageView negative = (ImageView) rootView.findViewById(R.id.imageView3);
-			
-			if(episode.rating.equals("love")){
-			positive.setImageResource(R.drawable.ic_action_good_dark);
-			love = true;
+
+			final ImageView positive = (ImageView) rootView
+					.findViewById(R.id.imageView1);
+			final ImageView negative = (ImageView) rootView
+					.findViewById(R.id.imageView3);
+
+			if (episode.rating.equals("love")) {
+				positive.setImageResource(R.drawable.ic_action_good_dark);
+				love = true;
+				
 			}
-		
-			else if (episode.rating.equals("hate"))
-			{
+
+			else if (episode.rating.equals("hate")) {
 				hate = true;
-				negative.setImageResource(R.drawable.ic_action_bad_dark);}
-			
-			
-			
-			positive.setOnClickListener(new OnClickListener(){
-				
-				
+				negative.setImageResource(R.drawable.ic_action_bad_dark);
+			}
+
+			positive.setOnClickListener(new OnClickListener() {
+
 				@Override
 				public void onClick(View v) {
-					
-					
-					
-					
-					
-					if (!love && !hate){
+
+					if (!love && !hate) {
 						positive.setImageResource(R.drawable.ic_action_good_dark);
 						love = true;
 						Log.e("", "PRIMO");
 						new MyDialogFragment6().show(getFragmentManager(),
 								"MyDialog");
-					
-					
+						try {
+							episode.makeARate("love");
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
 					}
-					
-					
-					
-					else if (love && !hate){
+
+					else if (love && !hate) {
 						positive.setImageResource(R.drawable.ic_action_good);
-						love  = false;
+						love = false;
 						Log.e("", "SECONDO");
+						try {
+							episode.makeARate("unrate");
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
-					
-					
-					
-					
-					else if (hate && !love){
+
+					else if (hate && !love) {
 						positive.setImageResource(R.drawable.ic_action_good_dark);
 						negative.setImageResource(R.drawable.ic_action_bad);
 						hate = false;
@@ -164,53 +173,101 @@ public class EpisodeFragment extends Fragment {
 						Log.e("", "TERZO");
 						new MyDialogFragment6().show(getFragmentManager(),
 								"MyDialog");
-					
+						
+						
+						
+						try {
+							episode.makeARate("love");
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
 					}
-					
+
 				}
-				
-				
-				
+
 			});
-			
-			
-			negative.setOnClickListener(new View.OnClickListener(){
+
+			negative.setOnClickListener(new View.OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					if (!love && !hate){
+					if (!love && !hate) {
 						negative.setImageResource(R.drawable.ic_action_bad_dark);
 						hate = true;
 						new MyDialogFragment7().show(getFragmentManager(),
 								"MyDialog");
+						
+						try {
+							episode.makeARate("hate");
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						
 					}
-					
-					
-					else if (hate && !love){
+
+					else if (hate && !love) {
 						negative.setImageResource(R.drawable.ic_action_bad);
 						hate = false;
+						
+						try {
+							episode.makeARate("unrate");
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						
+						
 					}
-					
-					
-					
-					else if (love && !hate){
+
+					else if (love && !hate) {
 						positive.setImageResource(R.drawable.ic_action_good);
 						negative.setImageResource(R.drawable.ic_action_bad_dark);
 						love = false;
-					    hate = true;
-					    new MyDialogFragment7().show(getFragmentManager(),
+						hate = true;
+						new MyDialogFragment7().show(getFragmentManager(),
 								"MyDialog");
-					
+						try {
+							episode.makeARate("hate");
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
 					}
-					
+
 				}
-				
-				
-				
+
 			});
-				
-			
-			
+
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -272,46 +329,29 @@ public class EpisodeFragment extends Fragment {
 
 			}
 		});
-		
-		
-		/*
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context);
 
-		String user = prefs.getString("user", "");
-		String pass = prefs.getString("passed", "");
-		JSONObject prova = new  JSONObject();
-		try {
-			prova.accumulate("username", user);
-			prova.accumulate("password", pass);
-			prova.accumulate("tvdb_id", code);
-			prova.accumulate("season", season_n);
-			prova.accumulate("episode", id);
-			prova.accumulate("comment", "SAU GEIL");
-			prova.accumulate("spoiler", "SAU GEIL");
-			prova.accumulate("review", "SAU GEIL");
-			 
-			
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		Comment com = new Comment (prova);
-		try {
-			com.send();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-		*/
-		
+		/*
+		 * SharedPreferences prefs = PreferenceManager
+		 * .getDefaultSharedPreferences(context);
+		 * 
+		 * String user = prefs.getString("user", ""); String pass =
+		 * prefs.getString("passed", ""); JSONObject prova = new JSONObject();
+		 * try { prova.accumulate("username", user);
+		 * prova.accumulate("password", pass); prova.accumulate("tvdb_id",
+		 * code); prova.accumulate("season", season_n);
+		 * prova.accumulate("episode", id); prova.accumulate("comment",
+		 * "SAU GEIL"); prova.accumulate("spoiler", "SAU GEIL");
+		 * prova.accumulate("review", "SAU GEIL");
+		 * 
+		 * 
+		 * } catch (JSONException e1) { // TODO Auto-generated catch block
+		 * e1.printStackTrace(); }
+		 * 
+		 * Comment com = new Comment (prova); try { com.send(); } catch
+		 * (InterruptedException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); } catch (ExecutionException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); }
+		 */
 
 		return rootView;
 
@@ -328,9 +368,7 @@ public class EpisodeFragment extends Fragment {
 		}
 
 	}
-	
-	
-	
+
 	public class MyDialogFragment4 extends DialogFragment {
 
 		@Override
@@ -342,10 +380,7 @@ public class EpisodeFragment extends Fragment {
 		}
 
 	}
-	
-	
-	
-	
+
 	public class MyDialogFragment5 extends DialogFragment {
 
 		@Override
@@ -357,43 +392,30 @@ public class EpisodeFragment extends Fragment {
 		}
 
 	}
-	
-	
-	
-	
+
 	public class MyDialogFragment6 extends DialogFragment {
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			return new AlertDialog.Builder(getActivity())
 
-			.setMessage("You LOVE this episode!")
-					.setPositiveButton("Ok", null).create();
+			.setMessage("You LOVE this episode!").setPositiveButton("Ok", null)
+					.create();
 		}
 
 	}
-	
-	
+
 	public class MyDialogFragment7 extends DialogFragment {
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			return new AlertDialog.Builder(getActivity())
 
-			.setMessage("You hate this episode!")
-					.setPositiveButton("Ok", null).create();
+			.setMessage("You hate this episode!").setPositiveButton("Ok", null)
+					.create();
 		}
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	public class MyDialogFragment3 extends DialogFragment {
 
@@ -406,53 +428,50 @@ public class EpisodeFragment extends Fragment {
 					context);
 			alertDialogBuilder.setView(promptView);
 			TextView title = (TextView) promptView.findViewById(R.id.title);
-			title.setText(episode.title+"\n");			
-			
-			final EditText edit = (EditText) promptView.findViewById(R.id.userInput);
-			
+			title.setText(episode.title + "\n");
+
+			final EditText edit = (EditText) promptView
+					.findViewById(R.id.userInput);
+
 			edit.setSelection(0);
-			
-			
+
 			Dialog dialog = new AlertDialog.Builder(getActivity())
-			.setPositiveButton("Cancel", null)
-					.setNegativeButton("Ok", new DialogInterface.OnClickListener(){
+					.setPositiveButton("Cancel", null)
+					.setNegativeButton("Ok",
+							new DialogInterface.OnClickListener() {
 
-				
+								@Override
+								public void onClick(DialogInterface arg0,
+										int arg1) {
+									try {
+										if (episode.makeAComment(edit.getText()
+												.toString())) {
+											;
 
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-							try {
-								if (episode.makeAComment(edit.getText().toString())){;
-								
-								new MyDialogFragment4().show(getFragmentManager(),
-										"MyDialog");
+											new MyDialogFragment4().show(
+													getFragmentManager(),
+													"MyDialog");
+										}
+
+									} catch (JSONException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									} catch (ExecutionException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+
 								}
-								
-							} catch (JSONException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (ExecutionException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							
-						}
-						
-						
-						
-						
-						
-						
-					})
-					
+
+							})
+
 					.setView(promptView).create();
-			
-			
+
 			dialog.getWindow().setLayout(600, 400);
-			
+
 			return dialog;
 
 		}

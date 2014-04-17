@@ -39,12 +39,12 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.SearchView.OnQueryTextListener;
 
-public class MainActivity extends Activity implements OnQueryTextListener  {
+public class MainActivity extends Activity implements OnQueryTextListener {
 	private DrawerLayout mDrawerLayout;
-	public  Vector<Fragment> prova;
-	
-	//public static Stack<Fragment> mFragmentStack = new Stack<Fragment>();
-	
+	public Vector<Fragment> prova;
+
+	// public static Stack<Fragment> mFragmentStack = new Stack<Fragment>();
+
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 
@@ -67,7 +67,7 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		setContentView(R.layout.activity_main);
 
 		mTitle = mDrawerTitle = getTitle();
-		prova = new  Vector<Fragment>();
+		prova = new Vector<Fragment>();
 		// load slide menu items
 		navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
 
@@ -82,18 +82,23 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 
 		// adding nav drawer items to array
 		// Home
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons
+				.getResourceId(0, -1)));
 		// Find People
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons
+				.getResourceId(1, -1)));
 		// Photos
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons
+				.getResourceId(2, -1)));
 		// Communities, Will add a counter here
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons
+				.getResourceId(3, -1), true, "22"));
 		// Pages
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
-		// What's hot, We  will add a counter here
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
-		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons
+				.getResourceId(4, -1)));
+		// What's hot, We will add a counter here
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons
+				.getResourceId(5, -1), true, "50+"));
 
 		// Recycle the typed array
 		navMenuIcons.recycle();
@@ -104,17 +109,17 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		adapter = new NavDrawerListAdapter(getApplicationContext(),
 				navDrawerItems);
 		mDrawerList.setAdapter(adapter);
-		
-		
 
 		// enabling action bar app icon and behaving it as toggle button
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setHomeButtonEnabled(true);
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, //nav menu toggle icon
-				R.string.app_name, // nav drawer open - description for accessibility
-				R.string.app_name // nav drawer close - description for accessibility
+				R.drawable.ic_drawer, // nav menu toggle icon
+				R.string.app_name, // nav drawer open - description for
+									// accessibility
+				R.string.app_name // nav drawer close - description for
+									// accessibility
 		) {
 			public void onDrawerClosed(View view) {
 				getActionBar().setTitle(mTitle);
@@ -145,37 +150,28 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			// display view for selected nav drawer item
-			
+
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(getBaseContext());
-		
-			
-		
-			
+
 			String user = prefs.getString("user", "");
 			String pass = prefs.getString("passed", "");
-			
-	  
-		if (!user.isEmpty() && position == 0){
-				
-				
-				
-				
-			}
-		else {
-			
-			displayView(position);
-		}}
-	}
-	
-	
 
+			if (!user.isEmpty() && position == 0) {
+
+			} else {
+
+				displayView(position);
+			}
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
-		  SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-		  searchView.setOnQueryTextListener(this);
+		SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
+				.getActionView();
+		searchView.setOnQueryTextListener(this);
 
 		return true;
 	}
@@ -188,19 +184,11 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		}
 		// Handle action bar actions click
 		switch (item.getItemId()) {
-		
-		
-		
-		
-		
+
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	
-
-
 
 	/* *
 	 * Called when invalidateOptionsMenu() is triggered
@@ -227,16 +215,16 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 			fragment = new HomeFragment();
 			break;
 		case 2:
-			//fragment = new SeasonFragment();
+			// fragment = new SeasonFragment();
 			break;
 		case 3:
-			//fragment = new CommunityFragment();
+			// fragment = new CommunityFragment();
 			break;
 		case 4:
 			fragment = new LoginFragment();
 			break;
 		case 5:
-			
+
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(this.getApplicationContext());
 			SharedPreferences.Editor editor = prefs.edit();
@@ -247,7 +235,7 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 			editor.commit();
 			Intent intent = new Intent(this.getApplicationContext(),
 					MainActivity.class);
-			
+
 			startActivity(intent);
 			break;
 
@@ -260,8 +248,7 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 			fragmentManager.beginTransaction().addToBackStack("");
 			fragmentManager.beginTransaction()
 					.replace(R.id.frame_container, fragment).commit();
-		
-			
+
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);
 			mDrawerList.setSelection(position);
@@ -272,29 +259,12 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 			Log.e("MainActivity", "Error in creating fragment");
 		}
 	}
-	
-	
-
-	
-	
-	
-	
 
 	@Override
 	public void setTitle(CharSequence title) {
 		mTitle = title;
 		getActionBar().setTitle(mTitle);
 	}
-	
-	
-	
-	
-	
-	
-	
-
-	
-	
 
 	/**
 	 * When using the ActionBarDrawerToggle, you must call it during
@@ -323,27 +293,21 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 
 	@Override
 	public boolean onQueryTextSubmit(String query) {
-		
-		//	FragmentManager fragmentManager = getFragmentManager();
-			Fragment fragment1;
-			fragment1 = new SearchFragment();
-			Bundle args = new Bundle();
-			args.putString("toSearch", query.replace(" ", "+"));
-			fragment1.setArguments(args);
-			//fragmentManager.beginTransaction().replace(R.id.frame_container, fragment1).commit();;
-			
-			
-			
-			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction().addToBackStack("");
-			fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, fragment1).commit();
-			
-			
-			
-			
 
-		
+		// FragmentManager fragmentManager = getFragmentManager();
+		Fragment fragment1;
+		fragment1 = new SearchFragment();
+		Bundle args = new Bundle();
+		args.putString("toSearch", query.replace(" ", "+"));
+		fragment1.setArguments(args);
+		// fragmentManager.beginTransaction().replace(R.id.frame_container,
+		// fragment1).commit();;
+
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction().addToBackStack("");
+		fragmentManager.beginTransaction()
+				.replace(R.id.frame_container, fragment1).commit();
+
 		return false;
 	}
 

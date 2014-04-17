@@ -42,12 +42,9 @@ public class HomeFragment extends Fragment {
 
 		ListView listView = (ListView) rootView.findViewById(R.id.sample);
 		CustomAdapter customAdapter;
-		
+
 		this.getActivity().setTitle("SUGGESTIONS");
-		
-		
-		
-		
+
 		try {
 
 			final Vector<Vector<String>> vector = getList();

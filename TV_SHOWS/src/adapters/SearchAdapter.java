@@ -37,109 +37,94 @@ import org.json.JSONException;
 import engine.Search_result;
 
 /**
-* Created with IntelliJ IDEA. User: Shahab Date: 8/22/12 Time: 11:37 AM To
-* change this template use File | Settings | File Templates.
-*/
+ * Created with IntelliJ IDEA. User: Shahab Date: 8/22/12 Time: 11:37 AM To
+ * change this template use File | Settings | File Templates.
+ */
 public class SearchAdapter extends BaseAdapter {
 
-private static final String TAG = CustomAdapter.class.getSimpleName();
+	private static final String TAG = CustomAdapter.class.getSimpleName();
 
-Vector<Search_result> vector;
-Context context;
-FragmentManager fm;
+	Vector<Search_result> vector;
+	Context context;
+	FragmentManager fm;
 
-public SearchAdapter(Vector<Search_result> vector,Context context, FragmentManager fm) {
-this.vector = vector;
-this.context = context;
-this.fm = fm;
+	public SearchAdapter(Vector<Search_result> vector, Context context,
+			FragmentManager fm) {
+		this.vector = vector;
+		this.context = context;
+		this.fm = fm;
 
-}
+	}
 
-@Override
-public int getCount() {
-return vector.size(); // total number of elements in the list
-}
+	@Override
+	public int getCount() {
+		return vector.size(); // total number of elements in the list
+	}
 
-@Override
-public Object getItem(int i) {
-return vector.get(i); // single item in the list
-}
+	@Override
+	public Object getItem(int i) {
+		return vector.get(i); // single item in the list
+	}
 
-@Override
-public long getItemId(int i) {
-return i; // index number
-}
+	@Override
+	public long getItemId(int i) {
+		return i; // index number
+	}
 
-@Override
-public View getView(final int index, View view, final ViewGroup parent) {
+	@Override
+	public View getView(final int index, View view, final ViewGroup parent) {
 
-if (view == null) {
-LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-view = inflater.inflate(R.layout.result_item, parent, false);
+		if (view == null) {
+			LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+			view = inflater.inflate(R.layout.result_item, parent, false);
 
-}
+		}
 
-// {summary, keywords, status,
-// resolution,type,version,milestone,reporter};
+		// {summary, keywords, status,
+		// resolution,type,version,milestone,reporter};
 
-WebView id = (WebView) view.findViewById(R.id.web);
-id.loadUrl(vector.get(index).image_link);
-id.setInitialScale(108);
+		WebView id = (WebView) view.findViewById(R.id.web);
+		id.loadUrl(vector.get(index).image_link);
+		id.setInitialScale(108);
 
+		id.setFocusable(false);
+		id.setClickable(false);
 
-id.setFocusable(false);
-id.setClickable(false);
+		TextView title = (TextView) view.findViewById(R.id.title);
+		title.setText(vector.get(index).title);
 
+		TextView year = (TextView) view.findViewById(R.id.year);
+		year.setText(vector.get(index).year);
 
+		TextView country = (TextView) view.findViewById(R.id.nation);
 
+		String str = vector.get(index).nation;
+		if (str.equals("null")) {
+			str = "";
 
+		}
+		country.setText(str);
 
-TextView title =  (TextView) view.findViewById(R.id.title);
-title.setText(vector.get(index).title);
+		TextView genres = (TextView) view.findViewById(R.id.genres);
+		genres.setText(vector.get(index).genres.toString().replace("\"", "")
+				.replace("[", "").replace("]", "").replace(",", ", "));
 
+		TextView ended = (TextView) view.findViewById(R.id.ended);
 
-TextView year =  (TextView) view.findViewById(R.id.year);
-year.setText(vector.get(index).year);
+		if (vector.get(index).ended) {
+			ended.setText("ENDED");
+			ended.setTextColor(context.getResources().getColor(R.color.red));
 
+		}
 
-TextView country =  (TextView) view.findViewById(R.id.nation);
+		else {
+			ended.setText("ON AIR");
+			ended.setTextColor(context.getResources().getColor(R.color.green));
 
-String str = vector.get(index).nation;
-if (str.equals("null")){
-	str = "";
-	
-	
-}
-country.setText(str);
+		}
 
+		return view;
 
-
-TextView genres =  (TextView) view.findViewById(R.id.genres);
-genres.setText(vector.get(index).genres.toString().replace("\"", "").replace("[", "").replace("]", "").replace(",", ", "));
-
-
-
-TextView ended =  (TextView) view.findViewById(R.id.ended);
-
-if (vector.get(index).ended){
-	ended.setText("ENDED");
-	ended.setTextColor(context.getResources().getColor(R.color.red));
-	
-	
-}
-
-else{
-	ended.setText("ON AIR");
-	ended.setTextColor(context.getResources().getColor(R.color.green));
-	
-	
-}
-
-
-
-
-return view;
-
-}
+	}
 
 }

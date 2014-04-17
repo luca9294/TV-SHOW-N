@@ -9,15 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class CommunityFragment extends Fragment {
-	
-	public CommunityFragment(){}
-	
+
+	public CommunityFragment() {
+	}
+
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
- 
-        View rootView = inflater.inflate(R.layout.fragment_season, container, false);
-         
-        return rootView;
-    }
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		View rootView = inflater.inflate(R.layout.fragment_season, container,
+				false);
+
+		return rootView;
+	}
 }

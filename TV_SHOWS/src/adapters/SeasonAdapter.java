@@ -81,7 +81,7 @@ public class SeasonAdapter extends BaseAdapter {
 		}
 
 		TextView number = (TextView) view.findViewById(R.id.number);
-		number.setText("#"+episodes.get(index).id);
+		number.setText("#" + episodes.get(index).id);
 
 		TextView title = (TextView) view.findViewById(R.id.title);
 		title.setText(episodes.get(index).title);
@@ -93,8 +93,4 @@ public class SeasonAdapter extends BaseAdapter {
 
 	}
 
-	
-	
-
-	
 }

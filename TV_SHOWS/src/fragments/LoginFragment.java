@@ -1,7 +1,5 @@
 package fragments;
 
-
-
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
@@ -29,41 +27,47 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class LoginFragment extends Fragment {
-	 private Context contextN;
-	public LoginFragment(){}
-	
+	private Context contextN;
+
+	public LoginFragment() {
+	}
+
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
- 
-        View rootView = inflater.inflate(R.layout.fragment_login, container, false);
-        
-        final EditText user = (EditText) rootView.findViewById(R.id.user);
-        final EditText pass = (EditText) rootView.findViewById(R.id.passwd);
-        Button button = (Button)rootView.findViewById(R.id.login);
-        final Context context = this.getActivity().getApplicationContext();
-        contextN = this.getActivity().getApplicationContext();;
-        button.setOnClickListener(new OnClickListener(){
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		View rootView = inflater.inflate(R.layout.fragment_login, container,
+				false);
+
+		final EditText user = (EditText) rootView.findViewById(R.id.user);
+		final EditText pass = (EditText) rootView.findViewById(R.id.passwd);
+		Button button = (Button) rootView.findViewById(R.id.login);
+		final Context context = this.getActivity().getApplicationContext();
+		contextN = this.getActivity().getApplicationContext();
+		;
+		button.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				Login login;
 				try {
-					 login = new Login(user.getText().toString(),pass.getText().toString(),context);
-					 
-					 if (!login.isSuccess()){
-							
-							new MyDialogFragment().show(getFragmentManager(), "MyDialog");
-						
-						}
-						
-						else{
+					login = new Login(user.getText().toString(), pass.getText()
+							.toString(), context);
 
-							new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
-						
-							
-						Log.e("","GIUSTO");
-						}
+					if (!login.isSuccess()) {
+
+						new MyDialogFragment().show(getFragmentManager(),
+								"MyDialog");
+
+					}
+
+					else {
+
+						new MyDialogFragment2().show(getFragmentManager(),
+								"MyDialog");
+
+						Log.e("", "GIUSTO");
+					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -74,50 +78,27 @@ public class LoginFragment extends Fragment {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-			
+
 			}
-        	
-        	
-        	
-        	
-        	
-        });
-        
-        
-        
-      
-			
-			
-				
-				
-				
-				
-	
-        
-        
-        
- 
-        
-        this.getActivity().setTitle("LOGIN"); 
-        
-        
-        return rootView;
-    }
-	
-	
+
+		});
+
+		this.getActivity().setTitle("LOGIN");
+
+		return rootView;
+	}
+
 	public class MyDialogFragment extends DialogFragment {
 
-	    @Override
-	    public Dialog onCreateDialog(Bundle savedInstanceState) {
-	        return new AlertDialog.Builder(getActivity())
-	                .setMessage("Authentication failed!\nPlease retry.").setPositiveButton("Ok", null).create();
-	    }
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+					.setMessage("Authentication failed!\nPlease retry.")
+					.setPositiveButton("Ok", null).create();
+		}
 
 	}
-	
-	
-	
+
 	public class MyDialogFragment2 extends DialogFragment {
 
 		@Override
@@ -140,16 +121,5 @@ public class LoginFragment extends Fragment {
 		}
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }

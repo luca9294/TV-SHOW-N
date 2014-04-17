@@ -23,31 +23,34 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class SearchFragment extends Fragment {
-	
-	public SearchFragment(){}
-	
-	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
- 
-        View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-       
-        
-        try {
-			
-        	 Bundle bundle = getArguments();
 
-     		String toSearch = bundle.getString("toSearch");
-     		
-     		  this.getActivity().setTitle(toSearch);
-     		
-        	
-        	ListView list = (ListView) rootView.findViewById(R.id.list);
-        	final Search search = new Search (toSearch, this.getActivity().getApplicationContext());
-        	SearchAdapter adapter = new SearchAdapter (search.getResults(), this.getActivity().getApplicationContext(), this.getFragmentManager());
+	public SearchFragment() {
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		View rootView = inflater.inflate(R.layout.fragment_search, container,
+				false);
+
+		try {
+
+			Bundle bundle = getArguments();
+
+			String toSearch = bundle.getString("toSearch");
+
+			this.getActivity().setTitle(toSearch);
+
+			ListView list = (ListView) rootView.findViewById(R.id.list);
+			final Search search = new Search(toSearch, this.getActivity()
+					.getApplicationContext());
+			SearchAdapter adapter = new SearchAdapter(search.getResults(), this
+					.getActivity().getApplicationContext(),
+					this.getFragmentManager());
 			list.setAdapter(adapter);
-			
-			list.setOnItemClickListener(new OnItemClickListener(){
+
+			list.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1,
@@ -55,23 +58,17 @@ public class SearchFragment extends Fragment {
 					Fragment fragment = new TvFragment();
 					FragmentManager fm = getFragmentManager();
 					Bundle args = new Bundle();
-					args.putString("toSearch",  search.getResults().get(arg2).id);
+					args.putString("toSearch", search.getResults().get(arg2).id);
 					fragment.setArguments(args);
-					
+
 					android.app.FragmentTransaction ft = fm.beginTransaction();
-					 ft.replace(R.id.frame_container, fragment);
-					 ft.addToBackStack("");
-					 ft.commit();
-					
-					
-					
+					ft.replace(R.id.frame_container, fragment);
+					ft.addToBackStack("");
+					ft.commit();
+
 				}
 			});
-			
-			
-			
-			
-			
+
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -82,10 +79,7 @@ public class SearchFragment extends Fragment {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
-        
-        
-         
-        return rootView;
-    }
+
+		return rootView;
+	}
 }

@@ -9,10 +9,11 @@ import android.os.Bundle;
 
 public class MyDialogFragment extends DialogFragment {
 
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new AlertDialog.Builder(getActivity())
-                .setMessage("Authentication failed!\nPlease retry.").setPositiveButton("Ok", null).create();
-    }
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		return new AlertDialog.Builder(getActivity())
+				.setMessage("Authentication failed!\nPlease retry.")
+				.setPositiveButton("Ok", null).create();
+	}
 
 }

@@ -105,11 +105,11 @@ public class CustomAdapter extends BaseAdapter {
 					Fragment fragment = new TvFragment();
 					Bundle args = new Bundle();
 					args.putString("toSearch", urls1.get(index).get(1));
-					fragment.setArguments(args); 
+					fragment.setArguments(args);
 					android.app.FragmentTransaction ft = fm.beginTransaction();
-					 ft.replace(R.id.frame_container, fragment);
-					 ft.addToBackStack("");
-					 ft.commit();
+					ft.replace(R.id.frame_container, fragment);
+					ft.addToBackStack("");
+					ft.commit();
 
 					return true;
 
@@ -148,19 +148,12 @@ public class CustomAdapter extends BaseAdapter {
 					Bundle args = new Bundle();
 					args.putString("toSearch", urls2.get(index).get(1));
 					fragment.setArguments(args);
-				
-				
-					
-					
-					
-			
+
 					android.app.FragmentTransaction ft = fm.beginTransaction();
-					 ft.replace(R.id.frame_container, fragment);
-					 ft.addToBackStack("");
-					 ft.commit();
-					
-					
-					
+					ft.replace(R.id.frame_container, fragment);
+					ft.addToBackStack("");
+					ft.commit();
+
 					return true;
 
 				}
