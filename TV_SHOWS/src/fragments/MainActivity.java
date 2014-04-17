@@ -29,6 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
@@ -65,6 +66,9 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		navMenuIcons = getResources()
 				.obtainTypedArray(R.array.nav_drawer_icons);
 
+		
+
+		
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
 
@@ -164,6 +168,17 @@ public class MainActivity extends Activity implements OnQueryTextListener  {
 		getMenuInflater().inflate(R.menu.main, menu);
 		  SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
 		  searchView.setOnQueryTextListener(this);
+		  
+		  
+			
+			int searchIconId = searchView.getContext().getResources().
+	                getIdentifier("android:id/search_button", null, null);
+	
+	
+	 ImageView searchIcon = (ImageView)searchView.findViewById(R.id.action_search);
+     // Setting background of 'search_plate' to earlier defined drawable.
+     searchIcon.setImageResource(R.drawable.trakt_01); 
+			
 				return true;
 	}
 	
