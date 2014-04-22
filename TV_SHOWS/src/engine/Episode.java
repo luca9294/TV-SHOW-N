@@ -70,6 +70,14 @@ public class Episode {
 		dg.execute();
 
 		JSONObject object = dg.get();
+	
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(parent);
+
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("pass", "");
+		
+		if (user != ""){
 		rating = object.getJSONObject("episode").getString("rating");
 
 		if (rating.equals("love")) {
@@ -81,7 +89,10 @@ public class Episode {
 			hate = true;
 
 		}
-
+		}
+		
+		
+		
 		title = object.getJSONObject("episode").getString("title");
 		first_aired_date = object.getJSONObject("episode")
 				.getString("first_aired_iso").replace("T", " ");

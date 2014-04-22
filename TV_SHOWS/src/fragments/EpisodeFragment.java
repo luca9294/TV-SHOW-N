@@ -68,15 +68,13 @@ public class EpisodeFragment extends Fragment {
 				false);
 		context = this.getActivity().getApplicationContext();
 
-		setHasOptionsMenu(true);
-		;
 		Bundle bundle = getArguments();
 
 		id = bundle.getString("id");
 		season_n = bundle.getString("season_n");
 		code = bundle.getString("code");
 
-		try {
+	try {
 			episode = new Episode(id, code, season_n, this.getActivity()
 					.getApplicationContext());
 			episode.getComments();
@@ -105,6 +103,15 @@ public class EpisodeFragment extends Fragment {
 			percentage.setText(episode.percentage + "%");
 			overview.setText(episode.overview);
 
+			
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(this.getActivity().getApplicationContext());
+
+			String user = prefs.getString("user", "");
+			String pass = prefs.getString("pass", "");
+			
+			if (user != ""){
+			
 			final ImageView positive = (ImageView) rootView
 					.findViewById(R.id.imageView1);
 			final ImageView negative = (ImageView) rootView
@@ -266,7 +273,7 @@ public class EpisodeFragment extends Fragment {
 
 				}
 
-			});
+			});}
 
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -352,6 +359,7 @@ public class EpisodeFragment extends Fragment {
 		 * e.printStackTrace(); } catch (ExecutionException e) { // TODO
 		 * Auto-generated catch block e.printStackTrace(); }
 		 */
+			
 
 		return rootView;
 
