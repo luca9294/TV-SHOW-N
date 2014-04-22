@@ -74,7 +74,7 @@ public class EpisodeFragment extends Fragment {
 		season_n = bundle.getString("season_n");
 		code = bundle.getString("code");
 
-	try {
+		try {
 			episode = new Episode(id, code, season_n, this.getActivity()
 					.getApplicationContext());
 			episode.getComments();
@@ -103,177 +103,189 @@ public class EpisodeFragment extends Fragment {
 			percentage.setText(episode.percentage + "%");
 			overview.setText(episode.overview);
 
-			
 			SharedPreferences prefs = PreferenceManager
-					.getDefaultSharedPreferences(this.getActivity().getApplicationContext());
+					.getDefaultSharedPreferences(this.getActivity()
+							.getApplicationContext());
 
-			String user = prefs.getString("user", "");
+			final String user = prefs.getString("user", "");
 			String pass = prefs.getString("pass", "");
-			
-			if (user != ""){
-			
+
 			final ImageView positive = (ImageView) rootView
 					.findViewById(R.id.imageView1);
 			final ImageView negative = (ImageView) rootView
 					.findViewById(R.id.imageView3);
+			if (user != "") {
+				if (episode.rating.equals("love")) {
+					positive.setImageResource(R.drawable.ic_action_good_dark);
+					love = true;
 
-			if (episode.rating.equals("love")) {
-				positive.setImageResource(R.drawable.ic_action_good_dark);
-				love = true;
-				
+				}
+
+				else if (episode.rating.equals("hate")) {
+					hate = true;
+					negative.setImageResource(R.drawable.ic_action_bad_dark);
+
+				}
 			}
-
-			else if (episode.rating.equals("hate")) {
-				hate = true;
-				negative.setImageResource(R.drawable.ic_action_bad_dark);
-			}
-
 			positive.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
+					if (user != "") {
 
-					if (!love && !hate) {
-						positive.setImageResource(R.drawable.ic_action_good_dark);
-						love = true;
-						Log.e("", "PRIMO");
-						new MyDialogFragment6().show(getFragmentManager(),
-								"MyDialog");
-						try {
-							episode.makeARate("love");
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (ExecutionException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+						if (!love && !hate) {
+							positive.setImageResource(R.drawable.ic_action_good_dark);
+							love = true;
+							Log.e("", "PRIMO");
+							new MyDialogFragment6().show(getFragmentManager(),
+									"MyDialog");
+							try {
+								episode.makeARate("love");
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ExecutionException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+						}
+
+						else if (love && !hate) {
+							positive.setImageResource(R.drawable.ic_action_good);
+							love = false;
+							Log.e("", "SECONDO");
+							try {
+								episode.makeARate("unrate");
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ExecutionException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+
+						else if (hate && !love) {
+							positive.setImageResource(R.drawable.ic_action_good_dark);
+							negative.setImageResource(R.drawable.ic_action_bad);
+							hate = false;
+							love = true;
+							Log.e("", "TERZO");
+							new MyDialogFragment6().show(getFragmentManager(),
+									"MyDialog");
+
+							try {
+								episode.makeARate("love");
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ExecutionException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
 						}
 
 					}
 
-					else if (love && !hate) {
-						positive.setImageResource(R.drawable.ic_action_good);
-						love = false;
-						Log.e("", "SECONDO");
-						try {
-							episode.makeARate("unrate");
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (ExecutionException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-
-					else if (hate && !love) {
-						positive.setImageResource(R.drawable.ic_action_good_dark);
-						negative.setImageResource(R.drawable.ic_action_bad);
-						hate = false;
-						love = true;
-						Log.e("", "TERZO");
-						new MyDialogFragment6().show(getFragmentManager(),
+					else {
+						new MyDialogFragment8().show(getFragmentManager(),
 								"MyDialog");
-						
-						
-						
-						try {
-							episode.makeARate("love");
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (ExecutionException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 
 					}
 
 				}
-
 			});
 
 			negative.setOnClickListener(new View.OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
-					if (!love && !hate) {
-						negative.setImageResource(R.drawable.ic_action_bad_dark);
-						hate = true;
-						new MyDialogFragment7().show(getFragmentManager(),
-								"MyDialog");
-						
-						try {
-							episode.makeARate("hate");
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (ExecutionException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+					if (user != "") {
+						if (!love && !hate) {
+							negative.setImageResource(R.drawable.ic_action_bad_dark);
+							hate = true;
+							new MyDialogFragment7().show(getFragmentManager(),
+									"MyDialog");
+
+							try {
+								episode.makeARate("hate");
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ExecutionException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
 						}
-						
-						
+
+						else if (hate && !love) {
+							negative.setImageResource(R.drawable.ic_action_bad);
+							hate = false;
+
+							try {
+								episode.makeARate("unrate");
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ExecutionException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+						}
+
+						else if (love && !hate) {
+							positive.setImageResource(R.drawable.ic_action_good);
+							negative.setImageResource(R.drawable.ic_action_bad_dark);
+							love = false;
+							hate = true;
+							new MyDialogFragment7().show(getFragmentManager(),
+									"MyDialog");
+							try {
+								episode.makeARate("hate");
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ExecutionException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+						}
+
 					}
 
-					else if (hate && !love) {
-						negative.setImageResource(R.drawable.ic_action_bad);
-						hate = false;
-						
-						try {
-							episode.makeARate("unrate");
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (ExecutionException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						
-						
-						
-					}
+					else {
 
-					else if (love && !hate) {
-						positive.setImageResource(R.drawable.ic_action_good);
-						negative.setImageResource(R.drawable.ic_action_bad_dark);
-						love = false;
-						hate = true;
-						new MyDialogFragment7().show(getFragmentManager(),
+						new MyDialogFragment8().show(getFragmentManager(),
 								"MyDialog");
-						try {
-							episode.makeARate("hate");
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (ExecutionException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 
 					}
 
 				}
 
-			});}
+			});
 
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -359,7 +371,6 @@ public class EpisodeFragment extends Fragment {
 		 * e.printStackTrace(); } catch (ExecutionException e) { // TODO
 		 * Auto-generated catch block e.printStackTrace(); }
 		 */
-			
 
 		return rootView;
 
@@ -421,6 +432,18 @@ public class EpisodeFragment extends Fragment {
 
 			.setMessage("You hate this episode!").setPositiveButton("Ok", null)
 					.create();
+		}
+
+	}
+
+	public class MyDialogFragment8 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("You must be logged in order to rate!")
+					.setPositiveButton("Ok", null).create();
 		}
 
 	}
