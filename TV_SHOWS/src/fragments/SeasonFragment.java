@@ -34,7 +34,7 @@ public class SeasonFragment extends Fragment {
 
 		View rootView = inflater.inflate(R.layout.fragment_season, container,
 				false);
-
+		
 		Bundle bundle = getArguments();
 
 		String id = bundle.getString("id");
@@ -59,6 +59,7 @@ public class SeasonFragment extends Fragment {
 			web.setVisibility(View.VISIBLE);
 
 			ListView view = (ListView) rootView.findViewById(R.id.listEpisodes);
+			//view.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
 			SeasonAdapter adapter = new SeasonAdapter(season.episodes, this
 					.getActivity().getApplicationContext(),
@@ -85,10 +86,7 @@ public class SeasonFragment extends Fragment {
 					ft.addToBackStack("");
 					ft.commit();
 
-					// fm.beginTransaction().addToBackStack("");
-					// fm.beginTransaction().replace(R.id.frame_container,
-					// fragment).commit();
-
+			
 				}
 			});
 
