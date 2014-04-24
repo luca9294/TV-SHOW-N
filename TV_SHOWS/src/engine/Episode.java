@@ -28,8 +28,9 @@ public class Episode {
 	public String id, season_n, title, first_aired_date, overview, image,
 			percentage, code, rating;
 
-	public boolean love, hate;
-	private JSONObject rate;
+	public boolean love, hate, watched;
+
+	private JSONObject rate, seen, watching;
 	public Vector<Comment> comments = new Vector<Comment>();
 
 	public Context parent;
@@ -48,6 +49,7 @@ public class Episode {
 		this.parent = parent;
 		love = false;
 		hate = false;
+		watched = false;
 	}
 
 	public Episode(String id, String code, String season_n, Context parent)
@@ -89,6 +91,9 @@ public class Episode {
 				hate = true;
 
 			}
+			
+			watched = object.getJSONObject("episode").getBoolean("watched");
+
 		}
 
 		title = object.getJSONObject("episode").getString("title");
@@ -169,6 +174,85 @@ public class Episode {
 
 	}
 
+	public void getComments() throws InterruptedException, ExecutionException,
+			JSONException {
+		api = new TraktAPI(parent);
+		DataGrabber2 dg = new DataGrabber2(parent);
+		dg.execute();
+
+		JSONArray array = dg.get();
+
+		for (int i = 0; i < array.length(); i++) {
+			JSONObject object = array.getJSONObject(i);
+
+			String user = object.getJSONObject("user").getString("username");
+			String text = object.getString("text_html");
+
+			String date = object.getString("inserted");
+
+			Comment comment = new Comment(user, text, date, parent);
+
+			comments.add(comment);
+
+		}
+	}
+
+	public void addToSeen(boolean s) throws JSONException,
+			InterruptedException, ExecutionException {
+		seen = new JSONObject();
+		JSONArray array = new JSONArray();
+		JSONObject object = new JSONObject();
+
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(parent);
+
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("pass", "");
+
+		seen.put("username", user);
+		seen.put("password", pass);
+		seen.put("tvdb_id", code);
+		// jsonpost.put("title", "Revenge");
+		object.put("season", season_n);
+		object.put("episode", id);
+		array.put(object);
+		seen.put("episodes", array);
+
+		DataGrabber4 grabber = new DataGrabber4(s);
+
+		grabber.execute();
+		grabber.get();
+
+	}
+
+	public void addToWatching() throws JSONException, InterruptedException,
+			ExecutionException {
+		watching = new JSONObject();
+		JSONArray array = new JSONArray();
+		JSONObject object = new JSONObject();
+
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(parent);
+
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("pass", "");
+
+		watching.put("username", user);
+		watching.put("password", pass);
+		watching.put("tvdb_id", code);
+		// jsonpost.put("title", "Revenge");
+		object.put("season", season_n);
+		object.put("episode", id);
+		array.put(object);
+		watching.put("episodes", array);
+
+		DataGrabber5 grabber = new DataGrabber5();
+
+		grabber.execute();
+		grabber.get();
+
+	}
+
 	private class DataGrabber extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
 		private Context parent;
@@ -198,29 +282,6 @@ public class Episode {
 
 		}
 
-	}
-
-	public void getComments() throws InterruptedException, ExecutionException,
-			JSONException {
-		api = new TraktAPI(parent);
-		DataGrabber2 dg = new DataGrabber2(parent);
-		dg.execute();
-
-		JSONArray array = dg.get();
-
-		for (int i = 0; i < array.length(); i++) {
-			JSONObject object = array.getJSONObject(i);
-
-			String user = object.getJSONObject("user").getString("username");
-			String text = object.getString("text_html");
-
-			String date = object.getString("inserted");
-
-			Comment comment = new Comment(user, text, date, parent);
-
-			comments.add(comment);
-
-		}
 	}
 
 	private class DataGrabber2 extends AsyncTask<String, Void, JSONArray> {
@@ -339,4 +400,178 @@ public class Episode {
 
 	}
 
+	class DataGrabber4 extends AsyncTask<String, Void, JSONObject> {
+		private ProgressDialog progressdialog;
+		private Context parent;
+		private String id;
+		private JSONObject data;
+		private boolean s;
+
+		public DataGrabber4(boolean s) {
+			this.s = s;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// progressdialog = ProgressDialog.show(parent,"",
+			// "Retrieving data ...", true);
+		}
+
+		@Override
+		protected JSONObject doInBackground(String... params) {
+
+			// api.setCred("luca9294", "1Aa30011992");
+			try {
+				if (s == false) {
+					data = getDataFromJSON(
+							"http://api.trakt.tv/show/episode/seen/361cd031c2473b06997c87c25ec9c057",
+							true, "", seen);
+				} else {
+					data = getDataFromJSON(
+							"http://api.trakt.tv/show/episode/unseen/361cd031c2473b06997c87c25ec9c057",
+							true, "", seen);
+				}
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			Log.e("seen", data.toString());
+
+			return data;
+
+		}
+
+		public JSONObject getDataFromJSON(String url, boolean login,
+				String type, JSONObject postdata) throws JSONException,
+				ClientProtocolException, IOException {
+
+			// Construct HttpClient
+			HttpClient httpclient = new DefaultHttpClient();
+			// If login add login information to a JSONObject
+			HttpPost httppost = new HttpPost(url);
+			JSONObject jsonpost;
+			if (postdata == null) {
+				jsonpost = new JSONObject();
+			} else {
+				jsonpost = postdata;
+			}
+
+			httppost.setEntity(new StringEntity(jsonpost.toString()));
+			// Perform POST
+			HttpResponse response = httpclient.execute(httppost);
+			// Return the data in the requested format
+			InputStream inputStream = response.getEntity().getContent();
+
+			String result = convertInputStreamToString(inputStream);
+
+			return new JSONObject(result);
+
+		}
+
+		private String convertInputStreamToString(InputStream inputStream)
+				throws IOException {
+			BufferedReader bufferedReader = new BufferedReader(
+					new InputStreamReader(inputStream));
+			String line = "";
+			String result = "";
+			while ((line = bufferedReader.readLine()) != null)
+				result += line;
+
+			inputStream.close();
+			return result;
+
+		}
+
+	}
+
+	class DataGrabber5 extends AsyncTask<String, Void, JSONObject> {
+		private ProgressDialog progressdialog;
+		private Context parent;
+		private String id;
+		private JSONObject data;
+
+		public DataGrabber5() {
+
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// progressdialog = ProgressDialog.show(parent,"",
+			// "Retrieving data ...", true);
+		}
+
+		@Override
+		protected JSONObject doInBackground(String... params) {
+
+			// api.setCred("luca9294", "1Aa30011992");
+			try {
+				data = getDataFromJSON(
+						"http://api.trakt.tv/show/episode/watchlist/361cd031c2473b06997c87c25ec9c057",
+						true, "", watching);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			Log.e("watchlist", data.toString());
+
+			return data;
+
+		}
+
+		public JSONObject getDataFromJSON(String url, boolean login,
+				String type, JSONObject postdata) throws JSONException,
+				ClientProtocolException, IOException {
+
+			// Construct HttpClient
+			HttpClient httpclient = new DefaultHttpClient();
+			// If login add login information to a JSONObject
+			HttpPost httppost = new HttpPost(url);
+			JSONObject jsonpost;
+			if (postdata == null) {
+				jsonpost = new JSONObject();
+			} else {
+				jsonpost = postdata;
+			}
+
+			httppost.setEntity(new StringEntity(jsonpost.toString()));
+			// Perform POST
+			HttpResponse response = httpclient.execute(httppost);
+			// Return the data in the requested format
+			InputStream inputStream = response.getEntity().getContent();
+
+			String result = convertInputStreamToString(inputStream);
+
+			return new JSONObject(result);
+
+		}
+
+		private String convertInputStreamToString(InputStream inputStream)
+				throws IOException {
+			BufferedReader bufferedReader = new BufferedReader(
+					new InputStreamReader(inputStream));
+			String line = "";
+			String result = "";
+			while ((line = bufferedReader.readLine()) != null)
+				result += line;
+
+			inputStream.close();
+			return result;
+
+		}
+
+	}
 }

@@ -18,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
@@ -56,6 +57,9 @@ public class EpisodeFragment extends Fragment {
 
 	boolean love;
 	boolean hate;
+
+	public boolean seenBool = false;
+	public boolean watchBool = false;
 
 	public EpisodeFragment() {
 
@@ -110,6 +114,15 @@ public class EpisodeFragment extends Fragment {
 			final String user = prefs.getString("user", "");
 			String pass = prefs.getString("pass", "");
 
+			Button seen = (Button) rootView.findViewById(R.id.seenList);
+			if(episode.watched == true){
+				seen.setText("SEEN");
+				seen.setTextColor(Color.GREEN);
+				seenBool = true;
+			}else{
+				seenBool = false;
+			}
+			
 			final ImageView positive = (ImageView) rootView
 					.findViewById(R.id.imageView1);
 			final ImageView negative = (ImageView) rootView
@@ -349,8 +362,7 @@ public class EpisodeFragment extends Fragment {
 			}
 		});
 
-		
-		Button seen = (Button) rootView.findViewById(R.id.seenList);
+		final Button seen = (Button) rootView.findViewById(R.id.seenList);
 		seen.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -369,16 +381,53 @@ public class EpisodeFragment extends Fragment {
 
 				else {
 
-					//new MyDialogFragment3().show(getFragmentManager(),
-					//		"MyDialog");
+					if (seenBool == false) {
+						try {
+							episode.addToSeen(seenBool);
 
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						new MyDialogFragment10().show(getFragmentManager(),
+								"MyDialog");
+
+						seen.setText("SEEN");
+						seen.setTextColor(Color.GREEN);
+						seenBool = true;
+					}else{
+						try {
+							episode.addToSeen(seenBool);
+
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						new MyDialogFragment12().show(getFragmentManager(),
+								"MyDialog");
+
+						seen.setText("ADD\nSEEN\nLIST");
+						seen.setTextColor(Color.WHITE);
+						seenBool = false;
+					}
 				}
 
 			}
 
 		});
 
-		
 		Button watching = (Button) rootView.findViewById(R.id.watchingList);
 		watching.setOnClickListener(new OnClickListener() {
 
@@ -398,15 +447,27 @@ public class EpisodeFragment extends Fragment {
 
 				else {
 
-					//new MyDialogFragment3().show(getFragmentManager(),
-					//		"MyDialog");
+					try {
+						episode.addToWatching();
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					new MyDialogFragment11().show(getFragmentManager(),
+							"MyDialog");
 
 				}
 
 			}
 
 		});
-		
+
 		/*
 		 * SharedPreferences prefs = PreferenceManager
 		 * .getDefaultSharedPreferences(context);
@@ -564,18 +625,53 @@ public class EpisodeFragment extends Fragment {
 			return dialog;
 
 		}
-		
 
 	}
 
-	
 	public class MyDialogFragment9 extends DialogFragment {
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			return new AlertDialog.Builder(getActivity())
 
-			.setMessage("You must be logged in order to add any episode to any list!")
+					.setMessage(
+							"You must be logged in order to add any episode to any list!")
+					.setPositiveButton("Ok", null).create();
+		}
+
+	}
+
+	public class MyDialogFragment10 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("Episode added to the \"Seen List\"!")
+					.setPositiveButton("Ok", null).create();
+		}
+
+	}
+
+	public class MyDialogFragment11 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("Episode added to the \"Watchlist\"!")
+					.setPositiveButton("Ok", null).create();
+		}
+
+	}
+	
+	public class MyDialogFragment12 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("Episode removed from the list!")
 					.setPositiveButton("Ok", null).create();
 		}
 
