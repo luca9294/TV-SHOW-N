@@ -28,7 +28,7 @@ public class Episode {
 	public String id, season_n, title, first_aired_date, overview, image,
 			percentage, code, rating;
 
-	public boolean love, hate, watched;
+	public boolean love, hate, watched, wish;
 
 	private JSONObject rate, seen, watching;
 	public Vector<Comment> comments = new Vector<Comment>();
@@ -50,6 +50,7 @@ public class Episode {
 		love = false;
 		hate = false;
 		watched = false;
+		wish = false;
 	}
 
 	public Episode(String id, String code, String season_n, Context parent)
@@ -91,8 +92,9 @@ public class Episode {
 				hate = true;
 
 			}
-			
+
 			watched = object.getJSONObject("episode").getBoolean("watched");
+			wish = object.getJSONObject("episode").getBoolean("in_watchlist");
 
 		}
 
@@ -225,7 +227,7 @@ public class Episode {
 
 	}
 
-	public void addToWatching() throws JSONException, InterruptedException,
+	public void addToWatching(boolean w) throws JSONException, InterruptedException,
 			ExecutionException {
 		watching = new JSONObject();
 		JSONArray array = new JSONArray();
@@ -246,7 +248,7 @@ public class Episode {
 		array.put(object);
 		watching.put("episodes", array);
 
-		DataGrabber5 grabber = new DataGrabber5();
+		DataGrabber5 grabber = new DataGrabber5(w);
 
 		grabber.execute();
 		grabber.get();
@@ -496,9 +498,10 @@ public class Episode {
 		private Context parent;
 		private String id;
 		private JSONObject data;
+		private boolean w;
 
-		public DataGrabber5() {
-
+		public DataGrabber5(boolean w) {
+			this.w = w;
 		}
 
 		@Override
@@ -512,9 +515,15 @@ public class Episode {
 
 			// api.setCred("luca9294", "1Aa30011992");
 			try {
-				data = getDataFromJSON(
-						"http://api.trakt.tv/show/episode/watchlist/361cd031c2473b06997c87c25ec9c057",
-						true, "", watching);
+				if (w == false) {
+					data = getDataFromJSON(
+							"http://api.trakt.tv/show/episode/watchlist/361cd031c2473b06997c87c25ec9c057",
+							true, "", watching);
+				} else {
+					data = getDataFromJSON(
+							"http://api.trakt.tv/show/episode/unwatchlist/361cd031c2473b06997c87c25ec9c057",
+							true, "", watching);
+				}
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

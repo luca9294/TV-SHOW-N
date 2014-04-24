@@ -113,15 +113,6 @@ public class EpisodeFragment extends Fragment {
 
 			final String user = prefs.getString("user", "");
 			String pass = prefs.getString("pass", "");
-
-			Button seen = (Button) rootView.findViewById(R.id.seenList);
-			if(episode.watched == true){
-				seen.setText("SEEN");
-				seen.setTextColor(Color.GREEN);
-				seenBool = true;
-			}else{
-				seenBool = false;
-			}
 			
 			final ImageView positive = (ImageView) rootView
 					.findViewById(R.id.imageView1);
@@ -140,6 +131,25 @@ public class EpisodeFragment extends Fragment {
 
 				}
 			}
+			
+			Button seen = (Button) rootView.findViewById(R.id.seenList);
+			if (episode.watched == true) {
+				seen.setText("SEEN");
+				seen.setTextColor(Color.GREEN);
+				seenBool = true;
+			} else {
+				seenBool = false;
+			}
+
+			Button watching = (Button) rootView.findViewById(R.id.watchingList);
+			if(episode.wish == true){
+				watching.setText("IN\nWATCHED\nLIST");
+				watching.setTextColor(Color.GREEN);
+				watchBool = true;
+			}else{
+				watchBool = false;
+			}
+			
 			positive.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -401,7 +411,7 @@ public class EpisodeFragment extends Fragment {
 						seen.setText("SEEN");
 						seen.setTextColor(Color.GREEN);
 						seenBool = true;
-					}else{
+					} else {
 						try {
 							episode.addToSeen(seenBool);
 
@@ -428,7 +438,7 @@ public class EpisodeFragment extends Fragment {
 
 		});
 
-		Button watching = (Button) rootView.findViewById(R.id.watchingList);
+		final Button watching = (Button) rootView.findViewById(R.id.watchingList);
 		watching.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -447,20 +457,45 @@ public class EpisodeFragment extends Fragment {
 
 				else {
 
-					try {
-						episode.addToWatching();
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					if (watchBool == false) {
+						try {
+							episode.addToWatching(watchBool);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						new MyDialogFragment11().show(getFragmentManager(),
+								"MyDialog");
+						
+						watching.setText("IN\nWATCHING\nLIST");
+						watching.setTextColor(Color.GREEN);
+						watchBool = true;
+					} else {
+						try {
+							episode.addToWatching(watchBool);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						new MyDialogFragment12().show(getFragmentManager(),
+								"MyDialog");
+						
+						watching.setText("ADD\nWATCHING\nLIST");
+						watching.setTextColor(Color.WHITE);
+						watchBool = false;
 					}
-					new MyDialogFragment11().show(getFragmentManager(),
-							"MyDialog");
 
 				}
 
@@ -664,7 +699,7 @@ public class EpisodeFragment extends Fragment {
 		}
 
 	}
-	
+
 	public class MyDialogFragment12 extends DialogFragment {
 
 		@Override
