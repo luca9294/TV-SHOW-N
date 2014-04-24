@@ -8,11 +8,20 @@ import java.util.concurrent.ExecutionException;
 import org.json.JSONException;
 
 import engine.Season;
+import fragments.EpisodeFragment.MyDialogFragment10;
+import fragments.EpisodeFragment.MyDialogFragment12;
+import fragments.EpisodeFragment.MyDialogFragment9;
 import adapters.SeasonAdapter;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,9 +29,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,7 +44,10 @@ public class SeasonFragment extends Fragment {
 	Season season;
 	String code;
 	SeasonAdapter adapter;
+	Context context;
 	boolean check = false;
+	boolean seenBool = false;
+	boolean watchBool = false;
 
 	public SeasonFragment() {
 	}
@@ -41,6 +55,8 @@ public class SeasonFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
+		context = this.getActivity().getApplicationContext();
 
 		rootView = inflater.inflate(R.layout.fragment_season, container, false);
 
@@ -66,6 +82,15 @@ public class SeasonFragment extends Fragment {
 			web.setFocusable(false);
 			web.setClickable(false);
 			web.setVisibility(View.VISIBLE);
+			
+			Button seen = (Button) rootView.findViewById(R.id.seenListSeason);
+			if (season.checkSeen() == true) {
+				seen.setText("SEASON SEEN");
+				seen.setTextColor(Color.GREEN);
+				seenBool = true;
+			} else {
+				seenBool = false;
+			}
 
 			view = (ListView) rootView.findViewById(R.id.listEpisodes);
 			// view.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -110,6 +135,73 @@ public class SeasonFragment extends Fragment {
 			e.printStackTrace();
 		}
 
+		
+		final Button seen = (Button) rootView.findViewById(R.id.seenListSeason);
+		seen.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				SharedPreferences prefs = PreferenceManager
+						.getDefaultSharedPreferences(context);
+
+				String user = prefs.getString("user", "");
+				String pass = prefs.getString("passed", "");
+
+				if (user.isEmpty()) {
+
+					new MyDialogFragment().show(getFragmentManager(),
+							"MyDialog");
+				}
+
+				else {
+
+					if (seenBool == false) {
+						try {
+							season.addToSeen(seenBool);
+
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						new MyDialogFragment1().show(getFragmentManager(),
+								"MyDialog");
+
+						seen.setText("SEASON SEEN");
+						seen.setTextColor(Color.GREEN);
+						seenBool = true;
+					} else {
+						try {
+							season.removeFromSeen();
+
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						new MyDialogFragment3().show(getFragmentManager(),
+								"MyDialog");
+
+						seen.setText("ADD\nSEEN\nLIST");
+						seen.setTextColor(Color.WHITE);
+						seenBool = false;
+					}
+				}
+
+			}
+
+		});
+		
 		return rootView;
 
 	}
@@ -177,6 +269,56 @@ public class SeasonFragment extends Fragment {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	
+	public class MyDialogFragment extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+					.setMessage(
+							"You must be logged in order to add any episode to any list!")
+					.setPositiveButton("Ok", null).create();
+		}
+
+	}
+	
+	public class MyDialogFragment1 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("Season added to the \"Seen List\"!")
+					.setPositiveButton("Ok", null).create();
+		}
+
+	}
+
+	public class MyDialogFragment2 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("Season added to the \"Watchlist\"!")
+					.setPositiveButton("Ok", null).create();
+		}
+
+	}
+
+	public class MyDialogFragment3 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("Season removed from the list!")
+					.setPositiveButton("Ok", null).create();
+		}
+
 	}
 
 }

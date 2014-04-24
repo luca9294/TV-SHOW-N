@@ -27,17 +27,14 @@ public class Episode {
 	private TraktAPI api;
 	public String id, season_n, title, first_aired_date, overview, image,
 			percentage, code, rating;
-
 	public boolean love, hate, watched, wish;
-
 	private JSONObject rate, seen, watching;
 	public Vector<Comment> comments = new Vector<Comment>();
-
 	public Context parent;
 
 	public Episode(String id, String season_n, String title,
 			String first_aired_date, String overview, String image,
-			String percentage, String code, Context parent) {
+			String percentage, String code, Context parent, boolean watched, boolean wish) {
 		this.id = id;
 		this.season_n = season_n;
 		this.title = title;
@@ -47,10 +44,10 @@ public class Episode {
 		this.percentage = percentage;
 		this.code = code;
 		this.parent = parent;
+		this.watched = watched;
+		this.wish = wish;
 		love = false;
 		hate = false;
-		watched = false;
-		wish = false;
 	}
 
 	public Episode(String id, String code, String season_n, Context parent)

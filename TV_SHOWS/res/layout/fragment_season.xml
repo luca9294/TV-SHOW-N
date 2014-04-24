@@ -3,20 +3,18 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".TVShowActivity" 
-    >
+    tools:context=".TVShowActivity" >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" 
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal" >
 
         <WebView
             android:id="@+id/imageSeason"
             android:layout_width="178dp"
-            android:layout_height="255dp"
-            />
+            android:layout_height="255dp" />
 
         <View
             android:layout_width="5dp"
@@ -29,7 +27,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" >
@@ -43,24 +40,48 @@
                 android:textColor="#1569C7"
                 android:textSize="23dp"
                 android:textStyle="bold" />
-
         </LinearLayout>
-
-       
     </LinearLayout>
 
     <ListView
         android:id="@+id/listEpisodes"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
-        android:divider="#FFF"
-    	android:dividerHeight="2dp"
-    
+        android:layout_height="148dp"
+        android:layout_weight="6.60"
         android:background="@drawable/selec"
-        android:textSize="18dp"
-        	android:cacheColorHint="@android:color/transparent"
-    	android:scrollingCache="false"
-        android:textColor="#fff">
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="#FFF"
+        android:dividerHeight="2dp"
+        android:scrollingCache="false"
+        android:textColor="#fff"
+        android:textSize="18dp" >
     </ListView>
- 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/selec"
+        android:gravity="bottom" >
+
+        <Button
+            android:id="@+id/seenListSeason"
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:gravity="center|center"
+            android:text="ADD SEEN LIST"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/watchingList"
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:gravity="center|center"
+            android:text="ADD WATCHING LIST"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 </LinearLayout>
