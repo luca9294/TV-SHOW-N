@@ -188,10 +188,32 @@ public class Season {
 	}
 	
 	public void removeFromSeen() throws JSONException, InterruptedException, ExecutionException{
-		for (int i = 0; i < episodes.size(); i++) {
-			Episode e = episodes.get(i);
-			e.addToSeen(true);		
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(parent);
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("pass", "");
+		seen = new JSONObject();
+		seen.put("username", user);
+		seen.put("password", pass);
+		seen.put("tvdb_id", code);
+		
+	  
+		JSONArray array = new JSONArray();
+		
+	
+
+		for (int i = 0; i < episodes.size(); i++){
+		JSONObject object = new JSONObject();
+		object.put("season", episodes.get(i).season_n);
+		object.put("episode", episodes.get(i).id);
+		array.put(object);
+	
 		}
+		seen.put("episodes", array);
+		
+		episodes.get(0).addToSeen(true, seen);
+		
+		
 	}
 
 	private class DataGrabber extends AsyncTask<String, Void, JSONArray> {

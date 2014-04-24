@@ -196,8 +196,9 @@ public class Episode {
 		}
 	}
 
-	public void addToSeen(boolean s) throws JSONException,
+	public void addToSeen(boolean s, JSONObject o) throws JSONException,
 			InterruptedException, ExecutionException {
+		if (o == null){
 		seen = new JSONObject();
 		JSONArray array = new JSONArray();
 		JSONObject object = new JSONObject();
@@ -220,9 +221,26 @@ public class Episode {
 		DataGrabber4 grabber = new DataGrabber4(s);
 
 		grabber.execute();
-		grabber.get();
+		grabber.get();}
+		
+		
+		
+		else{
+			seen = new JSONObject();
+			seen = o;
+			
+			DataGrabber4 grabber = new DataGrabber4(s);
 
-	}
+			grabber.execute();
+			grabber.get();}
+			
+			
+		}
+		
+		
+		
+
+	
 
 	public void addToWatching(boolean w) throws JSONException, InterruptedException,
 			ExecutionException {

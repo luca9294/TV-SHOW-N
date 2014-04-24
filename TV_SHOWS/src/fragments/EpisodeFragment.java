@@ -393,7 +393,7 @@ public class EpisodeFragment extends Fragment {
 
 					if (seenBool == false) {
 						try {
-							episode.addToSeen(seenBool);
+							episode.addToSeen(seenBool, null);
 
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -413,7 +413,7 @@ public class EpisodeFragment extends Fragment {
 						seenBool = true;
 					} else {
 						try {
-							episode.addToSeen(seenBool);
+							episode.addToSeen(seenBool, null);
 
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
