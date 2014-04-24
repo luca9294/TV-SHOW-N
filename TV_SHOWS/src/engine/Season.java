@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
@@ -21,6 +25,7 @@ import engine.Episode.DataGrabber4;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -53,7 +58,7 @@ public class Season {
 	}
 
 	public void getEpisodes() throws InterruptedException, ExecutionException,
-			JSONException {
+			JSONException, ParseException {
 
 		api = new TraktAPI(parent);
 
@@ -82,30 +87,65 @@ public class Season {
 			String percentage = object.getJSONObject("ratings").getString(
 					"percentage");
 
-			watched = object.getBoolean("watched");
-			if (watched){
+			boolean watchedn = object.getBoolean("watched");
+			if (watchedn){
 				Log.e("episode watched " + id, "ok");
 				
 			}
 		
-			
+			boolean prova = watched;
 			
 			wish = object.getBoolean("in_watchlist");
 
-			Episode e = new Episode(id_e, id, title, first_aired, overview,
-					image, percentage, code, parent, watched, wish);
-			episodes.add(e);
+			String first = first_aired;
+			// SimpleDateFormat df = new
+			// SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
+			Date result;
 
+			Date now = new Date();
+			String response = "";
+			SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+			String strCurrDate = sdfDate.format(now);
+
+			Log.e("DATE", strCurrDate);
+
+			Date currentDate;
+			result = sdfDate.parse(first);
+		currentDate = sdfDate.parse(strCurrDate);
+	
+			
+
+			
+			
+			
+			if (currentDate.before(result)){
+				Episode e = new Episode(id_e, id, title, first_aired, overview,
+						image, percentage, code, parent, true, false);
+				episodes.add(e);
+				
+				
+			}
+			else{
+				Episode e = new Episode(id_e, id, title, first_aired, overview,
+					image, percentage, code, parent, watchedn, false);
+			episodes.add(e);
+			}
 		}
 
 	}
 
-	public boolean checkSeen() {
+	public boolean checkSeen() throws InterruptedException, ExecutionException, JSONException {
+	
 		boolean result = true;
 		String r ="";
 		for (int i = 0; i < episodes.size(); i++) {
 			Episode e = episodes.get(i);
-			if (e.watched == false) {
+			Log.e("EPISODE", e.title);
+			if (e.watched){
+				Log.e("episode watched 6 " + e.id, "ok6");
+				
+			}
+			if (!e.watched) {
 				result = false;
 				Log.e("found", "The episode was found false");
 				

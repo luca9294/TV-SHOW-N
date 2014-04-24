@@ -2,6 +2,7 @@ package fragments;
 
 import info.androidhive.slidingmenu.R;
 
+import java.text.ParseException;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
@@ -71,7 +72,12 @@ public class SeasonFragment extends Fragment {
 			season = new Season(id, n_episode, image, code, this.getActivity()
 					.getApplicationContext());
 
-			season.getEpisodes();
+			try {
+				season.getEpisodes();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			TextView seasonTitle = (TextView) rootView
 					.findViewById(R.id.season);
