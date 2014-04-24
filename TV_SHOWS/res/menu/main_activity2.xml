@@ -2,33 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" 
 xmlns:app="http://schemas.android.com/apk/res-auto">
     
-    <item android:id="@+id/menu_add" 
-        android:title="Add" 
-        android:icon="@drawable/trakt_01"
-        android:orderInCategory="0"
-        android:showAsAction="ifRoom|withText"
-        />
+   
+  
     
-        
-    <item android:id="@+id/menu_add" 
-        android:title="Add" 
-        android:icon="@drawable/trakt_01"
-        android:orderInCategory="0"
-        android:showAsAction="ifRoom|withText"
-        />
-    
-        
-    <item android:id="@+id/menu_add" 
-        android:title="Add" 
-        android:icon="@drawable/trakt_01"
-        android:orderInCategory="0"
-        android:showAsAction="ifRoom|withText"
-        />
-    
-        
-    <item android:id="@+id/menu_add" 
-        android:title="Add" 
-        android:icon="@drawable/trakt_01"
+    <item android:id="@+id/selection" 
+        android:title="SELECT" 
         android:orderInCategory="0"
         android:showAsAction="ifRoom|withText"
         />
@@ -37,5 +15,3 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
 </menu>
-
-

@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,12 +53,14 @@ public class SeasonAdapter extends BaseAdapter {
 	Vector<Episode> episodes;
 	Context context;
 	FragmentManager fm;
+	boolean r;
 
-	public SeasonAdapter(Vector<Episode> episodes, Context context,
+	public SeasonAdapter(boolean r, Vector<Episode> episodes, Context context,
 			FragmentManager fm) {
 		this.episodes = episodes;
 		this.context = context;
 		this.fm = fm;
+		this.r = r;
 
 	}
 
@@ -91,6 +94,7 @@ public class SeasonAdapter extends BaseAdapter {
 			holder.numbern = (TextView) view.findViewById(R.id.number);
 			holder.titlen = (TextView) view.findViewById(R.id.title);
 			holder.airn = (TextView) view.findViewById(R.id.air_date);
+			holder.box = (CheckBox) view.findViewById(R.id.checkBox1);
 			view.setTag(holder);
 			Log.e("", "SONO QUA");
 
@@ -125,13 +129,13 @@ public class SeasonAdapter extends BaseAdapter {
 			Log.e("TEST12", currentDate.toString());
 			if (currentDate.after(result)) {
 				holder.airn.setTextColor(Color.parseColor("#B22222"));
-				//holder.airn.setBackgroundColor(Color.WHITE);
+				// holder.airn.setBackgroundColor(Color.WHITE);
 
 			}
 
 			else {
 				holder.airn.setTextColor(Color.parseColor("#4DBD33"));
-				//holder.airn.setBackgroundColor(Color.WHITE);
+				// holder.airn.setBackgroundColor(Color.WHITE);
 
 			}
 
@@ -140,13 +144,18 @@ public class SeasonAdapter extends BaseAdapter {
 			e.printStackTrace();
 		}
 
+		if (r) {
+			holder.box.setVisibility(View.VISIBLE);
+
+		}
+
 		return view;
 
 	}
 
 	public class ViewHolder {
 		public TextView numbern, titlen, airn;
+		public CheckBox box;
 
 	}
-
 }
