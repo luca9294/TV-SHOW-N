@@ -70,29 +70,27 @@ public class Episode {
 		dg.execute();
 
 		JSONObject object = dg.get();
-	
+
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(parent);
 
 		String user = prefs.getString("user", "");
 		String pass = prefs.getString("pass", "");
-		
-		if (user != ""){
-		rating = object.getJSONObject("episode").getString("rating");
 
-		if (rating.equals("love")) {
-			love = true;
+		if (user != "") {
+			rating = object.getJSONObject("episode").getString("rating");
 
+			if (rating.equals("love")) {
+				love = true;
+
+			}
+
+			else if (rating.equals("hate")) {
+				hate = true;
+
+			}
 		}
 
-		else if (rating.equals("hate")) {
-			hate = true;
-
-		}
-		}
-		
-		
-		
 		title = object.getJSONObject("episode").getString("title");
 		first_aired_date = object.getJSONObject("episode")
 				.getString("first_aired_iso").replace("T", " ");
@@ -143,42 +141,33 @@ public class Episode {
 		}
 
 	}
-	
+
 	public void makeARate(String str) throws JSONException,
-	InterruptedException, ExecutionException {
-rate = new JSONObject();
-SharedPreferences prefs = PreferenceManager
-		.getDefaultSharedPreferences(parent);
+			InterruptedException, ExecutionException {
+		rate = new JSONObject();
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(parent);
 
-String user = prefs.getString("user", "");
-String pass = prefs.getString("pass", "");
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("pass", "");
 
-Log.e("user", user);
-Log.e("pass", pass);
+		Log.e("user", user);
+		Log.e("pass", pass);
 
-rate.put("username", user);
-rate.put("password", pass);
-rate.put("tvdb_id", code);
-// jsonpost.put("title", "Revenge");
-rate.put("season", season_n);
-rate.put("episode", id);
-rate.put("rating", str);
+		rate.put("username", user);
+		rate.put("password", pass);
+		rate.put("tvdb_id", code);
+		// jsonpost.put("title", "Revenge");
+		rate.put("season", season_n);
+		rate.put("episode", id);
+		rate.put("rating", str);
 
-DataGrabber3 grabber = new DataGrabber3(parent, pass);
+		DataGrabber3 grabber = new DataGrabber3(parent, pass);
 
-grabber.execute();
-grabber.get();
+		grabber.execute();
+		grabber.get();
 
-
-
-}
-	
-	
-	
-	
-	
-	
-	
+	}
 
 	private class DataGrabber extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
@@ -264,12 +253,7 @@ grabber.get();
 		}
 
 	}
-	
-	
-	
-	
-	
-	
+
 	class DataGrabber3 extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
 		private Context parent;
@@ -354,29 +338,5 @@ grabber.get();
 		}
 
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

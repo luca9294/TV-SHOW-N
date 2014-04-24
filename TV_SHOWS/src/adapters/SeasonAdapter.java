@@ -79,84 +79,74 @@ public class SeasonAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int index, View view, final ViewGroup parent) {
 		ViewHolder holder;
-		//View rowView = view;
+		// View rowView = view;
 		if (view == null) {
-			//holder = new ViewHolder();
-			//ViewHolder holder = new ViewHolder();
+			// holder = new ViewHolder();
+			// ViewHolder holder = new ViewHolder();
 			LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-			
-			
+
 			view = inflater.inflate(R.layout.episode_view, parent, false);
 			holder = new ViewHolder();
 
-            holder.numbern= (TextView) view.findViewById(R.id.number);
-            holder.titlen= (TextView) view.findViewById(R.id.title);
-            holder.airn= (TextView) view.findViewById(R.id.air_date);
-            view.setTag(holder);
-            Log.e ("", "SONO QUA");		
-        
-        
+			holder.numbern = (TextView) view.findViewById(R.id.number);
+			holder.titlen = (TextView) view.findViewById(R.id.title);
+			holder.airn = (TextView) view.findViewById(R.id.air_date);
+			view.setTag(holder);
+			Log.e("", "SONO QUA");
+
 		}
-		
+
 		else
-			
+
 			holder = (ViewHolder) view.getTag();
-		
-		
-		
+
 		holder.numbern.setText("#" + episodes.get(index).id);
 		holder.titlen.setText(episodes.get(index).title);
 		holder.airn.setText(episodes.get(index).first_aired_date);
 
 		String first = episodes.get(index).first_aired_date;
-		//SimpleDateFormat df = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
+		// SimpleDateFormat df = new
+		// SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
 		Date result;
-	
-	
-		
-	    Date now = new Date();
-        String response="";
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        String strCurrDate = sdfDate.format(now);
-        
-        
-        Log.e("DATE", strCurrDate);
 
-        Date currentDate;
+		Date now = new Date();
+		String response = "";
+		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+		String strCurrDate = sdfDate.format(now);
+
+		Log.e("DATE", strCurrDate);
+
+		Date currentDate;
 		try {
-			
-			 result =  sdfDate.parse(first);
-			 Log.e("TEST1", result.toString());
+
+			result = sdfDate.parse(first);
+			Log.e("TEST1", result.toString());
 			currentDate = sdfDate.parse(strCurrDate);
 			Log.e("TEST12", currentDate.toString());
-			  if (currentDate.after(result)){
-		holder.airn.setTextColor(Color.RED);
-		
-		        }
-			  
-			  else{
-				  holder.airn.setTextColor(Color.GREEN);
-				 
-			  }
-			  
-			  
+			if (currentDate.after(result)) {
+				holder.airn.setTextColor(Color.parseColor("#B22222"));
+				//holder.airn.setBackgroundColor(Color.WHITE);
+
+			}
+
+			else {
+				holder.airn.setTextColor(Color.parseColor("#4DBD33"));
+				//holder.airn.setBackgroundColor(Color.WHITE);
+
+			}
+
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
-      
-		
-		
-		
 
 		return view;
 
 	}
-	
-	public class ViewHolder {
-        public TextView numbern,titlen, airn;
 
-    }
+	public class ViewHolder {
+		public TextView numbern, titlen, airn;
+
+	}
 
 }
