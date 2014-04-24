@@ -181,29 +181,23 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_action_bad" />
             
-            
                  <Button
-                android:id="@+id/imageView3"
-                android:gravity="left|center"
-                android:layout_width="61dp"
-       
-                android:layout_height="match_parent"
-                android:text = "ADD\nWATCHED\nLIST"
-                android:textColor="#FFFFFF"
-                android:textStyle = "bold"
-                 android:textSize = "7dp"
-                
-        			 />
-            
-                 
+                     android:id="@+id/seenList"
+                     android:layout_width="47dp"
+                     android:layout_height="match_parent"
+                     android:gravity="left|center"
+                     android:text="ADD\nSEEN\nLIST"
+                     android:textColor="#FFFFFF"
+                     android:textSize="7dp"
+                     android:textStyle="bold" />
                  
                  <Button
-                android:id="@+id/imageView3"
+                android:id="@+id/watchingList"
                 android:gravity="left|center"
-                android:layout_width="50dp"
+                android:layout_width="wrap_content"
             
                 android:layout_height="match_parent"
-                android:text = "ADD\nWISH\nLIST"
+                android:text = "ADD\nWATCHING\nLIST"
                 android:textColor="#FFFFFF"
                 android:textStyle = "bold"
                  android:textSize = "7dp"

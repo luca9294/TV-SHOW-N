@@ -349,6 +349,64 @@ public class EpisodeFragment extends Fragment {
 			}
 		});
 
+		
+		Button seen = (Button) rootView.findViewById(R.id.seenList);
+		seen.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				SharedPreferences prefs = PreferenceManager
+						.getDefaultSharedPreferences(context);
+
+				String user = prefs.getString("user", "");
+				String pass = prefs.getString("passed", "");
+
+				if (user.isEmpty()) {
+
+					new MyDialogFragment9().show(getFragmentManager(),
+							"MyDialog");
+				}
+
+				else {
+
+					//new MyDialogFragment3().show(getFragmentManager(),
+					//		"MyDialog");
+
+				}
+
+			}
+
+		});
+
+		
+		Button watching = (Button) rootView.findViewById(R.id.watchingList);
+		watching.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				SharedPreferences prefs = PreferenceManager
+						.getDefaultSharedPreferences(context);
+
+				String user = prefs.getString("user", "");
+				String pass = prefs.getString("passed", "");
+
+				if (user.isEmpty()) {
+
+					new MyDialogFragment9().show(getFragmentManager(),
+							"MyDialog");
+				}
+
+				else {
+
+					//new MyDialogFragment3().show(getFragmentManager(),
+					//		"MyDialog");
+
+				}
+
+			}
+
+		});
+		
 		/*
 		 * SharedPreferences prefs = PreferenceManager
 		 * .getDefaultSharedPreferences(context);
@@ -506,7 +564,20 @@ public class EpisodeFragment extends Fragment {
 			return dialog;
 
 		}
+		
 
 	}
 
+	
+	public class MyDialogFragment9 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("You must be logged in order to add any episode to any list!")
+					.setPositiveButton("Ok", null).create();
+		}
+
+	}
 }
