@@ -287,7 +287,7 @@ public class SeasonFragment extends Fragment {
 
 				if (user.isEmpty()) {
 
-					new MyDialogFragment2().show(getFragmentManager(),
+					new MyDialogFragment().show(getFragmentManager(),
 							"MyDialog");
 				}
 
