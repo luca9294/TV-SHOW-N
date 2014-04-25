@@ -459,7 +459,7 @@ public class EpisodeFragment extends Fragment {
 
 					if (watchBool == false) {
 						try {
-							episode.addToWatching(watchBool);
+							episode.addToWatching(watchBool, null);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -478,7 +478,7 @@ public class EpisodeFragment extends Fragment {
 						watchBool = true;
 					} else {
 						try {
-							episode.addToWatching(watchBool);
+							episode.addToWatching(watchBool, null);
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

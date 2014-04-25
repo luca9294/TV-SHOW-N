@@ -113,14 +113,36 @@ public class SeasonFragment extends Fragment {
 			
 			
 			Button seen = (Button) rootView.findViewById(R.id.seenListSeason);
+			Button watch = (Button) rootView.findViewById(R.id.watchingList);
 			if (season.checkSeen() == true) {
 				seen.setText("SEASON SEEN");
 				seen.setTextColor(Color.GREEN);
 				seenBool = true;
 				
 			} else {
+				seen.setText("ADD\nSEEN\nLIST");
+				seen.setTextColor(Color.WHITE);
 				seenBool = false;
 			}
+			
+			
+			if (season.checkWatch() == true) {
+				watch.setText("IN WATCHLIST");
+				watch.setTextColor(Color.GREEN);
+				watchBool = true;
+				
+			} else {
+				watch.setText("ADD\nTO WATCH LIST");
+				watch.setTextColor(Color.WHITE);
+				watchBool = false;
+			}
+
+			
+			
+			
+			
+			
+			
 
 			view = (ListView) rootView.findViewById(R.id.listEpisodes);
 			// view.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -202,8 +224,8 @@ public class SeasonFragment extends Fragment {
 						new MyDialogFragment1().show(getFragmentManager(),
 								"MyDialog");
 
-						seen.setText("SEASON SEEN");
-						seen.setTextColor(Color.GREEN);
+						//seen.setText("SEASON SEEN");
+						//seen.setTextColor(Color.GREEN);
 						seenBool = true;
 						
 						
@@ -247,6 +269,90 @@ public class SeasonFragment extends Fragment {
 				}
 
 			}
+
+		});
+		
+		
+		
+		final Button watching = (Button) rootView.findViewById(R.id.watchingList);
+		watching.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				SharedPreferences prefs = PreferenceManager
+						.getDefaultSharedPreferences(context);
+
+				String user = prefs.getString("user", "");
+				String pass = prefs.getString("passed", "");
+
+				if (user.isEmpty()) {
+
+					new MyDialogFragment2().show(getFragmentManager(),
+							"MyDialog");
+				}
+
+				else {
+
+					if (watchBool == false) {
+						try {
+							season.addToWatch(false);
+
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						new MyDialogFragment2().show(getFragmentManager(),
+								"MyDialog");
+
+						//watching.setText("SEASON SEEN");
+						//watching.setTextColor(Color.GREEN);
+						watchBool = true;
+						
+						
+						FragmentTransaction ft = getFragmentManager().beginTransaction();
+						ft.detach(fragment);
+						ft.attach(fragment);
+						ft.commit();
+						
+					
+						
+						
+					} else {
+						try{
+							season.addToWatch(true);
+							
+							FragmentTransaction ft = getFragmentManager().beginTransaction();
+							ft.detach(fragment);
+							ft.attach(fragment);
+							ft.commit();
+							
+							
+
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						new MyDialogFragment3().show(getFragmentManager(),
+								"MyDialog");
+
+					
+						watchBool = false;
+					}}
+				}
+
+				
 
 		});
 		

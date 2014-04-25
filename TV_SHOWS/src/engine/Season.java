@@ -132,7 +132,7 @@ public class Season {
 			else{
 				
 				Episode e = new Episode(id_e, id, title, first_aired, overview,
-						image, percentage, code, parent, true, false);
+						image, percentage, code, parent, true, true);
 				episodes.add(e);}
 				
 				
@@ -147,7 +147,7 @@ public class Season {
 				else{
 				
 				Episode e = new Episode(id_e, id, title, first_aired, overview,
-					image, percentage, code, parent, watchedn, false);
+					image, percentage, code, parent, watchedn, wish);
 			episodes.add(e);
 			}}
 		}
@@ -162,26 +162,44 @@ public class Season {
 			Episode e = episodes.get(i);
 			Log.e("EPISODE", e.title);
 			if (e.watched){
-				Log.e("episode watched 6 " + e.id, "ok6");
+		
 				
 			}
 			if (!e.watched) {
 				result = false;
-				Log.e("found", "The episode was found false");
+				
 				
 				break;
 			}
 
 		}
 
-		if (result==true){
-			r = "true";
-		}else{
-			r = "false";
-		}
-			
 		
-		Log.e("result", r);
+		return result;
+	}
+	
+	
+	
+	public boolean checkWatch() throws InterruptedException, ExecutionException, JSONException {
+		
+		boolean result = true;
+		String r ="";
+		for (int i = 0; i < episodes.size(); i++) {
+			Episode e = episodes.get(i);
+			if (e.wish){
+		
+				
+			}
+			if (!e.wish) {
+				result = false;
+				Log.e("", "CS");
+				
+				break;
+			}
+
+		}
+
+		
 		return result;
 	}
 
@@ -235,6 +253,44 @@ public class Season {
 		
 		
 	}
+	
+	
+	public void addToWatch(boolean bol) throws JSONException, InterruptedException, ExecutionException{
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(parent);
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("pass", "");
+		seen = new JSONObject();
+		seen.put("username", user);
+		seen.put("password", pass);
+		seen.put("tvdb_id", code);
+		
+	  
+		JSONArray array = new JSONArray();
+		
+	
+
+		for (int i = 0; i < episodes.size(); i++){
+		JSONObject object = new JSONObject();
+		object.put("season", episodes.get(i).season_n);
+		object.put("episode", episodes.get(i).id);
+		array.put(object);
+	
+		}
+		seen.put("episodes", array);
+		
+		episodes.get(0).addToWatching(bol, seen);
+		
+		
+	}
+
+	
+	
+	
+	
+	
+	
+	
 
 	private class DataGrabber extends AsyncTask<String, Void, JSONArray> {
 		private ProgressDialog progressdialog;
