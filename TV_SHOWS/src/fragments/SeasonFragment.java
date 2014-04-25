@@ -36,6 +36,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -88,6 +89,26 @@ public class SeasonFragment extends Fragment {
 			web.setFocusable(false);
 			web.setClickable(false);
 			web.setVisibility(View.VISIBLE);
+			
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(context);
+			
+
+			String user = prefs.getString("user", "");
+			String pass = prefs.getString("passed", "");
+
+			if (user.isEmpty()) {
+				
+				LinearLayout l = (LinearLayout) rootView.findViewById(R.id.linear);
+	
+		l.setVisibility(View.GONE);
+			}
+			
+			
+			
+			
+			
+			
 			
 			Button seen = (Button) rootView.findViewById(R.id.seenListSeason);
 			if (season.checkSeen() == true) {

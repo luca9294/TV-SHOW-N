@@ -37,6 +37,7 @@ public class Season {
 	public Context parent;
 	public Vector<Episode> episodes;
 	public boolean watched, wish;
+	boolean watchedn; 
 	private JSONObject seen;
 
 	public Season(String id, String n_episode, String image, String code,
@@ -87,15 +88,22 @@ public class Season {
 			String percentage = object.getJSONObject("ratings").getString(
 					"percentage");
 
-			boolean watchedn = object.getBoolean("watched");
-			if (watchedn){
-				Log.e("episode watched " + id, "ok");
-				
-			}
-		
-			boolean prova = watched;
 			
-			wish = object.getBoolean("in_watchlist");
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(parent);
+
+			String user = prefs.getString("user", "");
+			String pass = prefs.getString("pass", "");
+			
+			if (!user.isEmpty()){
+			
+			
+			 watchedn = object.getBoolean("watched");
+		
+		
+			
+			
+			wish = object.getBoolean("in_watchlist");}
 
 			String first = first_aired;
 			// SimpleDateFormat df = new
@@ -111,25 +119,37 @@ public class Season {
 
 			Date currentDate;
 			result = sdfDate.parse(first);
-		currentDate = sdfDate.parse(strCurrDate);
-	
-			
-
-			
+		currentDate = sdfDate.parse(strCurrDate);			
 			
 			
 			if (currentDate.before(result)){
+			if (user.isEmpty()){
+				Episode e = new Episode(id_e, id, title, first_aired, overview,
+						image, percentage, code, parent, false, false);
+				episodes.add(e);
+				
+			}
+			else{
+				
 				Episode e = new Episode(id_e, id, title, first_aired, overview,
 						image, percentage, code, parent, true, false);
-				episodes.add(e);
+				episodes.add(e);}
 				
 				
 			}
 			else{
+				if (user.isEmpty()){
+					Episode e = new Episode(id_e, id, title, first_aired, overview,
+							image, percentage, code, parent, false, false);
+					episodes.add(e);
+					
+				}
+				else{
+				
 				Episode e = new Episode(id_e, id, title, first_aired, overview,
 					image, percentage, code, parent, watchedn, false);
 			episodes.add(e);
-			}
+			}}
 		}
 
 	}
