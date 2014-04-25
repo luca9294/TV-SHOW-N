@@ -18,6 +18,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -50,14 +51,15 @@ public class SeasonFragment extends Fragment {
 	boolean check = false;
 	boolean seenBool = false;
 	boolean watchBool = false;
-
+	Fragment fragment;
+	
 	public SeasonFragment() {
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
+		fragment = this;
 		context = this.getActivity().getApplicationContext();
 
 		rootView = inflater.inflate(R.layout.fragment_season, container, false);
@@ -115,6 +117,7 @@ public class SeasonFragment extends Fragment {
 				seen.setText("SEASON SEEN");
 				seen.setTextColor(Color.GREEN);
 				seenBool = true;
+				
 			} else {
 				seenBool = false;
 			}
@@ -202,9 +205,27 @@ public class SeasonFragment extends Fragment {
 						seen.setText("SEASON SEEN");
 						seen.setTextColor(Color.GREEN);
 						seenBool = true;
+						
+						
+						FragmentTransaction ft = getFragmentManager().beginTransaction();
+						ft.detach(fragment);
+						ft.attach(fragment);
+						ft.commit();
+						
+						
+						
+						
+						
 					} else {
 						try {
 							season.removeFromSeen();
+							
+							FragmentTransaction ft = getFragmentManager().beginTransaction();
+							ft.detach(fragment);
+							ft.attach(fragment);
+							ft.commit();
+							
+							
 
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block

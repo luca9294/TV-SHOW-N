@@ -94,6 +94,7 @@ public class SeasonAdapter extends BaseAdapter {
 			holder.numbern = (TextView) view.findViewById(R.id.number);
 			holder.titlen = (TextView) view.findViewById(R.id.title);
 			holder.airn = (TextView) view.findViewById(R.id.air_date);
+			holder.seen = (TextView) view.findViewById(R.id.seenView);
 			holder.box = (CheckBox) view.findViewById(R.id.checkBox1);
 			view.setTag(holder);
 			Log.e("", "SONO QUA");
@@ -107,6 +108,9 @@ public class SeasonAdapter extends BaseAdapter {
 		holder.numbern.setText("#" + episodes.get(index).id);
 		holder.titlen.setText(episodes.get(index).title);
 		holder.airn.setText(episodes.get(index).first_aired_date);
+		
+		
+
 
 		String first = episodes.get(index).first_aired_date;
 		// SimpleDateFormat df = new
@@ -138,6 +142,27 @@ public class SeasonAdapter extends BaseAdapter {
 				// holder.airn.setBackgroundColor(Color.WHITE);
 
 			}
+			
+			
+			if (episodes.get(index).watched && currentDate.after(result)){
+				holder.seen.setText("SEEN");
+				holder.seen.setTextColor(Color.GREEN);
+				
+				
+				
+				
+			}
+			
+			
+			else{
+				holder.seen.setText("");
+			}
+			
+			
+			
+			
+			
+			
 
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -148,13 +173,18 @@ public class SeasonAdapter extends BaseAdapter {
 			holder.box.setVisibility(View.VISIBLE);
 
 		}
+		
+		
+		
+	
+		
 
 		return view;
 
 	}
 
 	public class ViewHolder {
-		public TextView numbern, titlen, airn;
+		public TextView numbern, titlen, airn, seen;
 		public CheckBox box;
 
 	}
