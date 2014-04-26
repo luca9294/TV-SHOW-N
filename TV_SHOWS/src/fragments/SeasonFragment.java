@@ -52,7 +52,7 @@ public class SeasonFragment extends Fragment {
 	boolean seenBool = false;
 	boolean watchBool = false;
 	Fragment fragment;
-	
+
 	public SeasonFragment() {
 	}
 
@@ -91,58 +91,44 @@ public class SeasonFragment extends Fragment {
 			web.setFocusable(false);
 			web.setClickable(false);
 			web.setVisibility(View.VISIBLE);
-			
+
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(context);
-			
 
 			String user = prefs.getString("user", "");
 			String pass = prefs.getString("passed", "");
 
 			if (user.isEmpty()) {
-				
-				LinearLayout l = (LinearLayout) rootView.findViewById(R.id.linear);
-	
-		l.setVisibility(View.GONE);
+
+				LinearLayout l = (LinearLayout) rootView
+						.findViewById(R.id.linear);
+
+				l.setVisibility(View.GONE);
 			}
-			
-			
-			
-			
-			
-			
-			
+
 			Button seen = (Button) rootView.findViewById(R.id.seenListSeason);
 			Button watch = (Button) rootView.findViewById(R.id.watchingList);
 			if (season.checkSeen() == true) {
 				seen.setText("SEASON SEEN");
 				seen.setTextColor(Color.GREEN);
 				seenBool = true;
-				
+
 			} else {
 				seen.setText("ADD\nSEEN\nLIST");
 				seen.setTextColor(Color.WHITE);
 				seenBool = false;
 			}
-			
-			
+
 			if (season.checkWatch() == true) {
 				watch.setText("IN WATCHLIST");
 				watch.setTextColor(Color.GREEN);
 				watchBool = true;
-				
+
 			} else {
 				watch.setText("ADD\nTO WATCH LIST");
 				watch.setTextColor(Color.WHITE);
 				watchBool = false;
 			}
-
-			
-			
-			
-			
-			
-			
 
 			view = (ListView) rootView.findViewById(R.id.listEpisodes);
 			// view.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -187,7 +173,6 @@ public class SeasonFragment extends Fragment {
 			e.printStackTrace();
 		}
 
-		
 		final Button seen = (Button) rootView.findViewById(R.id.seenListSeason);
 		seen.setOnClickListener(new OnClickListener() {
 
@@ -224,30 +209,25 @@ public class SeasonFragment extends Fragment {
 						new MyDialogFragment1().show(getFragmentManager(),
 								"MyDialog");
 
-						//seen.setText("SEASON SEEN");
-						//seen.setTextColor(Color.GREEN);
+						// seen.setText("SEASON SEEN");
+						// seen.setTextColor(Color.GREEN);
 						seenBool = true;
-						
-						
-						FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+						FragmentTransaction ft = getFragmentManager()
+								.beginTransaction();
 						ft.detach(fragment);
 						ft.attach(fragment);
 						ft.commit();
-						
-						
-						
-						
-						
+
 					} else {
 						try {
 							season.removeFromSeen();
-							
-							FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+							FragmentTransaction ft = getFragmentManager()
+									.beginTransaction();
 							ft.detach(fragment);
 							ft.attach(fragment);
 							ft.commit();
-							
-							
 
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -271,10 +251,9 @@ public class SeasonFragment extends Fragment {
 			}
 
 		});
-		
-		
-		
-		final Button watching = (Button) rootView.findViewById(R.id.watchingList);
+
+		final Button watching = (Button) rootView
+				.findViewById(R.id.watchingList);
 		watching.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -310,29 +289,25 @@ public class SeasonFragment extends Fragment {
 						new MyDialogFragment2().show(getFragmentManager(),
 								"MyDialog");
 
-						//watching.setText("SEASON SEEN");
-						//watching.setTextColor(Color.GREEN);
+						// watching.setText("SEASON SEEN");
+						// watching.setTextColor(Color.GREEN);
 						watchBool = true;
-						
-						
-						FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+						FragmentTransaction ft = getFragmentManager()
+								.beginTransaction();
 						ft.detach(fragment);
 						ft.attach(fragment);
 						ft.commit();
-						
-					
-						
-						
+
 					} else {
-						try{
+						try {
 							season.addToWatch(true);
-							
-							FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+							FragmentTransaction ft = getFragmentManager()
+									.beginTransaction();
 							ft.detach(fragment);
 							ft.attach(fragment);
 							ft.commit();
-							
-							
 
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -347,15 +322,13 @@ public class SeasonFragment extends Fragment {
 						new MyDialogFragment3().show(getFragmentManager(),
 								"MyDialog");
 
-					
 						watchBool = false;
-					}}
+					}
 				}
-
-				
+			}
 
 		});
-		
+
 		return rootView;
 
 	}
@@ -424,8 +397,7 @@ public class SeasonFragment extends Fragment {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	
+
 	public class MyDialogFragment extends DialogFragment {
 
 		@Override
@@ -438,7 +410,7 @@ public class SeasonFragment extends Fragment {
 		}
 
 	}
-	
+
 	public class MyDialogFragment1 extends DialogFragment {
 
 		@Override

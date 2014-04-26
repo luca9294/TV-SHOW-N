@@ -68,12 +68,12 @@ public class EpisodeFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		// load fragment and all its informations
+
 		View rootView = inflater.inflate(R.layout.fragment_episode, container,
 				false);
 		context = this.getActivity().getApplicationContext();
-
 		Bundle bundle = getArguments();
-
 		id = bundle.getString("id");
 		season_n = bundle.getString("season_n");
 		code = bundle.getString("code");
@@ -113,11 +113,13 @@ public class EpisodeFragment extends Fragment {
 
 			final String user = prefs.getString("user", "");
 			String pass = prefs.getString("pass", "");
-			
+
 			final ImageView positive = (ImageView) rootView
 					.findViewById(R.id.imageView1);
 			final ImageView negative = (ImageView) rootView
 					.findViewById(R.id.imageView3);
+
+			// displays like and dislike buttons in different colors
 			if (user != "") {
 				if (episode.rating.equals("love")) {
 					positive.setImageResource(R.drawable.ic_action_good_dark);
@@ -131,7 +133,8 @@ public class EpisodeFragment extends Fragment {
 
 				}
 			}
-			
+
+			// displays seen button in different colors
 			Button seen = (Button) rootView.findViewById(R.id.seenList);
 			if (episode.watched == true) {
 				seen.setText("SEEN");
@@ -141,15 +144,17 @@ public class EpisodeFragment extends Fragment {
 				seenBool = false;
 			}
 
+			// displays watching button in different colors
 			Button watching = (Button) rootView.findViewById(R.id.watchingList);
-			if(episode.wish == true){
+			if (episode.wish == true) {
 				watching.setText("IN\nWATCHED\nLIST");
 				watching.setTextColor(Color.GREEN);
 				watchBool = true;
-			}else{
+			} else {
 				watchBool = false;
 			}
-			
+
+			// handles action when the "like" button is pressed
 			positive.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -230,6 +235,7 @@ public class EpisodeFragment extends Fragment {
 				}
 			});
 
+			// handles action when the "dislike" button is pressed
 			negative.setOnClickListener(new View.OnClickListener() {
 
 				@Override
@@ -321,6 +327,7 @@ public class EpisodeFragment extends Fragment {
 			e.printStackTrace();
 		}
 
+		// handles action when the "send comment" button is pressed
 		Button comment = (Button) rootView.findViewById(R.id.sendComment);
 		comment.setOnClickListener(new OnClickListener() {
 
@@ -349,6 +356,7 @@ public class EpisodeFragment extends Fragment {
 
 		});
 
+		// handles action when the "view comments" button is pressed
 		Button button = (Button) rootView.findViewById(R.id.viewComments);
 		button.setOnClickListener(new View.OnClickListener() {
 
@@ -372,6 +380,8 @@ public class EpisodeFragment extends Fragment {
 			}
 		});
 
+		// handles action when the "Add to/remove from seen list" button is
+		// pressed
 		final Button seen = (Button) rootView.findViewById(R.id.seenList);
 		seen.setOnClickListener(new OnClickListener() {
 
@@ -438,7 +448,10 @@ public class EpisodeFragment extends Fragment {
 
 		});
 
-		final Button watching = (Button) rootView.findViewById(R.id.watchingList);
+		// handles action when the "Add to/remove from watching list" button is
+		// pressed
+		final Button watching = (Button) rootView
+				.findViewById(R.id.watchingList);
 		watching.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -472,7 +485,7 @@ public class EpisodeFragment extends Fragment {
 						}
 						new MyDialogFragment11().show(getFragmentManager(),
 								"MyDialog");
-						
+
 						watching.setText("IN\nWATCHING\nLIST");
 						watching.setTextColor(Color.GREEN);
 						watchBool = true;
@@ -491,7 +504,7 @@ public class EpisodeFragment extends Fragment {
 						}
 						new MyDialogFragment12().show(getFragmentManager(),
 								"MyDialog");
-						
+
 						watching.setText("ADD\nWATCHING\nLIST");
 						watching.setTextColor(Color.WHITE);
 						watchBool = false;
@@ -530,6 +543,7 @@ public class EpisodeFragment extends Fragment {
 
 	}
 
+	// dialog fragments
 	public class MyDialogFragment2 extends DialogFragment {
 
 		@Override

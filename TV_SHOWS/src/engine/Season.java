@@ -37,7 +37,7 @@ public class Season {
 	public Context parent;
 	public Vector<Episode> episodes;
 	public boolean watched, wish;
-	boolean watchedn; 
+	boolean watchedn;
 	private JSONObject seen;
 
 	public Season(String id, String n_episode, String image, String code,
@@ -88,22 +88,18 @@ public class Season {
 			String percentage = object.getJSONObject("ratings").getString(
 					"percentage");
 
-			
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(parent);
 
 			String user = prefs.getString("user", "");
 			String pass = prefs.getString("pass", "");
-			
-			if (!user.isEmpty()){
-			
-			
-			 watchedn = object.getBoolean("watched");
-		
-		
-			
-			
-			wish = object.getBoolean("in_watchlist");}
+
+			if (!user.isEmpty()) {
+
+				watchedn = object.getBoolean("watched");
+
+				wish = object.getBoolean("in_watchlist");
+			}
 
 			String first = first_aired;
 			// SimpleDateFormat df = new
@@ -112,94 +108,91 @@ public class Season {
 
 			Date now = new Date();
 			String response = "";
-			SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+			SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd",
+					Locale.US);
 			String strCurrDate = sdfDate.format(now);
 
 			Log.e("DATE", strCurrDate);
 
 			Date currentDate;
 			result = sdfDate.parse(first);
-		currentDate = sdfDate.parse(strCurrDate);			
-			
-			
-			if (currentDate.before(result)){
-			if (user.isEmpty()){
-				Episode e = new Episode(id_e, id, title, first_aired, overview,
-						image, percentage, code, parent, false, false);
-				episodes.add(e);
-				
-			}
-			else{
-				
-				Episode e = new Episode(id_e, id, title, first_aired, overview,
-						image, percentage, code, parent, true, true);
-				episodes.add(e);}
-				
-				
-			}
-			else{
-				if (user.isEmpty()){
-					Episode e = new Episode(id_e, id, title, first_aired, overview,
-							image, percentage, code, parent, false, false);
+			currentDate = sdfDate.parse(strCurrDate);
+
+			if (currentDate.before(result)) {
+				if (user.isEmpty()) {
+					Episode e = new Episode(id_e, id, title, first_aired,
+							overview, image, percentage, code, parent, false,
+							false);
 					episodes.add(e);
-					
+
+				} else {
+
+					Episode e = new Episode(id_e, id, title, first_aired,
+							overview, image, percentage, code, parent, true,
+							true);
+					episodes.add(e);
 				}
-				else{
-				
-				Episode e = new Episode(id_e, id, title, first_aired, overview,
-					image, percentage, code, parent, watchedn, wish);
-			episodes.add(e);
-			}}
+
+			} else {
+				if (user.isEmpty()) {
+					Episode e = new Episode(id_e, id, title, first_aired,
+							overview, image, percentage, code, parent, false,
+							false);
+					episodes.add(e);
+
+				} else {
+
+					Episode e = new Episode(id_e, id, title, first_aired,
+							overview, image, percentage, code, parent,
+							watchedn, wish);
+					episodes.add(e);
+				}
+			}
 		}
 
 	}
 
-	public boolean checkSeen() throws InterruptedException, ExecutionException, JSONException {
-	
+	public boolean checkSeen() throws InterruptedException, ExecutionException,
+			JSONException {
+
 		boolean result = true;
-		String r ="";
+		String r = "";
 		for (int i = 0; i < episodes.size(); i++) {
 			Episode e = episodes.get(i);
 			Log.e("EPISODE", e.title);
-			if (e.watched){
-		
-				
+			if (e.watched) {
+
 			}
 			if (!e.watched) {
 				result = false;
-				
-				
+
 				break;
 			}
 
 		}
 
-		
 		return result;
 	}
-	
-	
-	
-	public boolean checkWatch() throws InterruptedException, ExecutionException, JSONException {
-		
+
+	public boolean checkWatch() throws InterruptedException,
+			ExecutionException, JSONException {
+
 		boolean result = true;
-		String r ="";
+		String r = "";
 		for (int i = 0; i < episodes.size(); i++) {
 			Episode e = episodes.get(i);
-			if (e.wish){
-		
-				
+			if (e.wish) {
+
 			}
 			if (!e.wish) {
 				result = false;
 				Log.e("", "CS");
-				
+
 				break;
 			}
 
 		}
 
-		
 		return result;
 	}
 
@@ -224,8 +217,9 @@ public class Season {
 		grabber.get();
 
 	}
-	
-	public void removeFromSeen() throws JSONException, InterruptedException, ExecutionException{
+
+	public void removeFromSeen() throws JSONException, InterruptedException,
+			ExecutionException {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(parent);
 		String user = prefs.getString("user", "");
@@ -234,28 +228,24 @@ public class Season {
 		seen.put("username", user);
 		seen.put("password", pass);
 		seen.put("tvdb_id", code);
-		
-	  
-		JSONArray array = new JSONArray();
-		
-	
 
-		for (int i = 0; i < episodes.size(); i++){
-		JSONObject object = new JSONObject();
-		object.put("season", episodes.get(i).season_n);
-		object.put("episode", episodes.get(i).id);
-		array.put(object);
-	
+		JSONArray array = new JSONArray();
+
+		for (int i = 0; i < episodes.size(); i++) {
+			JSONObject object = new JSONObject();
+			object.put("season", episodes.get(i).season_n);
+			object.put("episode", episodes.get(i).id);
+			array.put(object);
+
 		}
 		seen.put("episodes", array);
-		
+
 		episodes.get(0).addToSeen(true, seen);
-		
-		
+
 	}
-	
-	
-	public void addToWatch(boolean bol) throws JSONException, InterruptedException, ExecutionException{
+
+	public void addToWatch(boolean bol) throws JSONException,
+			InterruptedException, ExecutionException {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(parent);
 		String user = prefs.getString("user", "");
@@ -264,33 +254,21 @@ public class Season {
 		seen.put("username", user);
 		seen.put("password", pass);
 		seen.put("tvdb_id", code);
-		
-	  
-		JSONArray array = new JSONArray();
-		
-	
 
-		for (int i = 0; i < episodes.size(); i++){
-		JSONObject object = new JSONObject();
-		object.put("season", episodes.get(i).season_n);
-		object.put("episode", episodes.get(i).id);
-		array.put(object);
-	
+		JSONArray array = new JSONArray();
+
+		for (int i = 0; i < episodes.size(); i++) {
+			JSONObject object = new JSONObject();
+			object.put("season", episodes.get(i).season_n);
+			object.put("episode", episodes.get(i).id);
+			array.put(object);
+
 		}
 		seen.put("episodes", array);
-		
-		episodes.get(0).addToWatching(bol, seen);
-		
-		
-	}
 
-	
-	
-	
-	
-	
-	
-	
+		episodes.get(0).addToWatching(bol, seen);
+
+	}
 
 	private class DataGrabber extends AsyncTask<String, Void, JSONArray> {
 		private ProgressDialog progressdialog;
@@ -322,7 +300,9 @@ public class Season {
 		}
 
 	}
-
+	
+	
+	//data grabber of seen
 	class DataGrabber2 extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
 		private Context parent;

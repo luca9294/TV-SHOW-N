@@ -34,7 +34,8 @@ public class Episode {
 
 	public Episode(String id, String season_n, String title,
 			String first_aired_date, String overview, String image,
-			String percentage, String code, Context parent, boolean watched, boolean wish) {
+			String percentage, String code, Context parent, boolean watched,
+			boolean wish) {
 		this.id = id;
 		this.season_n = season_n;
 		this.title = title;
@@ -146,6 +147,29 @@ public class Episode {
 
 	}
 
+	public void getComments() throws InterruptedException, ExecutionException,
+			JSONException {
+		api = new TraktAPI(parent);
+		DataGrabber2 dg = new DataGrabber2(parent);
+		dg.execute();
+
+		JSONArray array = dg.get();
+
+		for (int i = 0; i < array.length(); i++) {
+			JSONObject object = array.getJSONObject(i);
+
+			String user = object.getJSONObject("user").getString("username");
+			String text = object.getString("text_html");
+
+			String date = object.getString("inserted");
+
+			Comment comment = new Comment(user, text, date, parent);
+
+			comments.add(comment);
+
+		}
+	}
+
 	public void makeARate(String str) throws JSONException,
 			InterruptedException, ExecutionException {
 		rate = new JSONObject();
@@ -173,123 +197,89 @@ public class Episode {
 
 	}
 
-	public void getComments() throws InterruptedException, ExecutionException,
-			JSONException {
-		api = new TraktAPI(parent);
-		DataGrabber2 dg = new DataGrabber2(parent);
-		dg.execute();
-
-		JSONArray array = dg.get();
-
-		for (int i = 0; i < array.length(); i++) {
-			JSONObject object = array.getJSONObject(i);
-
-			String user = object.getJSONObject("user").getString("username");
-			String text = object.getString("text_html");
-
-			String date = object.getString("inserted");
-
-			Comment comment = new Comment(user, text, date, parent);
-
-			comments.add(comment);
-
-		}
-	}
-
 	public void addToSeen(boolean s, JSONObject o) throws JSONException,
 			InterruptedException, ExecutionException {
-		if (o == null){
-		seen = new JSONObject();
-		JSONArray array = new JSONArray();
-		JSONObject object = new JSONObject();
-
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(parent);
-
-		String user = prefs.getString("user", "");
-		String pass = prefs.getString("pass", "");
-
-		seen.put("username", user);
-		seen.put("password", pass);
-		seen.put("tvdb_id", code);
-		// jsonpost.put("title", "Revenge");
-		object.put("season", season_n);
-		object.put("episode", id);
-		array.put(object);
-		seen.put("episodes", array);
-
-		DataGrabber4 grabber = new DataGrabber4(s);
-
-		grabber.execute();
-		grabber.get();}
-		
-		
-		
-		else{
+		if (o == null) {
 			seen = new JSONObject();
-			seen = o;
-			
+			JSONArray array = new JSONArray();
+			JSONObject object = new JSONObject();
+
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(parent);
+
+			String user = prefs.getString("user", "");
+			String pass = prefs.getString("pass", "");
+
+			seen.put("username", user);
+			seen.put("password", pass);
+			seen.put("tvdb_id", code);
+			// jsonpost.put("title", "Revenge");
+			object.put("season", season_n);
+			object.put("episode", id);
+			array.put(object);
+			seen.put("episodes", array);
+
 			DataGrabber4 grabber = new DataGrabber4(s);
 
 			grabber.execute();
-			grabber.get();}
-			
-			
+			grabber.get();
 		}
-		
-		
-		
 
-	
+		else {
+			seen = new JSONObject();
+			seen = o;
 
-	public void addToWatching(boolean w, JSONObject o) throws JSONException, InterruptedException,
-			ExecutionException {
-		
-		if (o == null){
-		
-		watching = new JSONObject();
-		JSONArray array = new JSONArray();
-		JSONObject object = new JSONObject();
-
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(parent);
-
-		String user = prefs.getString("user", "");
-		String pass = prefs.getString("pass", "");
-
-		watching.put("username", user);
-		watching.put("password", pass);
-		watching.put("tvdb_id", code);
-		// jsonpost.put("title", "Revenge");
-		object.put("season", season_n);
-		object.put("episode", id);
-		array.put(object);
-		watching.put("episodes", array);
-
-		DataGrabber5 grabber = new DataGrabber5(w);
-
-		grabber.execute();
-		grabber.get();}
-		
-		else{
-			watching = new JSONObject();
-			watching = o;
-			
-			DataGrabber5 grabber = new DataGrabber5(w);
+			DataGrabber4 grabber = new DataGrabber4(s);
 
 			grabber.execute();
-			grabber.get();}
-			
-			
-	
-			
-			
-		
-		
-		
+			grabber.get();
+		}
 
 	}
 
+	public void addToWatching(boolean w, JSONObject o) throws JSONException,
+			InterruptedException, ExecutionException {
+
+		if (o == null) {
+
+			watching = new JSONObject();
+			JSONArray array = new JSONArray();
+			JSONObject object = new JSONObject();
+
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(parent);
+
+			String user = prefs.getString("user", "");
+			String pass = prefs.getString("pass", "");
+
+			watching.put("username", user);
+			watching.put("password", pass);
+			watching.put("tvdb_id", code);
+			// jsonpost.put("title", "Revenge");
+			object.put("season", season_n);
+			object.put("episode", id);
+			array.put(object);
+			watching.put("episodes", array);
+
+			DataGrabber5 grabber = new DataGrabber5(w);
+
+			grabber.execute();
+			grabber.get();
+		}
+
+		else {
+			watching = new JSONObject();
+			watching = o;
+
+			DataGrabber5 grabber = new DataGrabber5(w);
+
+			grabber.execute();
+			grabber.get();
+		}
+
+	}
+
+	// data grabbers
 	private class DataGrabber extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
 		private Context parent;

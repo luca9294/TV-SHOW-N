@@ -1,5 +1,9 @@
 package engine;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,19 +11,30 @@ import java.util.Date;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import engine.Episode.DataGrabber4;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class Tv_Show {
 	public String title, first_aired_iso, country, overview;
 	public String year, runtime, image, genre, percentage, loves, hate, status;
 	public String title_n;
 	public String seasons_n;
+	private JSONObject seen;
 
 	JSONObject summary;
 	JSONArray season;
@@ -97,14 +112,73 @@ public class Tv_Show {
 
 	}
 
+	public void addToSeen(boolean s, JSONObject o) throws JSONException,
+			InterruptedException, ExecutionException {
+		if (o == null) {
+			seen = new JSONObject();
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(context);
+
+			String user = prefs.getString("user", "");
+			String pass = prefs.getString("pass", "");
+
+			seen.put("username", user);
+			seen.put("password", pass);
+			//seen.put("imdb_id", code);
+			//seen.put("tvdb_id", code);
+			seen.put("title", title_n);
+			seen.put("year", year);
+
+			DataGrabber3 grabber = new DataGrabber3(s);
+
+			grabber.execute();
+			grabber.get();
+		}
+
+		else {
+			seen = new JSONObject();
+			seen = o;
+
+			DataGrabber3 grabber = new DataGrabber3(s);
+
+			grabber.execute();
+			grabber.get();
+		}
+
+	}
+	
+	public void removeFromSeen() throws JSONException{
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("pass", "");
+		seen = new JSONObject();
+		seen.put("username", user);
+		seen.put("title", title_n);
+		seen.put("year", year);
+
+		JSONArray array = new JSONArray();
+
+		/*for (int i = 0; i < prova.size(); i++) {
+			JSONObject object = new JSONObject();
+			object.put("season", episodes.get(i).season_n);
+			object.put("episode", episodes.get(i).id);
+			array.put(object);
+
+		}
+		seen.put("episodes", array);
+
+		episodes.get(0).addToSeen(true, seen);*/
+	}
+
 	private class DataGrabber extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
-		private Context parent;
+		private Context context;
 		private String id;
 		private JSONObject data;
 
-		public DataGrabber(Context parent, String id) {
-			this.parent = parent;
+		public DataGrabber(Context context, String id) {
+			this.context = context;
 			this.id = id;
 		}
 
@@ -131,12 +205,12 @@ public class Tv_Show {
 
 	private class DataGrabber2 extends AsyncTask<String, Void, JSONArray> {
 		private ProgressDialog progressdialog;
-		private Context parent;
+		private Context context;
 		private String id;
 		private JSONArray data;
 
-		public DataGrabber2(Context parent, String id) {
-			this.parent = parent;
+		public DataGrabber2(Context context, String id) {
+			this.context = context;
 			this.id = id;
 		}
 
@@ -161,22 +235,113 @@ public class Tv_Show {
 
 	}
 
-	public Date dateParser(String dateString) {
-		String dateExample = "2009-10-29T22:30:00-05:00"; // just a reminder for
-															// the format, will
-															// be deleted once
-															// work has been
-															// completed
-		Date airDate = new Date();
-		// String dateExample2 = "2001-07-04T12:08:56.235-0700";
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-		try {
-			airDate = df.parse(dateString);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	// data grabber for seen
+	class DataGrabber3 extends AsyncTask<String, Void, JSONObject> {
+		private ProgressDialog progressdialog;
+		private Context context;
+		private String id;
+		private JSONObject data;
+		private boolean s;
+
+		public DataGrabber3(boolean s) {
+			this.s = s;
 		}
-		return airDate;
+
+		@Override
+		protected void onPreExecute() {
+			// progressdialog = ProgressDialog.show(context,"",
+			// "Retrieving data ...", true);
+		}
+
+		@Override
+		protected JSONObject doInBackground(String... params) {
+
+			// api.setCred("luca9294", "1Aa30011992");
+			try {
+				data = getDataFromJSON(
+						"http://api.trakt.tv/show/seen/361cd031c2473b06997c87c25ec9c057",
+						true, "", seen);
+
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			Log.e("seen show", data.toString());
+
+			return data;
+
+		}
+
+		public JSONObject getDataFromJSON(String url, boolean login,
+				String type, JSONObject postdata) throws JSONException,
+				ClientProtocolException, IOException {
+
+			// Construct HttpClient
+			HttpClient httpclient = new DefaultHttpClient();
+			// If login add login information to a JSONObject
+			HttpPost httppost = new HttpPost(url);
+			JSONObject jsonpost;
+			if (postdata == null) {
+				jsonpost = new JSONObject();
+			} else {
+				jsonpost = postdata;
+			}
+
+			httppost.setEntity(new StringEntity(jsonpost.toString()));
+			// Perform POST
+			HttpResponse response = httpclient.execute(httppost);
+			// Return the data in the requested format
+			InputStream inputStream = response.getEntity().getContent();
+
+			String result = convertInputStreamToString(inputStream);
+
+			return new JSONObject(result);
+
+		}
+
+		// method to parse the date
+		public Date dateParser(String dateString) {
+			String dateExample = "2009-10-29T22:30:00-05:00"; // just a reminder
+																// for
+																// the format,
+																// will
+																// be deleted
+																// once
+																// work has been
+																// completed
+			Date airDate = new Date();
+			// String dateExample2 = "2001-07-04T12:08:56.235-0700";
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+			try {
+				airDate = df.parse(dateString);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return airDate;
+		}
+
+		private String convertInputStreamToString(InputStream inputStream)
+				throws IOException {
+			BufferedReader bufferedReader = new BufferedReader(
+					new InputStreamReader(inputStream));
+			String line = "";
+			String result = "";
+			while ((line = bufferedReader.readLine()) != null)
+				result += line;
+
+			inputStream.close();
+			return result;
+
+		}
+
 	}
 
 }
