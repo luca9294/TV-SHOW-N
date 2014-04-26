@@ -44,6 +44,8 @@ public class TvFragment extends Fragment {
 	Context context;
 	public boolean seenBool = false;
 	public boolean watchBool = false;
+	
+	private Menu menu;
 
 	public TvFragment() {
 	}
@@ -207,7 +209,7 @@ public class TvFragment extends Fragment {
 					new MyDialogFragment3().show(getFragmentManager(),
 							"MyDialog");
 
-					// seen.setText("SEEN");
+					//setOptionTitle(R.id.action_seenlist, "Remove from seen list");
 					// seen.setTextColor(Color.GREEN);
 					seenBool = true;
 				} else {
@@ -229,7 +231,7 @@ public class TvFragment extends Fragment {
 					new MyDialogFragment4().show(getFragmentManager(),
 							"MyDialog");
 
-					// seen.setText("ADD\nSEEN\nLIST");
+					//setOptionTitle(R.id.action_seenlist, "Add to seen list");
 					// seen.setTextColor(Color.WHITE);
 					seenBool = false;
 				}
@@ -321,5 +323,11 @@ public class TvFragment extends Fragment {
 					.setPositiveButton("Ok", null).create();
 		}
 
+	}
+	
+	private void setOptionTitle(int id, String title)
+	{
+	 MenuItem item = menu.findItem(id);
+	 item.setTitle(title);
 	}
 }
