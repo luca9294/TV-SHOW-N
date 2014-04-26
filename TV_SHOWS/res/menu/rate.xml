@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_like"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Like"/>
+   
+    <item
+        android:id="@+id/action_dislike"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Dislike"/>
+    
+     <item
+        android:id="@+id/action_seenlist"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Add to seen list"/>
+     
+      <item
+        android:id="@+id/action_watchlist"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="Add to watch list"/>
+    
+
+</menu>
