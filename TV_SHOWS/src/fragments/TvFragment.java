@@ -2,6 +2,7 @@ package fragments;
 
 import info.androidhive.slidingmenu.R;
 
+import java.text.ParseException;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
@@ -13,12 +14,14 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,7 +47,7 @@ public class TvFragment extends Fragment {
 	Context context;
 	public boolean seenBool = false;
 	public boolean watchBool = false;
-	
+	 Vector<Season> vector;
 	private Menu menu;
 
 	public TvFragment() {
@@ -57,7 +60,8 @@ public class TvFragment extends Fragment {
 		setHasOptionsMenu(true);
 
 		this.getActivity().setTitle("SUGGESTIONS");
-
+		
+		
 		View rootView = inflater
 				.inflate(R.layout.tv_fragment, container, false);
 		context = this.getActivity().getApplicationContext();
@@ -75,11 +79,11 @@ public class TvFragment extends Fragment {
 		TextView overview = (TextView) rootView.findViewById(R.id.overview);
 		TextView seasons = (TextView) rootView.findViewById(R.id.season_n);
 		WebView image = (WebView) rootView.findViewById(R.id.image);
-		final Vector<Season> vector;
+	
 		try {
 
 			prova = new Tv_Show(toSearch, getActivity().getApplicationContext());
-
+			
 			getActivity().setTitle(prova.title_n);
 			premiere.setText(prova.first_aired_iso);
 			country.setText(prova.country);
@@ -95,10 +99,14 @@ public class TvFragment extends Fragment {
 			image.setClickable(false);
 
 			vector = prova.getSeasons();
+			
+		
+			
 			strings = new String[vector.size()];
 
 			for (int i = 0; i < prova.getSeasons().size(); i++) {
 				strings[i] = vector.get(i).toString();
+				
 
 			}
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this
@@ -150,10 +158,61 @@ public class TvFragment extends Fragment {
 			e.printStackTrace();
 		}
 
+		seenBool = isSeen();
+		
 		return rootView;
 
 	}
 
+	
+	
+	
+	public boolean isSeen(){
+		boolean result = true;
+		for (Season i : vector){
+			try {
+				i.getEpisodes();
+			if (Integer.parseInt(i.id) != 0){
+				if (!i.checkSeen()){
+					Log.e("", "FALSE");
+					result = false;
+					break;}
+			}
+			}
+			 catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			}
+		
+		
+		
+		
+		
+		
+		
+		
+		return result;
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
 	public void getSeasonOverview(View view) {
 	}
 
@@ -194,7 +253,15 @@ public class TvFragment extends Fragment {
 			else {
 				if (seenBool == false) {
 					try {
+						new MyDialogFragment3().show(getFragmentManager(),
+								"MyDialog");
 						prova.addToSeen(seenBool, null);
+						
+						FragmentTransaction ft = getFragmentManager()
+								.beginTransaction();
+						ft.detach(this);
+						ft.attach(this);
+						ft.commit();
 
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -206,30 +273,62 @@ public class TvFragment extends Fragment {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					new MyDialogFragment3().show(getFragmentManager(),
-							"MyDialog");
-
-					//setOptionTitle(R.id.action_seenlist, "Remove from seen list");
+					
+				
+				
+				
+					
+					
+			
 					// seen.setTextColor(Color.GREEN);
 					seenBool = true;
 				} else {
 					
-					 try {
-						prova.addToSeen(seenBool, null);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					for (Season i : vector){
+						
+							try {
+								i.getEpisodes();
+							} catch (InterruptedException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (ExecutionException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (JSONException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (ParseException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+						if (Integer.parseInt(i.id) != 0){
+					    try {
+							i.removeFromSeen();
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						}}
+					
+					
+					
+					
 					 
 					
 					new MyDialogFragment4().show(getFragmentManager(),
 							"MyDialog");
+					
+					FragmentTransaction ft = getFragmentManager()
+							.beginTransaction();
+					ft.detach(this);
+					ft.attach(this);
+					ft.commit();
 
 					//setOptionTitle(R.id.action_seenlist, "Add to seen list");
 					// seen.setTextColor(Color.WHITE);
@@ -247,6 +346,15 @@ public class TvFragment extends Fragment {
 		}
 
 	}
+	
+	
+	
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+    	// menu.removeItem(R.id.action_like)
+    	 if (isSeen()){
+    	 menu.findItem(R.id.action_seenlist).setTitle("Remove from seen list");}
+    }
 
 	/***
 	 **** dialog fragments
@@ -324,6 +432,7 @@ public class TvFragment extends Fragment {
 		}
 
 	}
+
 	
 	private void setOptionTitle(int id, String title)
 	{

@@ -125,7 +125,7 @@ public class Tv_Show {
 			seen.put("username", user);
 			seen.put("password", pass);
 			//seen.put("imdb_id", code);
-			//seen.put("tvdb_id", code);
+			seen.put("tvdb_id", title);
 			seen.put("title", title_n);
 			seen.put("year", year);
 

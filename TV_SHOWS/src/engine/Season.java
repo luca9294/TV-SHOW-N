@@ -37,7 +37,7 @@ public class Season {
 	public Context parent;
 	public Vector<Episode> episodes;
 	public boolean watched, wish;
-	boolean watchedn;
+	public boolean watchedn;
 	private JSONObject seen;
 
 	public Season(String id, String n_episode, String image, String code,
