@@ -3,6 +3,7 @@ package fragments;
 import fragments.HomeFragment;
 import fragments.LoginFragment;
 import fragments.SearchFragment;
+import fragments.CommunityFragment;
 import info.androidhive.slidingmenu.R;
 import info.androidhive.slidingmenu.R.menu;
 import info.androidhive.slidingmenu.adapter.NavDrawerListAdapter;
@@ -218,10 +219,10 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			fragment = new HomeFragment();
 			break;
 		case 2:
-			fragment = new SeenListFragment();
+			fragment = new LoginFragment();
 			break;
 		case 3:
-			// fragment = new CommunityFragment();
+			fragment = new LoginFragment();
 			break;
 		case 4:
 			fragment = new LoginFragment();

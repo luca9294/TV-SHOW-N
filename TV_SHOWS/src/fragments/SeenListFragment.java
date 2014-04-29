@@ -34,20 +34,35 @@ public class SeenListFragment extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_search, container,
 				false);
 
-		try {
+	
 
 			String mySeenList = "MySeenList";
 
 			this.getActivity().setTitle(mySeenList);
 
 			ListView list = (ListView) rootView.findViewById(R.id.list);
-			final SeenList seenList = new SeenList(this.getActivity()
-					.getApplicationContext());
-			SearchAdapter adapter = new SearchAdapter(seenList.getResults(),
-					this.getActivity().getApplicationContext(),
-					this.getFragmentManager());
-			list.setAdapter(adapter);
+			SeenList seenList;
+			try {
+				seenList = new SeenList(this.getActivity().getApplicationContext());
+				SearchAdapter adapter = new SearchAdapter(seenList.getResults(),
+						this.getActivity().getApplicationContext(),
+						this.getFragmentManager());
+				list.setAdapter(adapter);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (ExecutionException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 
+			
+			
+			
 			/*
 			 * list.setOnItemClickListener(new OnItemClickListener() {
 			 * 
@@ -63,17 +78,8 @@ public class SeenListFragment extends Fragment {
 			 * 
 			 * } });
 			 */
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return rootView;
-	}
-}
+		
+	
+	return rootView;
+	
+	}}
