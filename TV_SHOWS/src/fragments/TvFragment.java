@@ -47,6 +47,12 @@ public class TvFragment extends Fragment {
 	Context context;
 	public boolean seenBool = false;
 	public boolean watchBool = false;
+	public boolean loves = false;
+	public boolean hates = false;
+
+	
+	
+	
 	 Vector<Season> vector;
 	private Menu menu;
 
@@ -83,7 +89,8 @@ public class TvFragment extends Fragment {
 		try {
 
 			prova = new Tv_Show(toSearch, getActivity().getApplicationContext());
-			
+			loves = prova.loves;
+			hates = prova.hates;
 			getActivity().setTitle(prova.title_n);
 			premiere.setText(prova.first_aired_iso);
 			country.setText(prova.country);
@@ -244,7 +251,41 @@ public class TvFragment extends Fragment {
 
 			else {
 			try {
-				prova.makeARate("love");
+				
+				if (!loves && !hates) {
+					
+					item.setIcon(R.drawable.ic_action_good_dark);
+					prova.makeARate("love");
+					new MyDialogFragment().show(getFragmentManager(), "MyDialog");
+					loves = true;
+				}
+				
+				else if (loves){
+					item.setIcon(R.drawable.ic_action_good);
+					prova.makeARate("unrate");
+					new MyDialogFragment0().show(getFragmentManager(), "MyDialog");
+					loves = false;
+					
+				}
+				
+				
+				else if (!prova.loves && prova.hates){
+					prova.makeARate("love");
+					new MyDialogFragment().show(getFragmentManager(), "MyDialog");
+					FragmentTransaction ft = getFragmentManager()
+							.beginTransaction();
+					
+					ft.detach(this);
+					ft.attach(this);
+					ft.commit();
+					
+				}
+				
+				
+				
+				
+				
+				
 			} catch (JSONException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -255,12 +296,13 @@ public class TvFragment extends Fragment {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
 			}
-			new MyDialogFragment().show(getFragmentManager(), "MyDialog");
-			FragmentTransaction ft = getFragmentManager()
-					.beginTransaction();
-			ft.detach(this);
-			ft.attach(this);
-			ft.commit();
+			
+		
+			
+			
+			//ft.detach(this);
+			//ft.attach(this);
+			//ft.commit();
 			
 			}
 			
@@ -274,7 +316,37 @@ public class TvFragment extends Fragment {
 			else {
 			
 			try {
-				prova.makeARate("hate");
+				if (!loves && !hates){
+					item.setIcon(R.drawable.ic_action_bad_dark);
+					prova.makeARate("hate");
+					new MyDialogFragment1().show(getFragmentManager(), "MyDialog");
+					hates = true;
+				
+				}
+				
+				else if (hates){
+					item.setIcon(R.drawable.ic_action_bad);
+					prova.makeARate("unrate");
+					new MyDialogFragment0().show(getFragmentManager(), "MyDialog");
+					hates = false;
+				}
+				
+				
+				else if (!hates && loves){
+					prova.makeARate("hate");
+					new MyDialogFragment1().show(getFragmentManager(), "MyDialog");
+					FragmentTransaction ft = getFragmentManager()
+							.beginTransaction();
+					
+					ft.detach(this);
+					ft.attach(this);
+					ft.commit();
+					
+				}
+				
+				
+				
+				
 			} catch (JSONException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -285,12 +357,7 @@ public class TvFragment extends Fragment {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
 			}
-			new MyDialogFragment1().show(getFragmentManager(), "MyDialog");
-			FragmentTransaction ft = getFragmentManager()
-					.beginTransaction();
-			ft.detach(this);
-			ft.attach(this);
-			ft.commit();
+		
 			
 			}
 			return true;
