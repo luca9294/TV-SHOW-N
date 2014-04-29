@@ -238,13 +238,100 @@ public class TvFragment extends Fragment {
 		// Handles item selection
 		switch (item.getItemId()) {
 		case R.id.action_like:
+			if (user.isEmpty()) {
+				new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
+			}
+
+			else {
+			try {
+				prova.makeARate("love");
+			} catch (JSONException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (InterruptedException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (ExecutionException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
 			new MyDialogFragment().show(getFragmentManager(), "MyDialog");
+			FragmentTransaction ft = getFragmentManager()
+					.beginTransaction();
+			ft.detach(this);
+			ft.attach(this);
+			ft.commit();
+			
+			}
+			
 			return true;
+			
 		case R.id.action_dislike:
+			if (user.isEmpty()) {
+				new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
+			}
+
+			else {
+			
+			try {
+				prova.makeARate("hate");
+			} catch (JSONException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (InterruptedException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (ExecutionException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
 			new MyDialogFragment1().show(getFragmentManager(), "MyDialog");
+			FragmentTransaction ft = getFragmentManager()
+					.beginTransaction();
+			ft.detach(this);
+			ft.attach(this);
+			ft.commit();
+			
+			}
 			return true;
 
 			// if SEEN LIST item is selected
+			
+		case R.id.action_unrate:
+			if (user.isEmpty()) {
+				new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
+			}
+
+			else {
+			
+			try {
+				prova.makeARate("unrate");
+			} catch (JSONException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (InterruptedException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			} catch (ExecutionException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			new MyDialogFragment0().show(getFragmentManager(), "MyDialog");
+			FragmentTransaction ft = getFragmentManager()
+					.beginTransaction();
+			ft.detach(this);
+			ft.attach(this);
+			ft.commit();
+			
+			}
+			return true;
+			
+			
+			
+			
+			
+			
+			
 		case R.id.action_seenlist: // dialog 2
 
 			if (user.isEmpty()) {
@@ -414,6 +501,18 @@ public class TvFragment extends Fragment {
     	
     }
     
+    if (prova.loves){
+    	
+    	 menu.findItem(R.id.action_like).setIcon(R.drawable.ic_action_good_dark);
+    	
+    }
+    
+    if (prova.hates){
+    	
+   	 menu.findItem(R.id.action_dislike).setIcon(R.drawable.ic_action_bad_dark);
+   	
+   }
+    
     
     }
 
@@ -432,7 +531,7 @@ public class TvFragment extends Fragment {
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			return new AlertDialog.Builder(getActivity())
 
-			.setMessage("Like option pressed").setPositiveButton("Ok", null)
+			.setMessage("You LOVE this TV SHOW").setPositiveButton("Ok", null)
 					.create();
 		}
 
@@ -444,11 +543,29 @@ public class TvFragment extends Fragment {
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			return new AlertDialog.Builder(getActivity())
 
-			.setMessage("disike option pressed").setPositiveButton("Ok", null)
+			.setMessage("You HATE this TV SHOW").setPositiveButton("Ok", null)
 					.create();
 		}
 
 	}
+	
+	
+	
+	public class MyDialogFragment0 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("You have unrate this TV SHOW").setPositiveButton("Ok", null)
+					.create();
+		}
+
+	}
+	
+	
+	
+	
 
 	public class MyDialogFragment2 extends DialogFragment {
 

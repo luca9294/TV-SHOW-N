@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import engine.Episode.DataGrabber3;
 import engine.Episode.DataGrabber4;
 import engine.Episode.DataGrabber5;
 import android.app.ProgressDialog;
@@ -32,11 +33,11 @@ import android.util.Log;
 
 public class Tv_Show {
 	public String title, first_aired_iso, country, overview;
-	public String year, runtime, image, genre, percentage, loves, hate, status;
+	public String year, runtime, image, genre, percentage,  status;
 	public String title_n;
 	public String seasons_n;
-	public boolean in_watching;
-	private JSONObject seen, watch;
+	public boolean in_watching, loves, hates;
+	private JSONObject seen, watch, rate;
 
 	JSONObject summary;
 	JSONArray season;
@@ -50,7 +51,8 @@ public class Tv_Show {
 		this.title = title;
 		this.context = context;
 		getTvShowJSON();
-
+		hates = false;
+		loves = false;
 		title_n = summary.getString("title");
 		year = summary.getString("year");
 		first_aired_iso = summary.getString("first_aired_iso").substring(0, 10);
@@ -68,7 +70,19 @@ public class Tv_Show {
 		String user = prefs.getString("user", "");
 		String pass = prefs.getString("pass", "");
 		if (!user.isEmpty()){
-		in_watching = summary.getBoolean("in_watchlist");}
+		in_watching = summary.getBoolean("in_watchlist");
+		String rate = summary.getString("rating");
+		if (rate.equals("love")){
+			loves = true;
+			
+		}
+		
+		else if (rate.equals("hate")){
+			hates = true;
+			
+		}
+		
+		}
 
 	}
 
@@ -76,6 +90,11 @@ public class Tv_Show {
 
 		return title;
 	}
+	
+	
+	
+	
+
 
 	public void getSeasonsN() throws InterruptedException, ExecutionException {
 		api = new TraktAPI(context);
@@ -158,6 +177,32 @@ public class Tv_Show {
 		
 		
 	}
+	
+	public void makeARate(String str) throws JSONException,
+	InterruptedException, ExecutionException {
+rate = new JSONObject();
+SharedPreferences prefs = PreferenceManager
+		.getDefaultSharedPreferences(context);
+
+String user = prefs.getString("user", "");
+String pass = prefs.getString("pass", "");
+
+Log.e("user", user);
+Log.e("pass", pass);
+
+rate.put("username", user);
+rate.put("password", pass);
+rate.put("tvdb_id", title);
+// jsonpost.put("title", "Revenge");
+rate.put("rating", str);
+
+
+DataGrabber5 grabber = new DataGrabber5(context, pass);
+
+grabber.execute();
+grabber.get();
+
+}
 	
 	
 	
@@ -445,6 +490,92 @@ public class Tv_Show {
 			}
 
 			Log.e("watch", data.toString());
+
+			return data;
+
+		}
+
+		public JSONObject getDataFromJSON(String url, boolean login,
+				String type, JSONObject postdata) throws JSONException,
+				ClientProtocolException, IOException {
+
+			// Construct HttpClient
+			HttpClient httpclient = new DefaultHttpClient();
+			// If login add login information to a JSONObject
+			HttpPost httppost = new HttpPost(url);
+			JSONObject jsonpost;
+			if (postdata == null) {
+				jsonpost = new JSONObject();
+			} else {
+				jsonpost = postdata;
+			}
+
+			httppost.setEntity(new StringEntity(jsonpost.toString()));
+			// Perform POST
+			HttpResponse response = httpclient.execute(httppost);
+			// Return the data in the requested format
+			InputStream inputStream = response.getEntity().getContent();
+
+			String result = convertInputStreamToString(inputStream);
+
+			return new JSONObject(result);
+
+		}
+
+		private String convertInputStreamToString(InputStream inputStream)
+				throws IOException {
+			BufferedReader bufferedReader = new BufferedReader(
+					new InputStreamReader(inputStream));
+			String line = "";
+			String result = "";
+			while ((line = bufferedReader.readLine()) != null)
+				result += line;
+
+			inputStream.close();
+			return result;
+
+		}
+
+	}
+	
+	
+	class DataGrabber5 extends AsyncTask<String, Void, JSONObject> {
+		private ProgressDialog progressdialog;
+		private Context parent;
+		private String id;
+		private JSONObject data;
+
+		public DataGrabber5(Context parent, String id) {
+			this.parent = parent;
+			this.id = id;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// progressdialog = ProgressDialog.show(parent,"",
+			// "Retrieving data ...", true);
+		}
+
+		@Override
+		protected JSONObject doInBackground(String... params) {
+
+			// api.setCred("luca9294", "1Aa30011992");
+			try {
+				data = getDataFromJSON(
+						"http://api.trakt.tv/rate/show/361cd031c2473b06997c87c25ec9c057",
+						true, "", rate);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			Log.e("e", data.toString());
 
 			return data;
 
