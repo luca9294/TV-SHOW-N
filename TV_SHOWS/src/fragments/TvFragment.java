@@ -50,10 +50,7 @@ public class TvFragment extends Fragment {
 	public boolean loves = false;
 	public boolean hates = false;
 
-	
-	
-	
-	 Vector<Season> vector;
+	Vector<Season> vector;
 	private Menu menu;
 
 	public TvFragment() {
@@ -66,8 +63,7 @@ public class TvFragment extends Fragment {
 		setHasOptionsMenu(true);
 
 		this.getActivity().setTitle("SUGGESTIONS");
-		
-		
+
 		View rootView = inflater
 				.inflate(R.layout.tv_fragment, container, false);
 		context = this.getActivity().getApplicationContext();
@@ -85,7 +81,7 @@ public class TvFragment extends Fragment {
 		TextView overview = (TextView) rootView.findViewById(R.id.overview);
 		TextView seasons = (TextView) rootView.findViewById(R.id.season_n);
 		WebView image = (WebView) rootView.findViewById(R.id.image);
-	
+
 		try {
 
 			prova = new Tv_Show(toSearch, getActivity().getApplicationContext());
@@ -106,14 +102,11 @@ public class TvFragment extends Fragment {
 			image.setClickable(false);
 
 			vector = prova.getSeasons();
-			
-		
-			
+
 			strings = new String[vector.size()];
 
 			for (int i = 0; i < prova.getSeasons().size(); i++) {
 				strings[i] = vector.get(i).toString();
-				
 
 			}
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this
@@ -167,27 +160,25 @@ public class TvFragment extends Fragment {
 
 		seenBool = isSeen();
 		watchBool = prova.in_watching;
-		
+
 		return rootView;
 
 	}
 
-	
-	
-	
-	public boolean isSeen(){
+	// for each season of a tv show, it checkes if it is seen.
+	public boolean isSeen() {
 		boolean result = true;
-		for (Season i : vector){
+		for (Season i : vector) {
 			try {
 				i.getEpisodes();
-			if (Integer.parseInt(i.id) != 0){
-				if (!i.checkSeen()){
-					Log.e("", "FALSE");
-					result = false;
-					break;}
-			}
-			}
-			 catch (ParseException e) {
+				if (Integer.parseInt(i.id) != 0) {
+					if (!i.checkSeen()) {
+						Log.e("", "FALSE");
+						result = false;
+						break;
+					}
+				}
+			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InterruptedException e) {
@@ -200,27 +191,13 @@ public class TvFragment extends Fragment {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			}
-		
-		
-		
-		
-		
-		
-		
-		
+
+		}
+
 		return result;
-		
-		
-		
-		
+
 	}
-	
-	
-	
-	
-	
+
 	public void getSeasonOverview(View view) {
 	}
 
@@ -244,161 +221,149 @@ public class TvFragment extends Fragment {
 
 		// Handles item selection
 		switch (item.getItemId()) {
+
+		// if like and dislike buttons are selected
 		case R.id.action_like:
 			if (user.isEmpty()) {
 				new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
 			}
 
 			else {
-			try {
-				
-				if (!loves && !hates) {
-					
-					item.setIcon(R.drawable.ic_action_good_dark);
-					prova.makeARate("love");
-					new MyDialogFragment().show(getFragmentManager(), "MyDialog");
-					loves = true;
+				try {
+
+					if (!loves && !hates) {
+
+						item.setIcon(R.drawable.ic_action_good_dark);
+						prova.makeARate("love");
+						new MyDialogFragment().show(getFragmentManager(),
+								"MyDialog");
+						loves = true;
+					}
+
+					else if (loves) {
+						item.setIcon(R.drawable.ic_action_good);
+						prova.makeARate("unrate");
+						new MyDialogFragment0().show(getFragmentManager(),
+								"MyDialog");
+						loves = false;
+
+					}
+
+					else if (!prova.loves && prova.hates) {
+						prova.makeARate("love");
+						new MyDialogFragment().show(getFragmentManager(),
+								"MyDialog");
+						FragmentTransaction ft = getFragmentManager()
+								.beginTransaction();
+
+						ft.detach(this);
+						ft.attach(this);
+						ft.commit();
+
+					}
+
+				} catch (JSONException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (InterruptedException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (ExecutionException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
 				}
-				
-				else if (loves){
-					item.setIcon(R.drawable.ic_action_good);
-					prova.makeARate("unrate");
-					new MyDialogFragment0().show(getFragmentManager(), "MyDialog");
-					loves = false;
-					
-				}
-				
-				
-				else if (!prova.loves && prova.hates){
-					prova.makeARate("love");
-					new MyDialogFragment().show(getFragmentManager(), "MyDialog");
-					FragmentTransaction ft = getFragmentManager()
-							.beginTransaction();
-					
-					ft.detach(this);
-					ft.attach(this);
-					ft.commit();
-					
-				}
-				
-				
-				
-				
-				
-				
-			} catch (JSONException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			} catch (InterruptedException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			} catch (ExecutionException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
+
+				// ft.detach(this);
+				// ft.attach(this);
+				// ft.commit();
+
 			}
-			
-		
-			
-			
-			//ft.detach(this);
-			//ft.attach(this);
-			//ft.commit();
-			
-			}
-			
+
 			return true;
-			
+
 		case R.id.action_dislike:
 			if (user.isEmpty()) {
 				new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
 			}
 
 			else {
-			
-			try {
-				if (!loves && !hates){
-					item.setIcon(R.drawable.ic_action_bad_dark);
-					prova.makeARate("hate");
-					new MyDialogFragment1().show(getFragmentManager(), "MyDialog");
-					hates = true;
-				
+
+				try {
+					if (!loves && !hates) {
+						item.setIcon(R.drawable.ic_action_bad_dark);
+						prova.makeARate("hate");
+						new MyDialogFragment1().show(getFragmentManager(),
+								"MyDialog");
+						hates = true;
+
+					}
+
+					else if (hates) {
+						item.setIcon(R.drawable.ic_action_bad);
+						prova.makeARate("unrate");
+						new MyDialogFragment0().show(getFragmentManager(),
+								"MyDialog");
+						hates = false;
+					}
+
+					else if (!hates && loves) {
+						prova.makeARate("hate");
+						new MyDialogFragment1().show(getFragmentManager(),
+								"MyDialog");
+						FragmentTransaction ft = getFragmentManager()
+								.beginTransaction();
+
+						ft.detach(this);
+						ft.attach(this);
+						ft.commit();
+
+					}
+
+				} catch (JSONException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (InterruptedException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (ExecutionException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
 				}
-				
-				else if (hates){
-					item.setIcon(R.drawable.ic_action_bad);
-					prova.makeARate("unrate");
-					new MyDialogFragment0().show(getFragmentManager(), "MyDialog");
-					hates = false;
-				}
-				
-				
-				else if (!hates && loves){
-					prova.makeARate("hate");
-					new MyDialogFragment1().show(getFragmentManager(), "MyDialog");
-					FragmentTransaction ft = getFragmentManager()
-							.beginTransaction();
-					
-					ft.detach(this);
-					ft.attach(this);
-					ft.commit();
-					
-				}
-				
-				
-				
-				
-			} catch (JSONException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			} catch (InterruptedException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			} catch (ExecutionException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-		
-			
+
 			}
 			return true;
 
-			// if SEEN LIST item is selected
-			
+		// if UNRATE item is selected
 		case R.id.action_unrate:
 			if (user.isEmpty()) {
 				new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
 			}
 
 			else {
-			
-			try {
-				prova.makeARate("unrate");
-			} catch (JSONException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			} catch (InterruptedException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			} catch (ExecutionException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
-			new MyDialogFragment0().show(getFragmentManager(), "MyDialog");
-			FragmentTransaction ft = getFragmentManager()
-					.beginTransaction();
-			ft.detach(this);
-			ft.attach(this);
-			ft.commit();
-			
+
+				try {
+					prova.makeARate("unrate");
+				} catch (JSONException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (InterruptedException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (ExecutionException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				new MyDialogFragment0().show(getFragmentManager(), "MyDialog");
+				FragmentTransaction ft = getFragmentManager()
+						.beginTransaction();
+				ft.detach(this);
+				ft.attach(this);
+				ft.commit();
+
 			}
 			return true;
-			
-			
-			
-			
-			
-			
-			
+
+		// if SEEN LIST item is selected	
 		case R.id.action_seenlist: // dialog 2
 
 			if (user.isEmpty()) {
@@ -411,7 +376,7 @@ public class TvFragment extends Fragment {
 						new MyDialogFragment3().show(getFragmentManager(),
 								"MyDialog");
 						prova.addToSeen(seenBool, null);
-						
+
 						FragmentTransaction ft = getFragmentManager()
 								.beginTransaction();
 						ft.detach(this);
@@ -428,96 +393,87 @@ public class TvFragment extends Fragment {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
-				
-				
-				
-					
-					
-			
+
 					// seen.setTextColor(Color.GREEN);
 					seenBool = true;
 				} else {
-					
-					for (Season i : vector){
-						
-							try {
-								i.getEpisodes();
-							} catch (InterruptedException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							} catch (ExecutionException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							} catch (JSONException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							} catch (ParseException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-						if (Integer.parseInt(i.id) != 0){
-					    try {
-							i.removeFromSeen();
-						} catch (JSONException e) {
+
+					for (Season i : vector) {
+
+						try {
+							i.getEpisodes();
+						} catch (InterruptedException e1) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (InterruptedException e) {
+							e1.printStackTrace();
+						} catch (ExecutionException e1) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (ExecutionException e) {
+							e1.printStackTrace();
+						} catch (JSONException e1) {
 							// TODO Auto-generated catch block
-							e.printStackTrace();
+							e1.printStackTrace();
+						} catch (ParseException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						}
-						}}
-					
-					
-					
-					
-					 
-					
+						if (Integer.parseInt(i.id) != 0) {
+							try {
+								i.removeFromSeen();
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							} catch (ExecutionException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+
 					new MyDialogFragment4().show(getFragmentManager(),
 							"MyDialog");
-					
+
 					FragmentTransaction ft = getFragmentManager()
 							.beginTransaction();
 					ft.detach(this);
 					ft.attach(this);
 					ft.commit();
 
-					//setOptionTitle(R.id.action_seenlist, "Add to seen list");
+					// setOptionTitle(R.id.action_seenlist, "Add to seen list");
 					// seen.setTextColor(Color.WHITE);
 					seenBool = false;
 				}
 
 				return true;
 			}
+			
+			
+		// if WATCHLIST item is selected
 		case R.id.action_watchlist:
 			if (user.isEmpty()) {
 				new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
-			}
-			else{
-				if(watchBool){
-				try {
-					prova.addToWatch(false);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			} else {
+				if (watchBool) {
+					try {
+						prova.addToWatch(false);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					new MyDialogFragment6().show(getFragmentManager(),
+							"MyDialog");
+
 				}
-				
-				new MyDialogFragment6().show(getFragmentManager(), "MyDialog");
-				
-				
-			
-				}
-				
-				else{
+
+				else {
 					try {
 						prova.addToWatch(true);
 					} catch (JSONException e) {
@@ -528,65 +484,58 @@ public class TvFragment extends Fragment {
 						e.printStackTrace();
 					} catch (ExecutionException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();}
-						new MyDialogFragment5().show(getFragmentManager(), "MyDialog");
-						
-						
-						
-						
+						e.printStackTrace();
 					}
-					
-				
+					new MyDialogFragment5().show(getFragmentManager(),
+							"MyDialog");
+
+				}
+
 				FragmentTransaction ft = getFragmentManager()
 						.beginTransaction();
 				ft.detach(this);
 				ft.attach(this);
 				ft.commit();
-					
+
 				return true;
-				}
-				
-				
-			
+			}
 
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 
 	}
-	
-	
-	
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-    	// menu.removeItem(R.id.action_like)
-    	 if (isSeen()){
-    	 menu.findItem(R.id.action_seenlist).setTitle("Remove from seen list");}
-   
-    if (prova.in_watching){
-    	 menu.findItem(R.id.action_watchlist).setTitle("Remove from watch list");
-    	
-    }
-    
-    if (prova.loves){
-    	
-    	 menu.findItem(R.id.action_like).setIcon(R.drawable.ic_action_good_dark);
-    	
-    }
-    
-    if (prova.hates){
-    	
-   	 menu.findItem(R.id.action_dislike).setIcon(R.drawable.ic_action_bad_dark);
-   	
-   }
-    
-    
-    }
 
-    
-    
-    
-    
+	// changes names of the option menu
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		// menu.removeItem(R.id.action_like)
+		if (isSeen()) {
+			menu.findItem(R.id.action_seenlist).setTitle(
+					"Remove from seen list");
+		}
+
+		if (prova.in_watching) {
+			menu.findItem(R.id.action_watchlist).setTitle(
+					"Remove from watch list");
+
+		}
+
+		if (prova.loves) {
+
+			menu.findItem(R.id.action_like).setIcon(
+					R.drawable.ic_action_good_dark);
+
+		}
+
+		if (prova.hates) {
+
+			menu.findItem(R.id.action_dislike).setIcon(
+					R.drawable.ic_action_bad_dark);
+
+		}
+
+	}
 
 	/***
 	 **** dialog fragments
@@ -615,24 +564,18 @@ public class TvFragment extends Fragment {
 		}
 
 	}
-	
-	
-	
+
 	public class MyDialogFragment0 extends DialogFragment {
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			return new AlertDialog.Builder(getActivity())
 
-			.setMessage("You have unrate this TV SHOW").setPositiveButton("Ok", null)
-					.create();
+			.setMessage("You have unrate this TV SHOW")
+					.setPositiveButton("Ok", null).create();
 		}
 
 	}
-	
-	
-	
-	
 
 	public class MyDialogFragment2 extends DialogFragment {
 
@@ -682,9 +625,7 @@ public class TvFragment extends Fragment {
 		}
 
 	}
-	
-	
-	
+
 	public class MyDialogFragment6 extends DialogFragment {
 
 		@Override
@@ -696,7 +637,5 @@ public class TvFragment extends Fragment {
 		}
 
 	}
-
-	
 
 }
