@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import engine.Episode.DataGrabber4;
+import engine.Episode.DataGrabber5;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -34,7 +35,8 @@ public class Tv_Show {
 	public String year, runtime, image, genre, percentage, loves, hate, status;
 	public String title_n;
 	public String seasons_n;
-	private JSONObject seen;
+	public boolean in_watching;
+	private JSONObject seen, watch;
 
 	JSONObject summary;
 	JSONArray season;
@@ -60,6 +62,13 @@ public class Tv_Show {
 		percentage = summary.getJSONObject("ratings").getString("percentage");
 		genre = summary.getJSONArray("genres").getString(0);
 		seasons_n = season.getJSONObject(0).getString("season");
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("pass", "");
+		if (!user.isEmpty()){
+		in_watching = summary.getBoolean("in_watchlist");}
 
 	}
 
@@ -111,6 +120,54 @@ public class Tv_Show {
 		return seasons;
 
 	}
+	
+	
+	public void addToWatch(boolean s) throws JSONException, InterruptedException, ExecutionException{
+		
+		watch = new JSONObject();
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("pass", "");
+
+		watch.put("username", user);
+		watch.put("password", pass);
+		
+		JSONObject object = new JSONObject();
+		object.put("tvdb_id", title);
+		object.put("title", title_n);
+		object.put("year", year);
+	
+		JSONArray array = new JSONArray();
+		array.put(object);
+		
+		watch.put("shows", array);
+		
+		
+		Log.e("2", watch.toString());
+		
+		
+		
+		DataGrabber4 grabber = new DataGrabber4(s);
+
+		grabber.execute();
+		grabber.get();
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	public void addToSeen(boolean s, JSONObject o) throws JSONException,
 			InterruptedException, ExecutionException {
@@ -326,6 +383,98 @@ public class Tv_Show {
 				e.printStackTrace();
 			}
 			return airDate;
+		}
+
+		private String convertInputStreamToString(InputStream inputStream)
+				throws IOException {
+			BufferedReader bufferedReader = new BufferedReader(
+					new InputStreamReader(inputStream));
+			String line = "";
+			String result = "";
+			while ((line = bufferedReader.readLine()) != null)
+				result += line;
+
+			inputStream.close();
+			return result;
+
+		}
+
+	}
+	
+	
+	class DataGrabber4 extends AsyncTask<String, Void, JSONObject> {
+		private ProgressDialog progressdialog;
+		private Context parent;
+		private String id;
+		private JSONObject data;
+		private boolean s;
+
+		public DataGrabber4(boolean s) {
+			this.s = s;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// progressdialog = ProgressDialog.show(parent,"",
+			// "Retrieving data ...", true);
+		}
+
+		@Override
+		protected JSONObject doInBackground(String... params) {
+
+			// api.setCred("luca9294", "1Aa30011992");
+			try {
+				if (s == true) {
+					data = getDataFromJSON(
+							"http://api.trakt.tv/show/watchlist/361cd031c2473b06997c87c25ec9c057",
+							true, "", watch);
+				} else {
+					data = getDataFromJSON(
+							"http://api.trakt.tv/show/unwatchlist/361cd031c2473b06997c87c25ec9c057",
+							true, "", watch);
+				}
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			Log.e("watch", data.toString());
+
+			return data;
+
+		}
+
+		public JSONObject getDataFromJSON(String url, boolean login,
+				String type, JSONObject postdata) throws JSONException,
+				ClientProtocolException, IOException {
+
+			// Construct HttpClient
+			HttpClient httpclient = new DefaultHttpClient();
+			// If login add login information to a JSONObject
+			HttpPost httppost = new HttpPost(url);
+			JSONObject jsonpost;
+			if (postdata == null) {
+				jsonpost = new JSONObject();
+			} else {
+				jsonpost = postdata;
+			}
+
+			httppost.setEntity(new StringEntity(jsonpost.toString()));
+			// Perform POST
+			HttpResponse response = httpclient.execute(httppost);
+			// Return the data in the requested format
+			InputStream inputStream = response.getEntity().getContent();
+
+			String result = convertInputStreamToString(inputStream);
+
+			return new JSONObject(result);
+
 		}
 
 		private String convertInputStreamToString(InputStream inputStream)

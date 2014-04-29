@@ -159,6 +159,7 @@ public class TvFragment extends Fragment {
 		}
 
 		seenBool = isSeen();
+		watchBool = prova.in_watching;
 		
 		return rootView;
 
@@ -338,8 +339,61 @@ public class TvFragment extends Fragment {
 				return true;
 			}
 		case R.id.action_watchlist:
-			new MyDialogFragment3().show(getFragmentManager(), "MyDialog");
-			return true;
+			if (user.isEmpty()) {
+				new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
+			}
+			else{
+				if(watchBool){
+				try {
+					prova.addToWatch(false);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				new MyDialogFragment6().show(getFragmentManager(), "MyDialog");
+				
+				
+			
+				}
+				
+				else{
+					try {
+						prova.addToWatch(true);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();}
+						new MyDialogFragment5().show(getFragmentManager(), "MyDialog");
+						
+						
+						
+						
+					}
+					
+				
+				FragmentTransaction ft = getFragmentManager()
+						.beginTransaction();
+				ft.detach(this);
+				ft.attach(this);
+				ft.commit();
+					
+				return true;
+				}
+				
+				
+			
 
 		default:
 			return super.onOptionsItemSelected(item);
@@ -354,7 +408,19 @@ public class TvFragment extends Fragment {
     	// menu.removeItem(R.id.action_like)
     	 if (isSeen()){
     	 menu.findItem(R.id.action_seenlist).setTitle("Remove from seen list");}
+   
+    if (prova.in_watching){
+    	 menu.findItem(R.id.action_watchlist).setTitle("Remove from watch list");
+    	
     }
+    
+    
+    }
+
+    
+    
+    
+    
 
 	/***
 	 **** dialog fragments
@@ -427,16 +493,26 @@ public class TvFragment extends Fragment {
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			return new AlertDialog.Builder(getActivity())
 
-			.setMessage("Watchlist option pressed")
+			.setMessage("Show added to the Watchlist")
+					.setPositiveButton("Ok", null).create();
+		}
+
+	}
+	
+	
+	
+	public class MyDialogFragment6 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("Show removed to the Watchlist")
 					.setPositiveButton("Ok", null).create();
 		}
 
 	}
 
 	
-	private void setOptionTitle(int id, String title)
-	{
-	 MenuItem item = menu.findItem(id);
-	 item.setTitle(title);
-	}
+
 }
