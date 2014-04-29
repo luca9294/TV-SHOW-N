@@ -218,7 +218,7 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			fragment = new HomeFragment();
 			break;
 		case 2:
-			// fragment = new SeasonFragment();
+			fragment = new SeenListFragment();
 			break;
 		case 3:
 			// fragment = new CommunityFragment();

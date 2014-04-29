@@ -11,8 +11,8 @@
     <string-array name="nav_drawer_items">
         <item>LOGIN</item>
         <item>SUGGESTIONS</item>
-        <item>My WatchedList</item>
-        <item>My WishList</item>
+        <item>My SeenList</item>
+        <item>My WatchList</item>
         <item>My Calendar</item>
         <item>LOGOUT</item>
     </string-array>
