@@ -1,44 +1,67 @@
 package fragments;
 
 import info.androidhive.slidingmenu.R;
-import info.androidhive.slidingmenu.R.id;
-import info.androidhive.slidingmenu.R.layout;
 
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
-import engine.Search;
-import engine.SeenList;
 import adapters.SearchAdapter;
 import android.app.Fragment;
-import android.app.FragmentManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import engine.SeenList;
+import engine.TvShowProgress;
 
-public class SeenListFragment extends Fragment {
+public class TvShowProgressFragment extends Fragment {
 
-	public SeenListFragment() {
+	Context context;
+	
+	public TvShowProgressFragment() {
+
 	}
 
-	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View rootView = inflater.inflate(R.layout.fragment_search, container,
+		String code = "";
+		
+		View rootView = inflater.inflate(R.layout.fragment_tvshowprogress, container,
 				false);
 
 		String mySeenList = "MySeenList";
 
 		this.getActivity().setTitle(mySeenList);
+		context = this.getActivity().getApplicationContext();
+		
+		try {
+			
+			TvShowProgress tvsp = new TvShowProgress(context, code);
+			TextView title = (TextView) rootView.findViewById(R.id.tvshow_title);
+			title.setText(tvsp.title);
+			
+			ProgressBar progressbar = (ProgressBar) rootView.findViewById(R.id.pbar1);
+			progressbar.setMax(100);
+			progressbar.setProgress(Integer.parseInt(tvsp.progress));
+			
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		ListView list = (ListView) rootView.findViewById(R.id.list);
+		/*ListView list = (ListView) rootView.findViewById(R.id.list);
 		SeenList seenList;
 		try {
 			seenList = new SeenList(this.getActivity().getApplicationContext());
@@ -55,30 +78,8 @@ public class SeenListFragment extends Fragment {
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-
-		list.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				Fragment fragment = new TvFragment();
-				FragmentManager fm = getFragmentManager();
-				Bundle args = new Bundle();
-				
-				seenList = new SeenList(this.getActivity().getApplicationContext());
-				args.putString("toSee", seenList.getResults().get(arg2).id);
-				fragment.setArguments(args);
-
-				android.app.FragmentTransaction ft = fm.beginTransaction();
-				ft.replace(R.id.frame_container, fragment);
-				ft.addToBackStack("");
-				ft.commit();
-
-			}
-		});
+		}*/
 
 		return rootView;
-
 	}
 }

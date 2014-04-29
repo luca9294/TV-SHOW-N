@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/tvshow_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tv show title"
+        android:textColor="#1569C7"
+        android:textSize="30dp"
+        android:textStyle="bold" >
+    </TextView>
+
+    <ProgressBar
+            android:id="@+id/pbar1"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:indeterminate="false"
+            android:maxHeight="50dip"
+            android:minHeight="50dip"
+            android:progress="50"
+            android:progressDrawable="@drawable/greenprogress" />
+
+ 
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:divider="#FFF"
+        android:dividerHeight="2dp" 
+        android:layout_marginTop="10dp">
+    </ListView>
+
+</LinearLayout>
