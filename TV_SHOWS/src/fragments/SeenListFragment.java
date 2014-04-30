@@ -39,23 +39,15 @@ public class SeenListFragment extends Fragment {
 		this.getActivity().setTitle(mySeenList);
 
 		ListView list = (ListView) rootView.findViewById(R.id.list);
-		SeenList seenList;
+		final SeenList seenList;
+		
 		try {
 			seenList = new SeenList(this.getActivity().getApplicationContext());
 			SearchAdapter adapter = new SearchAdapter(seenList.getResults(),
 					this.getActivity().getApplicationContext(),
 					this.getFragmentManager());
 			list.setAdapter(adapter);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ExecutionException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		
 
 		list.setOnItemClickListener(new OnItemClickListener() {
 
@@ -66,7 +58,7 @@ public class SeenListFragment extends Fragment {
 				FragmentManager fm = getFragmentManager();
 				Bundle args = new Bundle();
 				
-				seenList = new SeenList(this.getActivity().getApplicationContext());
+				
 				args.putString("toSee", seenList.getResults().get(arg2).id);
 				fragment.setArguments(args);
 
@@ -77,6 +69,17 @@ public class SeenListFragment extends Fragment {
 
 			}
 		});
+		
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ExecutionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		return rootView;
 
