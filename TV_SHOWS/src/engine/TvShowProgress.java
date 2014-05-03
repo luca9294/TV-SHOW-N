@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class TvShowProgress {
 
@@ -98,7 +99,9 @@ public class TvShowProgress {
 			String pass = prefs.getString("pass", "");
 
 			data = api.getDataArrayFromJSON("user/progress/watched.json/%k/"
-					+ user + "/code", false);
+					+ user + "/"+ code, true);
+			
+			Log.e("DATA", data.toString());
 
 			return data;
 

@@ -13,7 +13,9 @@ import engine.SeenList;
 import adapters.SearchAdapter;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +41,7 @@ public class SeenListFragment extends Fragment {
 		this.getActivity().setTitle(mySeenList);
 
 		ListView list = (ListView) rootView.findViewById(R.id.list);
-		final SeenList seenList;
+		 final SeenList seenList;
 		
 		try {
 			seenList = new SeenList(this.getActivity().getApplicationContext());
@@ -54,15 +56,17 @@ public class SeenListFragment extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				Fragment fragment = new TvFragment();
+				Fragment fragment = new TvShowProgressFragment();
 				FragmentManager fm = getFragmentManager();
 				Bundle args = new Bundle();
+				Log.e("", String.valueOf(arg2));
+				Log.e("", String.valueOf(seenList.getResults().size()));
 				
-				
-				args.putString("toSee", seenList.getResults().get(arg2).id);
+				args.putString("toP", seenList.getResults().get(arg2).id);
+
 				fragment.setArguments(args);
 
-				android.app.FragmentTransaction ft = fm.beginTransaction();
+				FragmentTransaction ft = fm.beginTransaction();
 				ft.replace(R.id.frame_container, fragment);
 				ft.addToBackStack("");
 				ft.commit();

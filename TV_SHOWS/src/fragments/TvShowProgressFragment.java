@@ -10,6 +10,7 @@ import adapters.SearchAdapter;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,8 @@ public class TvShowProgressFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		String code = "";
+	
+
 		
 		View rootView = inflater.inflate(R.layout.fragment_tvshowprogress, container,
 				false);
@@ -40,9 +42,19 @@ public class TvShowProgressFragment extends Fragment {
 		this.getActivity().setTitle(mySeenList);
 		context = this.getActivity().getApplicationContext();
 		
+		Bundle bundle = getArguments();
+
+		String code = bundle.getString("toP");
+		
+
+		
+		
 		try {
 			
 			TvShowProgress tvsp = new TvShowProgress(context, code);
+			Log.e("CODE", code);
+			Log.e("title", tvsp.title);
+			Log.e("progress", tvsp.progress);
 			TextView title = (TextView) rootView.findViewById(R.id.tvshow_title);
 			title.setText(tvsp.title);
 			
