@@ -2,6 +2,7 @@ package fragments;
 
 import info.androidhive.slidingmenu.R;
 
+import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
@@ -16,11 +17,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import engine.Season;
 import engine.SeenList;
 import engine.TvShowProgress;
+import engine.Tv_Show;
 
 public class TvShowProgressFragment extends Fragment {
 
@@ -70,6 +74,26 @@ public class TvShowProgressFragment extends Fragment {
 				progress.setTextColor(Color.GREEN);
 				
 			}
+			
+			Tv_Show show = new Tv_Show(code,context);
+			
+			Vector<Season> vector = show.getSeasons();
+
+			String[] strings = new String[vector.size()];
+
+			for (int i = 0; i < vector.size(); i++) {
+				strings[i] = vector.get(i).toString();
+
+			}
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this
+					.getActivity().getApplicationContext(),
+					R.layout.activity_main_activity2,R.id.ses, strings);
+			
+			ListView list = (ListView) rootView.findViewById(R.id.list_g);
+			
+			list.setAdapter(adapter);
+
+
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

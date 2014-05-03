@@ -62,10 +62,10 @@
     
     
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/list_g"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:divider="#FFF"
+       
         android:dividerHeight="2dp" 
         android:layout_marginTop="10dp">
     </ListView>
