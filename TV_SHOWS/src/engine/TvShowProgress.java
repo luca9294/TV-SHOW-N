@@ -99,9 +99,8 @@ public class TvShowProgress {
 			String pass = prefs.getString("pass", "");
 
 			data = api.getDataArrayFromJSON("user/progress/watched.json/%k/"
-					+ user + "/"+ code, true);
+					+ user + "/"+ code, false);
 			
-			Log.e("DATA", data.toString());
 
 			return data;
 

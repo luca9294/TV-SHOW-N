@@ -8,25 +8,59 @@
     <TextView
         android:id="@+id/tvshow_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="46dp"
         android:text="Tv show title"
         android:textColor="#1569C7"
         android:textSize="30dp"
         android:textStyle="bold" >
     </TextView>
+    
+    
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Percentage of completion:"
+        android:textSize="20dp"
+        android:textStyle="bold" >
+    </TextView>
+    
+    
+    
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:orientation="horizontal"
+        >
+    
     <ProgressBar
-            android:id="@+id/pbar1"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="20dp"
-            android:indeterminate="false"
-            android:maxHeight="50dip"
-            android:minHeight="50dip"
-            android:progress="50"
-            android:progressDrawable="@drawable/greenprogress" />
+        android:id="@+id/pbar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="293dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="false"
+        android:maxHeight="50dip"
+        android:minHeight="50dip"
+        android:progress="50"
+        android:progressDrawable="@drawable/greenprogress" />
+    
+    <TextView
+        android:id="@+id/percentage_show"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="12%"
+        android:textColor="#1569C7"
+        android:textSize="25dp"
+        android:textStyle="bold" >
+
+    </TextView>
+    
 
  
+    </LinearLayout>
+    
+    
     <ListView
         android:id="@+id/list"
         android:layout_width="fill_parent"
@@ -35,5 +69,4 @@
         android:dividerHeight="2dp" 
         android:layout_marginTop="10dp">
     </ListView>
-
 </LinearLayout>

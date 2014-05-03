@@ -9,6 +9,8 @@ import org.json.JSONException;
 import adapters.SearchAdapter;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,15 +54,22 @@ public class TvShowProgressFragment extends Fragment {
 		try {
 			
 			TvShowProgress tvsp = new TvShowProgress(context, code);
-			Log.e("CODE", code);
-			Log.e("title", tvsp.title);
-			Log.e("progress", tvsp.progress);
 			TextView title = (TextView) rootView.findViewById(R.id.tvshow_title);
+			TextView progress = (TextView) rootView.findViewById(R.id.percentage_show);
 			title.setText(tvsp.title);
+		
+			progress.setText(tvsp.progress + "%");
 			
 			ProgressBar progressbar = (ProgressBar) rootView.findViewById(R.id.pbar1);
 			progressbar.setMax(100);
 			progressbar.setProgress(Integer.parseInt(tvsp.progress));
+			
+			if (progress.getText().equals("100%")){
+				 Resources res = getResources();;
+				progressbar.setProgressDrawable(res.getDrawable(R.drawable.greenprogress2));
+				progress.setTextColor(Color.GREEN);
+				
+			}
 			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -73,24 +82,7 @@ public class TvShowProgressFragment extends Fragment {
 			e.printStackTrace();
 		}
 
-		/*ListView list = (ListView) rootView.findViewById(R.id.list);
-		SeenList seenList;
-		try {
-			seenList = new SeenList(this.getActivity().getApplicationContext());
-			SearchAdapter adapter = new SearchAdapter(seenList.getResults(),
-					this.getActivity().getApplicationContext(),
-					this.getFragmentManager());
-			list.setAdapter(adapter);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ExecutionException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
+	
 
 		return rootView;
 	}
