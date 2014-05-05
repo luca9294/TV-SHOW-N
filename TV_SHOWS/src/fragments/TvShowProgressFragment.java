@@ -73,29 +73,22 @@ public class TvShowProgressFragment extends Fragment {
 			if (progress.getText().equals("100%")){
 				 Resources res = getResources();;
 				progressbar.setProgressDrawable(res.getDrawable(R.drawable.greenprogress2));
-				progress.setTextColor(Color.GREEN);
-				
+			
+				progress.setTextColor(Color.parseColor("#008000"));
 			}
 			
 			Tv_Show show = new Tv_Show(code,context);
 			
 			Vector<Season> vector = show.getSeasons();
-
-			String[] strings = new String[vector.size()];
+			if (vector.get(vector.size()-1).id.equals("0")){
+			vector.remove(vector.size()-1);}
 			
-			ProgressAdapter adapter = new ProgressAdapter(vector, context, this.getFragmentManager(), tvsp.vector);
+			Vector<SeenObject> vector1 = tvsp.vector;
+			
+			ProgressAdapter adapter = new ProgressAdapter(vector, context, this.getFragmentManager(), vector1);
 		
 			
-			
-			
-			for (int i = 0; i < vector.size(); i++) {
-				strings[i] = vector.get(i).toString();
-
-			}
-			/*ArrayAdapter<String> adapter = new ArrayAdapter<String>(this
-					.getActivity().getApplicationContext(),
-					R.layout.activity_main_activity2,R.id.ses, strings);*/
-			
+		
 			
 			
 			ListView list = (ListView) rootView.findViewById(R.id.list_g);

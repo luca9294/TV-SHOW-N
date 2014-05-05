@@ -82,21 +82,25 @@ public class ProgressAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int index, View view, final ViewGroup parent) {
 
-		if (view == null && ! (seasons.get(index).id.equals("0"))) {
+		if (view == null ) {
+			
+			//if (! (seasons.get(index).id.equals("0"))){
 			LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-			view = inflater.inflate(R.layout.activity_main_activity2, parent, false);
+			view = inflater.inflate(R.layout.activity_main_activity2, parent, false);//}
 
 		}
 
-	    
 		
 		if(! (seasons.get(index).id.equals("0"))){
 			SeenObject object = objects.get(objects.size()-1-index);
-			Log.e("ee", seasons.get(index).id);
-			Log.e("eee", object.percentage);
+	
 			
 		if (object.percentage.equals("100") ){
 			TextView user = (TextView) view.findViewById(R.id.ses);
+			TextView div =  (TextView) view.findViewById(R.id.div);
+			
+			div.setText(object.completed +"/" + object.completed + " Episodes SEEN");
+			div.setTextColor(Color.parseColor("#008000"));
 			
 			user.setTextColor(Color.parseColor("#008000"));
 
@@ -104,8 +108,12 @@ public class ProgressAdapter extends BaseAdapter {
 			
 			}
 		else{
-		   TextView user = (TextView) view.findViewById(R.id.ses);
+		    TextView user = (TextView) view.findViewById(R.id.ses);
+	        TextView div =  (TextView) view.findViewById(R.id.div);
 			
+			div.setText(object.completed +"/" + object.total + " Episodes SEEN");
+		    div.setTextColor(Color.RED);
+		   
 			user.setTextColor(Color.BLACK);
 			user.setText(seasons.get(index).toString());
 			

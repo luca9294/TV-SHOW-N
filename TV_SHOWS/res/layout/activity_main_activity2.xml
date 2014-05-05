@@ -1,17 +1,29 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
- 
-    tools:context=".MainActivity2" >
+    android:orientation="vertical" >
 
     <TextView
        android:id="@+id/ses"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="23dp"
+        android:text="d"
+        android:textColor="#000000"
+    />
+    
+    
+        <TextView
+       android:id="@+id/div"
+        android:layout_width="wrap_content"
+       android:layout_height="40dp"
+        android:gravity="center"
         android:textStyle="bold"
         android:textSize="20dp"
         android:textColor="#000000"
     />
+    
 
-</RelativeLayout>
+</LinearLayout>
