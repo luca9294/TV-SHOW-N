@@ -59,8 +59,7 @@ public class SeenListFragment extends Fragment {
 				Fragment fragment = new TvShowProgressFragment();
 				FragmentManager fm = getFragmentManager();
 				Bundle args = new Bundle();
-				Log.e("", String.valueOf(arg2));
-				Log.e("", String.valueOf(seenList.getResults().size()));
+				
 				
 				args.putString("toP", seenList.getResults().get(arg2).id);
 

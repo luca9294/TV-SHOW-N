@@ -31,6 +31,33 @@ public class TvShowProgress {
 		initialize();
 
 	}
+	
+	
+	public SeenObject getSeason(String id){
+		SeenObject result = null;
+		
+		for (SeenObject o  :  vector){
+			if (o.id.equals(id)){
+				
+				result = o;
+				break;
+				
+				
+			}
+			
+			else{
+				
+				result= null;
+			}
+			
+			
+		}
+		return result;
+		
+		
+	}
+	
+	
 
 	public void initialize() throws JSONException {
 

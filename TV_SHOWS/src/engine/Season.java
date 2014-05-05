@@ -112,7 +112,6 @@ public class Season {
 					Locale.US);
 			String strCurrDate = sdfDate.format(now);
 
-			Log.e("DATE", strCurrDate);
 
 			Date currentDate;
 			result = sdfDate.parse(first);

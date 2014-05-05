@@ -4,6 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
@@ -64,6 +68,35 @@ public class Episode {
 		hate = false;
 	}
 
+	public boolean isFuture() throws ParseException{
+
+		Date now = new Date();
+		String response = "";
+		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd",
+				Locale.US);
+		String strCurrDate = sdfDate.format(now);
+
+
+		Date currentDate;
+		Date result = sdfDate.parse(first_aired_date);
+		currentDate = sdfDate.parse(strCurrDate);
+
+		if (currentDate.before(result)) {
+		
+		
+	return true;	
+		
+		
+	}
+		else{
+			
+			return false;
+		}	
+	
+	}
+	
+	
+	
 	public void getEpisode() throws InterruptedException, ExecutionException,
 			JSONException {
 		api = new TraktAPI(parent);

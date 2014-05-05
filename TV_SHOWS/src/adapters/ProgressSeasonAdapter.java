@@ -46,21 +46,21 @@ import engine.Episode;
  * Created with IntelliJ IDEA. User: Shahab Date: 8/22/12 Time: 11:37 AM To
  * change this template use File | Settings | File Templates.
  */
-public class SeasonAdapter extends BaseAdapter {
+public class ProgressSeasonAdapter extends BaseAdapter {
 
-	private static final String TAG = SeasonAdapter.class.getSimpleName();
+	private static final String TAG = ProgressSeasonAdapter.class.getSimpleName();
 
 	Vector<Episode> episodes;
 	Context context;
 	FragmentManager fm;
-	boolean r;
 
-	public SeasonAdapter(boolean r, Vector<Episode> episodes, Context context,
+
+	public ProgressSeasonAdapter(Vector<Episode> episodes, Context context,
 			FragmentManager fm) {
 		this.episodes = episodes;
 		this.context = context;
 		this.fm = fm;
-		this.r = r;
+	
 
 	}
 
@@ -81,110 +81,41 @@ public class SeasonAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(final int index, View view, final ViewGroup parent) {
-		ViewHolder holder;
+	
 		// View rowView = view;
 		if (view == null) {
 			// holder = new ViewHolder();
 			// ViewHolder holder = new ViewHolder();
 			LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-			view = inflater.inflate(R.layout.episode_view, parent, false);
-			holder = new ViewHolder();
-
-			holder.numbern = (TextView) view.findViewById(R.id.number);
-			holder.titlen = (TextView) view.findViewById(R.id.title);
-			holder.airn = (TextView) view.findViewById(R.id.air_date);
-			holder.seen = (TextView) view.findViewById(R.id.seenView);
-			holder.box = (CheckBox) view.findViewById(R.id.checkBox1);
-			view.setTag(holder);
-			Log.e("", "SONO QUA");
-
+			view = inflater.inflate(R.layout.activity_main_activity3, parent, false);
+			
+			
+		
+		
 		}
-
-		else
-
-			holder = (ViewHolder) view.getTag();
-
-		holder.numbern.setText("#" + episodes.get(index).id);
-		holder.titlen.setText(episodes.get(index).title);
-		holder.airn.setText(episodes.get(index).first_aired_date);
-		
-		
-
-
-		String first = episodes.get(index).first_aired_date;
-
-		Date result;
-
-		Date now = new Date();
-		String response = "";
-		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-		String strCurrDate = sdfDate.format(now);
-
-
-
-		Date currentDate;
-		try {
-
-			result = sdfDate.parse(first);
 	
-			currentDate = sdfDate.parse(strCurrDate);
-			
-			if (currentDate.after(result)) {
-				holder.airn.setTextColor(Color.parseColor("#B22222"));
-				// holder.airn.setBackgroundColor(Color.WHITE);
-
-			}
-
-			else {
-				holder.airn.setTextColor(Color.parseColor("#4DBD33"));
-				// holder.airn.setBackgroundColor(Color.WHITE);
-
-			}
-			
-			
-			if (episodes.get(index).watched && currentDate.after(result)){
-				holder.seen.setText("SEEN");
-				holder.seen.setTextColor(Color.GREEN);
-				
-				
-				
-				
-			}
-			
-			
-			else{
-				holder.seen.setText("");
-			}
-			
-			
-			
-			
-			
-			
-
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		TextView title = (TextView) view.findViewById(R.id.ses);
+		
+		
+		if (episodes.get(index).watched){
+		title.setText("#" + episodes.get(index).id + "  " + episodes.get(index).title + " SEEN" );
+		title.setTextColor(Color.parseColor("#008000"));
+		
 		}
-
-		if (r) {
-			holder.box.setVisibility(View.VISIBLE);
-
+		
+		else{
+			title.setText("#" + episodes.get(index).id + "  " + episodes.get(index).title);
+			title.setTextColor(Color.BLACK);	
+			
+			
 		}
 		
 		
 		
-	
 		
 
 		return view;
-
-	}
-
-	public class ViewHolder {
-		public TextView numbern, titlen, airn, seen;
-		public CheckBox box;
 
 	}
 }
