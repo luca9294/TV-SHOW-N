@@ -9,4 +9,5 @@
     
     <color name="red">#FF0000</color>
      <color name="green">#40FF00</color>
+      <color name="green_dark">#348017</color>
 </resources>

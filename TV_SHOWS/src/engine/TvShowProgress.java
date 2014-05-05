@@ -55,6 +55,8 @@ public class TvShowProgress {
 			String left = o.getString("left");
 			String percentage = o.getString("percentage");
 			
+		
+			
 			SeenObject so = new SeenObject(percentage, completed, left, season);
 			
 			vector.add(so);
@@ -99,7 +101,7 @@ public class TvShowProgress {
 			String pass = prefs.getString("pass", "");
 
 			data = api.getDataArrayFromJSON("user/progress/watched.json/%k/"
-					+ user + "/"+ code, false);
+					+ user + "/"+ code, true);
 			
 
 			return data;

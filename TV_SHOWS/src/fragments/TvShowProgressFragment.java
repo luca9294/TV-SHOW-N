@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
+import adapters.ProgressAdapter;
 import adapters.SearchAdapter;
 import android.app.Fragment;
 import android.content.Context;
@@ -23,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import engine.Season;
 import engine.SeenList;
+import engine.SeenObject;
 import engine.TvShowProgress;
 import engine.Tv_Show;
 
@@ -80,18 +82,25 @@ public class TvShowProgressFragment extends Fragment {
 			Vector<Season> vector = show.getSeasons();
 
 			String[] strings = new String[vector.size()];
-
+			
+			ProgressAdapter adapter = new ProgressAdapter(vector, context, this.getFragmentManager(), tvsp.vector);
+		
+			
+			
+			
 			for (int i = 0; i < vector.size(); i++) {
 				strings[i] = vector.get(i).toString();
 
 			}
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this
+			/*ArrayAdapter<String> adapter = new ArrayAdapter<String>(this
 					.getActivity().getApplicationContext(),
-					R.layout.activity_main_activity2,R.id.ses, strings);
+					R.layout.activity_main_activity2,R.id.ses, strings);*/
+			
+			
 			
 			ListView list = (ListView) rootView.findViewById(R.id.list_g);
 			
-			list.setAdapter(adapter);
+		 list.setAdapter(adapter);
 
 
 			
