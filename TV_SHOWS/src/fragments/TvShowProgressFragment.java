@@ -10,6 +10,8 @@ import org.json.JSONException;
 import adapters.ProgressAdapter;
 import adapters.SearchAdapter;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -18,10 +20,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 import engine.Season;
 import engine.SeenList;
 import engine.SeenObject;
@@ -59,7 +63,7 @@ public class TvShowProgressFragment extends Fragment {
 		
 		try {
 			
-			TvShowProgress tvsp = new TvShowProgress(context, code);
+			final TvShowProgress tvsp = new TvShowProgress(context, code);
 			TextView title = (TextView) rootView.findViewById(R.id.tvshow_title);
 			TextView progress = (TextView) rootView.findViewById(R.id.percentage_show);
 			title.setText(tvsp.title);
@@ -79,7 +83,8 @@ public class TvShowProgressFragment extends Fragment {
 			
 			Tv_Show show = new Tv_Show(code,context);
 			
-			Vector<Season> vector = show.getSeasons();
+			final Vector<Season> vector = show.getSeasons();
+			
 			if (vector.get(vector.size()-1).id.equals("0")){
 			vector.remove(vector.size()-1);}
 			
@@ -94,6 +99,29 @@ public class TvShowProgressFragment extends Fragment {
 			ListView list = (ListView) rootView.findViewById(R.id.list_g);
 			
 		 list.setAdapter(adapter);
+		 
+		 
+		 list.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+						long arg3) {
+					Fragment fragment = new SeasonProgressFragment();
+					FragmentManager fm = getFragmentManager();
+					Bundle args = new Bundle();
+					
+					args.putString("code", tvsp.code);
+					args.putString("id", vector.get(arg2).id);
+
+					fragment.setArguments(args);
+
+					FragmentTransaction ft = fm.beginTransaction();
+					ft.replace(R.id.frame_container, fragment);
+					ft.addToBackStack("");
+					ft.commit();
+
+				}
+			});
 
 
 			

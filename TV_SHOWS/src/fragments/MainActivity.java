@@ -3,7 +3,7 @@ package fragments;
 import fragments.HomeFragment;
 import fragments.LoginFragment;
 import fragments.SearchFragment;
-import fragments.CommunityFragment;
+import fragments.SeasonProgressFragment;
 import info.androidhive.slidingmenu.R;
 import info.androidhive.slidingmenu.R.menu;
 import info.androidhive.slidingmenu.adapter.NavDrawerListAdapter;

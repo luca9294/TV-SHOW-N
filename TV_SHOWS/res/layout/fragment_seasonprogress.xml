@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/season_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Arrow - Season 1"
+        android:textColor="#1569C7"
+        android:textSize="25dp"
+        android:textStyle="bold" >
+    </TextView>
+    
+    
+      <View
+        android:id="@+id/season_title"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
+ 
+
+    
+    
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Percentage of completion of the Season:"
+        android:textSize="20dp"
+        android:textStyle="bold" >
+    </TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <ProgressBar
+            android:id="@+id/pbar1"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="293dp"
+            android:layout_height="wrap_content"
+            android:indeterminate="false"
+            android:maxHeight="50dip"
+            android:minHeight="50dip"
+            android:progress="50"
+            android:progressDrawable="@drawable/greenprogress" />
+
+        <TextView
+            android:id="@+id/percentage_show"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="12%"
+            android:textColor="#1569C7"
+            android:textSize="25dp"
+            android:textStyle="bold" >
+        </TextView>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="bottom"
+        android:text="14/14 Episodes SEEN"
+        android:textSize="20dp"
+        android:textStyle="bold" >
+    </TextView>
+
+    <ListView
+        android:id="@+id/list_g"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:dividerHeight="2dp" >
+    </ListView>
+
+</LinearLayout>
