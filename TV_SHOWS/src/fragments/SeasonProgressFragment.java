@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import engine.Episode;
@@ -18,9 +19,12 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,6 +78,10 @@ View rootView = null;
 					.findViewById(R.id.percentage_show);
 			TextView seen = (TextView) rootView.findViewById(R.id.seen);
 			perc.setText(object.percentage + "%");
+			DataGrabber2 data = new DataGrabber2(Integer.parseInt(object.percentage));
+			data.execute();
+			
+			
 			if (perc.getText().equals("100%")) {
 				Resources res = getResources();
 				;
@@ -95,13 +103,9 @@ View rootView = null;
 
 			}
 			
-			SeenObject object1 = tsp.getSeason(id);
 		
-			ProgressBar progressbar1 = (ProgressBar) rootView.findViewById(R.id.pbar1);
-			progressbar1.setMax(100);
-
-			progressbar1.setProgress(Integer.parseInt(object1.percentage));
-			
+		
+		
 			
 			ListView view = (ListView) rootView.findViewById(R.id.list_g);
 
@@ -188,8 +192,8 @@ View rootView = null;
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							try {
+								
 								season.episodes.get(index).addToSeen(false, null);
-						
 								FragmentTransaction ft = getFragmentManager()
 										.beginTransaction();
 								ft.detach(fragment);
@@ -235,6 +239,7 @@ View rootView = null;
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							try {
+								
 								season.episodes.get(index).addToSeen(true, null);
 								
 								if (!tsp.getSeason(id).completed.equals("1")){
@@ -278,6 +283,38 @@ View rootView = null;
 					.setPositiveButton("Cancel", null).create()
 					;
 		}}
+	
+	
+	
+	private class DataGrabber2 extends AsyncTask<Integer, Void, Void> {
+
+		private int progress;
+
+	
+
+		public DataGrabber2(int progress) {
+			this.progress = progress;
+
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// progressdialog = ProgressDialog.show(parent,"",
+			// "Retrieving data ...", true);
+		}
+
+
+		@Override
+		protected Void doInBackground(Integer... params) {
+			ProgressBar progressbar = (ProgressBar) rootView
+					.findViewById(R.id.pbar1);
+			progressbar.setMax(100);
+			Log.e("progress", String.valueOf(   progress));
+			progressbar.setProgress(progress);
+			return null;
+		}
+
+	}
 
 	
 	
