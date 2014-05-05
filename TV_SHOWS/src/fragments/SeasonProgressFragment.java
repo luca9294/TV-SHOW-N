@@ -26,6 +26,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,8 @@ Fragment fragment = this;
 TvShowProgress tsp  = null;
 String id = "";
 View rootView = null;
+ Handler mHandler = new Handler();
+
 
 	public SeasonProgressFragment() {
 	}
@@ -60,8 +63,26 @@ View rootView = null;
 		 id = bundle.getString("id");
 
 		try {
-			 tsp = new TvShowProgress(this.getActivity()
+			final ProgressBar progressbar = (ProgressBar) rootView
+					.findViewById(R.id.pbar1);
+			progressbar.setMax(100); 
+			tsp = new TvShowProgress(this.getActivity()
 					.getApplicationContext(), code);
+			  new Thread(new Runnable() {
+				  SeenObject object = tsp.getSeason(id);
+		             public void run() {
+		        
+		                    
+
+		                     // Update the progress bar
+		                     mHandler.post(new Runnable() {
+		                         public void run() {
+		                        	 progressbar.setProgress(Integer.parseInt(object.percentage));
+		                         }
+		                     });
+		                 
+		             }
+		         }).start();
 			 season = new Season(id, null, null, code, this.getActivity()
 					.getApplicationContext());
 			season.getEpisodes();
@@ -69,17 +90,24 @@ View rootView = null;
 					.findViewById(R.id.season_title);
 			title.setText(tsp.title + "\nSeason " + id);
 			SeenObject object = tsp.getSeason(id);
+			tsp.initialize();
+		
+			//progressbar.setProgress(0);
 			
-			ProgressBar progressbar = (ProgressBar) rootView
-					.findViewById(R.id.pbar1);
-			progressbar.setMax(100);
-			progressbar.setProgress(Integer.parseInt(object.percentage));
+			
+			
+			
+			//progressbar.setProgress(Integer.parseInt(object.percentage));
+			
+		
+
+			
+			
 			TextView perc = (TextView) rootView
 					.findViewById(R.id.percentage_show);
 			TextView seen = (TextView) rootView.findViewById(R.id.seen);
 			perc.setText(object.percentage + "%");
-			DataGrabber2 data = new DataGrabber2(Integer.parseInt(object.percentage));
-			data.execute();
+			
 			
 			
 			if (perc.getText().equals("100%")) {
@@ -286,35 +314,7 @@ View rootView = null;
 	
 	
 	
-	private class DataGrabber2 extends AsyncTask<Integer, Void, Void> {
 
-		private int progress;
-
-	
-
-		public DataGrabber2(int progress) {
-			this.progress = progress;
-
-		}
-
-		@Override
-		protected void onPreExecute() {
-			// progressdialog = ProgressDialog.show(parent,"",
-			// "Retrieving data ...", true);
-		}
-
-
-		@Override
-		protected Void doInBackground(Integer... params) {
-			ProgressBar progressbar = (ProgressBar) rootView
-					.findViewById(R.id.pbar1);
-			progressbar.setMax(100);
-			Log.e("progress", String.valueOf(   progress));
-			progressbar.setProgress(progress);
-			return null;
-		}
-
-	}
 
 	
 	

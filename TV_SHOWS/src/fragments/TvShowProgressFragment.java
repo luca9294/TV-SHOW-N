@@ -16,6 +16,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,10 @@ import engine.Tv_Show;
 public class TvShowProgressFragment extends Fragment {
 
 	Context context;
+	String code = "";
+ Handler mHandler = new Handler();
+ProgressBar progressbar = null;
+
 	
 	public TvShowProgressFragment() {
 
@@ -56,7 +61,7 @@ public class TvShowProgressFragment extends Fragment {
 		
 		Bundle bundle = getArguments();
 
-		String code = bundle.getString("toP");
+		 code = bundle.getString("toP");
 		
 
 		
@@ -70,9 +75,38 @@ public class TvShowProgressFragment extends Fragment {
 		
 			progress.setText(tvsp.progress + "%");
 			
-			ProgressBar progressbar = (ProgressBar) rootView.findViewById(R.id.pbar1);
+			progressbar = (ProgressBar) rootView.findViewById(R.id.pbar1);
 			progressbar.setMax(100);
 			progressbar.setProgress(Integer.parseInt(tvsp.progress));
+			
+			
+			
+			
+			  new Thread(new Runnable() {
+				  final TvShowProgress tvsp = new TvShowProgress(context, code);
+		
+		             public void run() {
+		        
+		                    
+
+		                     // Update the progress bar
+		                     mHandler.post(new Runnable() {
+		                         public void run() {
+		                        	 progressbar.setProgress(Integer.parseInt(tvsp.progress));
+		                         }
+		                     });
+		                 
+		             }
+		         }).start();
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 			if (progress.getText().equals("100%")){
 				 Resources res = getResources();;
