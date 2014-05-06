@@ -5,6 +5,7 @@ import fragments.LoginFragment;
 import fragments.SearchFragment;
 import fragments.CommentsFragment;
 import fragments.SeenListFragment;
+import fragments.WatchingListFragment;
 import info.androidhive.slidingmenu.R;
 import info.androidhive.slidingmenu.R.menu;
 import info.androidhive.slidingmenu.adapter.NavDrawerListAdapter;
@@ -194,13 +195,13 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	/* *
 	 * Called when invalidateOptionsMenu() is triggered
 	 */
-	/*@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		// if nav drawer is opened, hide the action items
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-		return super.onPrepareOptionsMenu(menu);
-	}*/
+	/*
+	 * @Override public boolean onPrepareOptionsMenu(Menu menu) { // if nav
+	 * drawer is opened, hide the action items boolean drawerOpen =
+	 * mDrawerLayout.isDrawerOpen(mDrawerList);
+	 * menu.findItem(R.id.action_settings).setVisible(!drawerOpen); return
+	 * super.onPrepareOptionsMenu(menu); }
+	 */
 
 	/**
 	 * Diplaying fragment view for selected nav drawer list item
@@ -216,10 +217,10 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			fragment = new HomeFragment();
 			break;
 		case 2:
-			 fragment = new SeenListFragment();
+			fragment = new SeenListFragment();
 			break;
 		case 3:
-			// fragment = new SeenListFragment();
+			fragment = new WatchingListFragment();
 			break;
 		case 4:
 			fragment = new LoginFragment();

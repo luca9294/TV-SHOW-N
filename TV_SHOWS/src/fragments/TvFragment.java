@@ -333,7 +333,7 @@ public class TvFragment extends Fragment {
 			}
 			return true;
 
-		// if UNRATE item is selected
+			// if UNRATE item is selected
 		case R.id.action_unrate:
 			if (user.isEmpty()) {
 				new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
@@ -363,7 +363,7 @@ public class TvFragment extends Fragment {
 			}
 			return true;
 
-		// if SEEN LIST item is selected	
+			// if SEEN LIST item is selected
 		case R.id.action_seenlist: // dialog 2
 
 			if (user.isEmpty()) {
@@ -447,9 +447,8 @@ public class TvFragment extends Fragment {
 
 				return true;
 			}
-			
-			
-		// if WATCHLIST item is selected
+
+			// if WATCHLIST item is selected
 		case R.id.action_watchlist:
 			if (user.isEmpty()) {
 				new MyDialogFragment2().show(getFragmentManager(), "MyDialog");

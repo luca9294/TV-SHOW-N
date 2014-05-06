@@ -112,7 +112,6 @@ public class Season {
 					Locale.US);
 			String strCurrDate = sdfDate.format(now);
 
-
 			Date currentDate;
 			result = sdfDate.parse(first);
 			currentDate = sdfDate.parse(strCurrDate);
@@ -299,9 +298,8 @@ public class Season {
 		}
 
 	}
-	
-	
-	//data grabber of seen
+
+	// data grabber of seen
 	class DataGrabber2 extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
 		private Context parent;

@@ -68,35 +68,28 @@ public class Episode {
 		hate = false;
 	}
 
-	public boolean isFuture() throws ParseException{
+	public boolean isFuture() throws ParseException {
 
 		Date now = new Date();
 		String response = "";
-		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd",
-				Locale.US);
+		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		String strCurrDate = sdfDate.format(now);
-
 
 		Date currentDate;
 		Date result = sdfDate.parse(first_aired_date);
 		currentDate = sdfDate.parse(strCurrDate);
 
 		if (currentDate.before(result)) {
-		
-		
-	return true;	
-		
-		
-	}
-		else{
-			
+
+			return true;
+
+		} else {
+
 			return false;
-		}	
-	
+		}
+
 	}
-	
-	
-	
+
 	public void getEpisode() throws InterruptedException, ExecutionException,
 			JSONException {
 		api = new TraktAPI(parent);

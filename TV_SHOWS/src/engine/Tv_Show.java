@@ -135,7 +135,7 @@ public class Tv_Show {
 
 	}
 
-	//adds tv show to the watchlist
+	// adds tv show to the watchlist
 	public void addToWatch(boolean s) throws JSONException,
 			InterruptedException, ExecutionException {
 
@@ -191,9 +191,8 @@ public class Tv_Show {
 		grabber.get();
 
 	}
-	
-	
-	//adds tv show to the seenlist
+
+	// adds tv show to the seenlist
 	public void addToSeen(boolean s, JSONObject o) throws JSONException,
 			InterruptedException, ExecutionException {
 		if (o == null) {
@@ -229,7 +228,7 @@ public class Tv_Show {
 
 	}
 
-	//removes tv show from the seenlist
+	// removes tv show from the seenlist
 	public void removeFromSeen() throws JSONException {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(context);
@@ -253,8 +252,7 @@ public class Tv_Show {
 		 */
 	}
 
-	
-	//data grabber of the season (summary)
+	// data grabber of the season (summary)
 	private class DataGrabber extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
 		private Context context;
@@ -287,8 +285,7 @@ public class Tv_Show {
 
 	}
 
-	
-	//data grabber of the season number
+	// data grabber of the season number
 	private class DataGrabber2 extends AsyncTask<String, Void, JSONArray> {
 		private ProgressDialog progressdialog;
 		private Context context;
@@ -430,8 +427,7 @@ public class Tv_Show {
 
 	}
 
-	
-	//data grabber for watchlist
+	// data grabber for watchlist
 	class DataGrabber4 extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
 		private Context parent;
@@ -522,9 +518,8 @@ public class Tv_Show {
 		}
 
 	}
-	
-	
-	//data grabber for rate option
+
+	// data grabber for rate option
 	class DataGrabber5 extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
 		private Context parent;

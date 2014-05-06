@@ -108,9 +108,6 @@ public class SeasonAdapter extends BaseAdapter {
 		holder.numbern.setText("#" + episodes.get(index).id);
 		holder.titlen.setText(episodes.get(index).title);
 		holder.airn.setText(episodes.get(index).first_aired_date);
-		
-		
-
 
 		String first = episodes.get(index).first_aired_date;
 
@@ -121,15 +118,13 @@ public class SeasonAdapter extends BaseAdapter {
 		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 		String strCurrDate = sdfDate.format(now);
 
-
-
 		Date currentDate;
 		try {
 
 			result = sdfDate.parse(first);
-	
+
 			currentDate = sdfDate.parse(strCurrDate);
-			
+
 			if (currentDate.after(result)) {
 				holder.airn.setTextColor(Color.parseColor("#B22222"));
 				// holder.airn.setBackgroundColor(Color.WHITE);
@@ -141,27 +136,16 @@ public class SeasonAdapter extends BaseAdapter {
 				// holder.airn.setBackgroundColor(Color.WHITE);
 
 			}
-			
-			
-			if (episodes.get(index).watched && currentDate.after(result)){
+
+			if (episodes.get(index).watched && currentDate.after(result)) {
 				holder.seen.setText("SEEN");
 				holder.seen.setTextColor(Color.GREEN);
-				
-				
-				
-				
+
 			}
-			
-			
-			else{
+
+			else {
 				holder.seen.setText("");
 			}
-			
-			
-			
-			
-			
-			
 
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
@@ -172,11 +156,6 @@ public class SeasonAdapter extends BaseAdapter {
 			holder.box.setVisibility(View.VISIBLE);
 
 		}
-		
-		
-		
-	
-		
 
 		return view;
 

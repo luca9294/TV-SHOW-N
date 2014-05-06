@@ -31,61 +31,52 @@ public class TvShowProgress {
 		initialize();
 
 	}
-	
-	
-	public SeenObject getSeason(String id){
+
+	public SeenObject getSeason(String id) {
 		SeenObject result = null;
-		
-		for (SeenObject o  :  vector){
-			if (o.id.equals(id)){
-				
+
+		for (SeenObject o : vector) {
+			if (o.id.equals(id)) {
+
 				result = o;
 				break;
-				
-				
+
 			}
-			
-			else{
-				
-				result= null;
+
+			else {
+
+				result = null;
 			}
-			
-			
+
 		}
 		return result;
-		
-		
+
 	}
-	
-	
 
 	public void initialize() throws JSONException {
 
 		vector = new Vector<SeenObject>();
-		
-		
+
 		JSONObject object = data.getJSONObject(0);
 		JSONObject show = object.getJSONObject("show");
 		JSONObject progress_o = object.getJSONObject("progress");
 		JSONArray seasons = object.getJSONArray("seasons");
-		
+
 		title = show.getString("title");
 		progress = progress_o.getString("percentage");
 		completed = progress_o.getString("completed");
 		left = progress_o.getString("left");
-		total = Integer.parseInt(completed)+Integer.parseInt(left);
-		
-		for (int i = 0; i<seasons.length(); i++){
+		total = Integer.parseInt(completed) + Integer.parseInt(left);
+
+		for (int i = 0; i < seasons.length(); i++) {
 			JSONObject o = seasons.getJSONObject(i);
 			String season = o.getString("season");
 			String completed = o.getString("completed");
 			String left = o.getString("left");
 			String percentage = o.getString("percentage");
-			
-		
-			
+
 			SeenObject so = new SeenObject(percentage, completed, left, season);
-			
+
 			vector.add(so);
 		}
 	}
@@ -128,8 +119,7 @@ public class TvShowProgress {
 			String pass = prefs.getString("pass", "");
 
 			data = api.getDataArrayFromJSON("user/progress/watched.json/%k/"
-					+ user + "/"+ code, true);
-			
+					+ user + "/" + code, true);
 
 			return data;
 

@@ -197,13 +197,12 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	 */
 
 	/*
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		// if nav drawer is opened, hide the action items
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-		return super.onPrepareOptionsMenu(menu);
-	}*/
+	 * @Override public boolean onPrepareOptionsMenu(Menu menu) { // if nav
+	 * drawer is opened, hide the action items boolean drawerOpen =
+	 * mDrawerLayout.isDrawerOpen(mDrawerList);
+	 * menu.findItem(R.id.action_settings).setVisible(!drawerOpen); return
+	 * super.onPrepareOptionsMenu(menu); }
+	 */
 
 	/**
 	 * Diplaying fragment view for selected nav drawer list item

@@ -13,13 +13,13 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
-public class SeenList {
+public class WatchingList {
 	Context context;
 	TraktAPI api;
 	public JSONArray data;
-	public Vector<Search_result> vector;
+	public Vector<Tv_Show> tvshows;
 
-	public SeenList(Context context) throws InterruptedException,
+	public WatchingList(Context context) throws InterruptedException,
 			ExecutionException, JSONException {
 		this.context = context;
 		getArrayJSON();
@@ -27,28 +27,14 @@ public class SeenList {
 
 	}
 
-	public void makeVector() throws JSONException {
-		vector = new Vector<Search_result>();
+	public void makeVector() throws JSONException, InterruptedException, ExecutionException {
+		tvshows = new Vector<Tv_Show>();
 
 		for (int i = 0; i < data.length(); i++) {
 			JSONObject object = data.getJSONObject(i);
-			String title_n = object.getString("title");
-			String country = object.getString("country");
-			String year = object.getString("year");
-			String poster = object.getJSONObject("images").getString("poster");
-			String status = object.getString("status");
-			boolean ended = false;
-			if (status.equals("Ended")) {
-				ended = true;
-			}
-			JSONArray array = object.getJSONArray("genres");
 			String id = object.getString("tvdb_id");
-
-			poster = poster.replace(".jpg", "-300.jpg");
-			Search_result result = new Search_result(title_n, year, country,
-					poster, array, id, ended);
-
-			vector.add(result);
+			Tv_Show tv = new Tv_Show(id,context);
+			tvshows.add(tv);
 
 		}
 	}
@@ -91,7 +77,7 @@ public class SeenList {
 			String pass = prefs.getString("pass", "");
 
 			data = api.getDataArrayFromJSON(
-					"user/library/shows/watched.json/%k/" + user + "/true",
+					"user/watchlist/shows.json/%k/" + user,
 					false);
 
 			return data;
@@ -100,9 +86,5 @@ public class SeenList {
 
 	}
 
-	public Vector<Search_result> getResults() {
-
-		return vector;
-	}
 
 }
