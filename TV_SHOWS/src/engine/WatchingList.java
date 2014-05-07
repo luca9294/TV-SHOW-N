@@ -1,5 +1,6 @@
 package engine;
 
+import java.text.ParseException;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
@@ -20,14 +21,14 @@ public class WatchingList {
 	public Vector<Tv_Show> tvshows;
 
 	public WatchingList(Context context) throws InterruptedException,
-			ExecutionException, JSONException {
+			ExecutionException, JSONException, ParseException {
 		this.context = context;
 		getArrayJSON();
 		makeVector();
 
 	}
 
-	public void makeVector() throws JSONException, InterruptedException, ExecutionException {
+	public void makeVector() throws JSONException, InterruptedException, ExecutionException, ParseException {
 		tvshows = new Vector<Tv_Show>();
 
 		for (int i = 0; i < data.length(); i++) {

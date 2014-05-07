@@ -44,10 +44,10 @@ public class Tv_Show {
 	TraktAPI api;
 	Context context;
 
-	Vector<Season> seasons;
+	public Vector<Season> seasons;
 
 	public Tv_Show(String title, Context context) throws InterruptedException,
-			ExecutionException, JSONException {
+			ExecutionException, JSONException, ParseException {
 		this.title = title;
 		this.context = context;
 		getTvShowJSON();
@@ -102,7 +102,7 @@ public class Tv_Show {
 	}
 
 	public void getTvShowJSON() throws InterruptedException,
-			ExecutionException, JSONException {
+			ExecutionException, JSONException, ParseException {
 		api = new TraktAPI(context);
 		String title_c = title.replace(" ", "-");
 		title_c = title_c.toLowerCase();
@@ -122,7 +122,6 @@ public class Tv_Show {
 			String episodes = object.getString("episodes");
 			String image = object.getJSONObject("images").getString("poster");
 			Season s = new Season(id, episodes, image, title, context);
-
 			seasons.add(s);
 
 		}

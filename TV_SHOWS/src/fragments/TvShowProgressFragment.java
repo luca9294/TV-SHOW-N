@@ -2,6 +2,7 @@ package fragments;
 
 import info.androidhive.slidingmenu.R;
 
+import java.text.ParseException;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
@@ -145,6 +146,9 @@ public class TvShowProgressFragment extends Fragment {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

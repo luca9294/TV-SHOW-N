@@ -156,6 +156,9 @@ public class TvFragment extends Fragment {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		seenBool = isSeen();
