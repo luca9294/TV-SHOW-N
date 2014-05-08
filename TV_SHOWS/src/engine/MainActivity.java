@@ -1,5 +1,6 @@
 package engine;
 
+
 import fragments.HomeFragment;
 import fragments.LoginFragment;
 import fragments.SearchFragment;
@@ -220,7 +221,8 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			fragment = new SeenListFragment();
 			break;
 		case 3:
-			fragment = new WatchingListFragment();
+		fragment = new WatchingListFragment();
+			//fragment = new CopyOfLoginFragment();
 			break;
 		case 4:
 			fragment = new LoginFragment();
