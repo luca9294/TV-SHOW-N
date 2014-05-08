@@ -1,11 +1,13 @@
 package fragments;
 
+
 import info.androidhive.slidingmenu.R;
 import info.androidhive.slidingmenu.R.id;
 import info.androidhive.slidingmenu.R.layout;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
@@ -20,8 +22,9 @@ import engine.TraktAPI;
 import engine.TvShow_result;
 import engine.Tv_Show;
 import engine.WatchingList;
+import adapters.ExpandableListAdapter;
 import adapters.SearchAdapter;
-import adapters.WatchingAdapter;
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -49,6 +52,11 @@ import android.widget.Toast;
 public class WatchingListFragment extends Fragment {
 	private TraktAPI api;
 	private Vector<TvShow_result> string; 
+	ExpandableListAdapter listAdapter;
+	ExpandableListView expListView;
+	List<String> listDataHeader;
+	Vector<String> codes = new Vector<String>();
+	HashMap<String, List<String>> listDataChild;
 	
 	public WatchingListFragment() {
 	}
@@ -59,7 +67,7 @@ public class WatchingListFragment extends Fragment {
 
 		View rootView = inflater.inflate(R.layout.fragment_watching, container,
 				false);
-
+		listDataChild = new HashMap<String, List<String>>();
 		String mySeenList = "MyWatchingList";
 	
 		DataGrabber3 data2 = new DataGrabber3(this.getActivity().getApplicationContext());
@@ -72,35 +80,60 @@ public class WatchingListFragment extends Fragment {
 				for (int i = 0; i < array.length(); i++){
 					JSONObject object = array.getJSONObject(i);
 					String code = object.getString("tvdb_id");
+					codes.add(code);
 					TvShow_result show = new TvShow_result(code, this.getActivity().getApplicationContext());
+				
+					show.getEpisodesWatching();
 					string.add(show);
 					
+					listDataChild.put(show.id, show.episodesVector);
+					
 					
 				}
 				
-				
-				
-				
-			WatchingAdapter adapter = new WatchingAdapter( this.getActivity().getApplicationContext(),string);
-			ExpandableListView expListView = (ExpandableListView) rootView.findViewById(R.id.lvExp);
-			
-		
-			
-			expListView.setOnGroupClickListener(new OnGroupClickListener() {
 
-				@Override
-				public boolean onGroupClick(ExpandableListView parent, View v,
-						int groupPosition, long id) {
+				DataGrabber4 data1 = new DataGrabber4(this.getActivity().getApplicationContext());
+				data1.execute();
+			
+				JSONArray array1;
+				array1 = data1.get();
 					
-					parent.expandGroup(groupPosition);
-					Log.e("", "CIAOOOOO");
 					
-					return true;
-				}
-			});
+					
+					for (int i = 0; i < array1.length(); i++){
+						JSONObject object = array1.getJSONObject(i);
+						String code = object.getString("tvdb_id");
+						TvShow_result show = new TvShow_result(code, this.getActivity().getApplicationContext());
+					   
+						if (!codes.contains(code)){
+						show.getEpisodesWatching();
+						string.add(show);
+						List <String> d = new Vector <String>(); 
+				
+						listDataChild.put(show.id, d);
+					
+						}
+						
+						
+						
+			}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			   listAdapter = new ExpandableListAdapter( this.getActivity().getApplicationContext(),string,listDataChild);
+			   expListView = (ExpandableListView) rootView.findViewById(R.id.lvExp);
+			
+			
+	
 
 		
-			expListView.setAdapter(adapter);
+			expListView.setAdapter(listAdapter);
 		
 			
 			
@@ -111,6 +144,9 @@ public class WatchingListFragment extends Fragment {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -127,8 +163,11 @@ public class WatchingListFragment extends Fragment {
 
 
 		return rootView;
-		
+			
 	}
+	
+	
+	
 
 	
 	
@@ -162,6 +201,47 @@ public class WatchingListFragment extends Fragment {
 			
 			
 			data = api.getDataArrayFromJSON("user/watchlist/episodes.json/%k/" + user, false);
+		
+
+			return data;
+			
+			
+
+		}
+
+	}
+	
+	
+	class DataGrabber4 extends AsyncTask<String, Void, JSONArray> {
+		private ProgressDialog progressdialog;
+		private Context parent;
+
+		private JSONArray data;
+
+		public DataGrabber4(Context parent) {
+			this.parent = parent;
+
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// progressdialog = ProgressDialog.show(parent,"",
+			// "Retrieving data ...", true);
+		}
+
+		@Override
+		protected JSONArray doInBackground(String... params) {
+			
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(parent);
+
+			String user = prefs.getString("user", "");
+			api = new TraktAPI(parent);
+			data = new JSONArray();
+			
+			
+			
+			data = api.getDataArrayFromJSON("user/watchlist/shows.json/%k/" + user, false);
 		
 
 			return data;
