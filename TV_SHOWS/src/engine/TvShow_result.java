@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class TvShow_result {
 	public String title, year, nation, image_link;
@@ -32,7 +33,7 @@ public class TvShow_result {
 
 	public void getEpisodesWatching() throws InterruptedException,
 			ExecutionException, JSONException, ParseException {
-
+        boolean found = false;
 		api = new TraktAPI(parent);
 
 		DataGrabber3 dg = new DataGrabber3(parent);
@@ -51,11 +52,15 @@ public class TvShow_result {
 			String code1 = object.getString("tvdb_id");
 			if (code1.equals(id)) {
 				myTvShow = object;
+				found = true;
 				break;
 
 			}
 		}
-
+		
+		
+		
+        if (found){
 		title = myTvShow.getString("title");
 		year = myTvShow.getString("year");
 		nation = myTvShow.getString("country");
@@ -80,7 +85,42 @@ public class TvShow_result {
 		
 			episodesVector.add(result);
 
-		}
+		}}
+        
+        
+        
+        
+        
+        else{
+        	DataGrabber4 dg1 = new DataGrabber4(parent);
+    		
+    		dg1.execute();
+    		JSONArray array1 = dg1.get();
+    		Log.e("cdd", array1.toString());
+    		JSONObject myTvShow1 = new JSONObject();
+        	
+    		for (int i = 0; i < array1.length(); i++) {
+    			JSONObject object = array1.getJSONObject(i);
+    			String code1 = object.getString("tvdb_id");
+    			if (code1.equals(id)) {
+    				myTvShow1 = object;
+    				break;
+
+    			}
+    		}
+    		
+    		
+        	
+    		title = myTvShow1.getString("title");
+    		year = myTvShow1.getString("year");
+    		nation = myTvShow1.getString("country");
+    		genres = myTvShow1.getJSONArray("genres"); 
+    		image_link = myTvShow1.getJSONObject("images").getString("poster").replace(".jpg", "-300.jpg");
+        	
+        	
+        	
+        	
+        }
 	}
 
 	class DataGrabber3 extends AsyncTask<String, Void, JSONArray> {
@@ -117,6 +157,50 @@ public class TvShow_result {
 			return data;
 
 		}
+		
+
+		
+
+	}
+	
+	
+	class DataGrabber4 extends AsyncTask<String, Void, JSONArray> {
+		private ProgressDialog progressdialog;
+		private Context parent;
+
+		private JSONArray data;
+
+		public DataGrabber4(Context parent) {
+			this.parent = parent;
+
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// progressdialog = ProgressDialog.show(parent,"",
+			// "Retrieving data ...", true);
+		}
+
+		@Override
+		protected JSONArray doInBackground(String... params) {
+
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(parent);
+
+			String user = prefs.getString("user", "");
+
+			data = api.getDataArrayFromJSON("user/watchlist/shows.json/%k/"
+					+ user, true);
+
+			// data2 = api.getDataArrayFromJSON("show/season.json/%k/revenge/3",
+			// true);
+
+			return data;
+
+		}
+		
+
+		
 
 	}
 

@@ -55,6 +55,7 @@ public class WatchingListFragment extends Fragment {
 	ExpandableListAdapter listAdapter;
 	ExpandableListView expListView;
 	List<String> listDataHeader;
+	Vector<String> codes = new Vector<String>();
 	HashMap<String, List<String>> listDataChild;
 	
 	public WatchingListFragment() {
@@ -79,6 +80,7 @@ public class WatchingListFragment extends Fragment {
 				for (int i = 0; i < array.length(); i++){
 					JSONObject object = array.getJSONObject(i);
 					String code = object.getString("tvdb_id");
+					codes.add(code);
 					TvShow_result show = new TvShow_result(code, this.getActivity().getApplicationContext());
 				
 					show.getEpisodesWatching();
@@ -89,15 +91,46 @@ public class WatchingListFragment extends Fragment {
 					
 				}
 				
+
+				DataGrabber4 data1 = new DataGrabber4(this.getActivity().getApplicationContext());
+				data1.execute();
+			
+				JSONArray array1;
+				array1 = data1.get();
+					
+					
+					
+					for (int i = 0; i < array1.length(); i++){
+						JSONObject object = array1.getJSONObject(i);
+						String code = object.getString("tvdb_id");
+						TvShow_result show = new TvShow_result(code, this.getActivity().getApplicationContext());
+					   
+						if (!codes.contains(code)){
+						show.getEpisodesWatching();
+						string.add(show);
+						List <String> d = new Vector <String>(); 
+				
+						listDataChild.put(show.id, d);
+					
+						}
+						
+						
+						
+			}
 				
 				
 				
-				listAdapter = new ExpandableListAdapter( this.getActivity().getApplicationContext(),string,listDataChild);
+				
+				
+				
+				
+				
+				
+			   listAdapter = new ExpandableListAdapter( this.getActivity().getApplicationContext(),string,listDataChild);
 			   expListView = (ExpandableListView) rootView.findViewById(R.id.lvExp);
 			
 			
-			
-		//	expListView.setAdapter(listAdapter);
+	
 
 		
 			expListView.setAdapter(listAdapter);
@@ -135,45 +168,6 @@ public class WatchingListFragment extends Fragment {
 	
 	
 	
-	
-	private void prepareListData() {
-		listDataHeader = new ArrayList<String>();
-		listDataChild = new HashMap<String, List<String>>();
-
-		// Adding child data
-		listDataHeader.add("Top 250");
-		listDataHeader.add("Now Showing");
-		listDataHeader.add("Coming Soon..");
-
-		// Adding child data
-		List<String> top250 = new ArrayList<String>();
-		top250.add("The Shawshank Redemption");
-		top250.add("The Godfather");
-		top250.add("The Godfather: Part II");
-		top250.add("Pulp Fiction");
-		top250.add("The Good, the Bad and the Ugly");
-		top250.add("The Dark Knight");
-		top250.add("12 Angry Men");
-
-		List<String> nowShowing = new ArrayList<String>();
-		nowShowing.add("The Conjuring");
-		nowShowing.add("Despicable Me 2");
-		nowShowing.add("Turbo");
-		nowShowing.add("Grown Ups 2");
-		nowShowing.add("Red 2");
-		nowShowing.add("The Wolverine");
-
-		List<String> comingSoon = new ArrayList<String>();
-		comingSoon.add("2 Guns");
-		comingSoon.add("The Smurfs 2");
-		comingSoon.add("The Spectacular Now");
-		comingSoon.add("The Canyons");
-		comingSoon.add("Europa Report");
-
-		listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-		listDataChild.put(listDataHeader.get(1), nowShowing);
-		listDataChild.put(listDataHeader.get(2), comingSoon);
-	}
 
 	
 	
@@ -207,6 +201,47 @@ public class WatchingListFragment extends Fragment {
 			
 			
 			data = api.getDataArrayFromJSON("user/watchlist/episodes.json/%k/" + user, false);
+		
+
+			return data;
+			
+			
+
+		}
+
+	}
+	
+	
+	class DataGrabber4 extends AsyncTask<String, Void, JSONArray> {
+		private ProgressDialog progressdialog;
+		private Context parent;
+
+		private JSONArray data;
+
+		public DataGrabber4(Context parent) {
+			this.parent = parent;
+
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// progressdialog = ProgressDialog.show(parent,"",
+			// "Retrieving data ...", true);
+		}
+
+		@Override
+		protected JSONArray doInBackground(String... params) {
+			
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(parent);
+
+			String user = prefs.getString("user", "");
+			api = new TraktAPI(parent);
+			data = new JSONArray();
+			
+			
+			
+			data = api.getDataArrayFromJSON("user/watchlist/shows.json/%k/" + user, false);
 		
 
 			return data;
