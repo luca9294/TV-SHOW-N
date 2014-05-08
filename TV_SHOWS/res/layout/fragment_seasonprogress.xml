@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="5dp"
     android:orientation="vertical" >
 
     <TextView
@@ -13,16 +14,11 @@
         android:textSize="25dp"
         android:textStyle="bold" >
     </TextView>
-    
-    
-      <View
+
+    <View
         android:id="@+id/season_title"
         android:layout_width="match_parent"
-        android:layout_height="20dp"/>
- 
-
-    
-    
+        android:layout_height="20dp" />
 
     <TextView
         android:layout_width="match_parent"

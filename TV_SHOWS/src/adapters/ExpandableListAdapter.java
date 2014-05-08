@@ -26,7 +26,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 	// child data in format of header title, child title
 	private HashMap<String, List<String>> _listDataChild;
 
-	public ExpandableListAdapter(Context context, List<TvShow_result> listDataHeader,
+	public ExpandableListAdapter(Context context,
+			List<TvShow_result> listDataHeader,
 			HashMap<String, List<String>> listChildData) {
 		this._context = context;
 		this._listDataHeader = listDataHeader;
@@ -36,16 +37,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 	@Override
 	public Object getChild(int groupPosition, int childPosititon) {
 		if (this._listDataChild.get(this._listDataHeader.get(groupPosition).id)
-				.get(childPosititon).length() == 0){
+				.get(childPosititon).length() == 0) {
 			return "";
-			
+
+		} else {
+
+			return this._listDataChild.get(
+					this._listDataHeader.get(groupPosition).id).get(
+					childPosititon);
 		}
-				else{
-		
-		
-		return this._listDataChild.get(this._listDataHeader.get(groupPosition).id)
-				.get(childPosititon);}
-		//return null;
+		// return null;
 	}
 
 	@Override
@@ -62,11 +63,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 		if (convertView == null) {
 			LayoutInflater infalInflater = (LayoutInflater) this._context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = infalInflater.inflate(R.layout.activity_main_activity3, null);
+			convertView = infalInflater.inflate(
+					R.layout.activity_main_activity3, null);
 		}
 
-		TextView txtListChild = (TextView) convertView
-				.findViewById(R.id.ses);
+		TextView txtListChild = (TextView) convertView.findViewById(R.id.ses);
 		txtListChild.setText(Html.fromHtml(childText));
 		return convertView;
 	}
@@ -102,37 +103,28 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 			convertView = infalInflater.inflate(R.layout.result_item2, null);
 		}
 
-		TextView title = (TextView) convertView
-				.findViewById(R.id.title);
-		
+		TextView title = (TextView) convertView.findViewById(R.id.title);
+
 		title.setTypeface(null, Typeface.BOLD);
 		title.setText(headerTitle.title);
-		
-		TextView year = (TextView) convertView
-				.findViewById(R.id.year);
-		
+
+		TextView year = (TextView) convertView.findViewById(R.id.year);
 
 		year.setText(headerTitle.year);
-		
-		
-		TextView nation = (TextView) convertView
-				.findViewById(R.id.nation);
-		
+
+		TextView nation = (TextView) convertView.findViewById(R.id.nation);
 
 		nation.setText(headerTitle.nation);
-		
-		
-		TextView genres = (TextView) convertView
-				.findViewById(R.id.genres);
-		
 
-		 genres.setText(headerTitle.genres.toString().replace("[", "").replace("]", "").replace("\"", " ").replace(" ,", ","));
-		
-		
+		TextView genres = (TextView) convertView.findViewById(R.id.genres);
+
+		String varText = headerTitle.genres.toString().replace("[", "")
+				.replace("]", "").replace("\"", " ").replace(" ,", ",");
+		genres.setText(varText.substring(1));
+
 		ImageViewFromURL url = new ImageViewFromURL(headerTitle.image_link);
 		try {
-			ImageView p = (ImageView) convertView
-					.findViewById(R.id.web);
+			ImageView p = (ImageView) convertView.findViewById(R.id.web);
 			p.setImageBitmap(url.getImage());
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
