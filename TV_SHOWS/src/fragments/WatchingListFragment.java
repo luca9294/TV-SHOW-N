@@ -1,11 +1,13 @@
 package fragments;
 
+
 import info.androidhive.slidingmenu.R;
 import info.androidhive.slidingmenu.R.id;
 import info.androidhive.slidingmenu.R.layout;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
@@ -20,8 +22,9 @@ import engine.TraktAPI;
 import engine.TvShow_result;
 import engine.Tv_Show;
 import engine.WatchingList;
+import adapters.ExpandableListAdapter;
 import adapters.SearchAdapter;
-import adapters.WatchingAdapter;
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -49,6 +52,10 @@ import android.widget.Toast;
 public class WatchingListFragment extends Fragment {
 	private TraktAPI api;
 	private Vector<TvShow_result> string; 
+	ExpandableListAdapter listAdapter;
+	ExpandableListView expListView;
+	List<String> listDataHeader;
+	HashMap<String, List<String>> listDataChild;
 	
 	public WatchingListFragment() {
 	}
@@ -59,7 +66,7 @@ public class WatchingListFragment extends Fragment {
 
 		View rootView = inflater.inflate(R.layout.fragment_watching, container,
 				false);
-
+		listDataChild = new HashMap<String, List<String>>();
 		String mySeenList = "MyWatchingList";
 	
 		DataGrabber3 data2 = new DataGrabber3(this.getActivity().getApplicationContext());
@@ -73,34 +80,27 @@ public class WatchingListFragment extends Fragment {
 					JSONObject object = array.getJSONObject(i);
 					String code = object.getString("tvdb_id");
 					TvShow_result show = new TvShow_result(code, this.getActivity().getApplicationContext());
+				
+					show.getEpisodesWatching();
 					string.add(show);
 					
+					listDataChild.put(show.id, show.episodesVector);
+					
 					
 				}
 				
 				
 				
 				
-			WatchingAdapter adapter = new WatchingAdapter( this.getActivity().getApplicationContext(),string);
-			ExpandableListView expListView = (ExpandableListView) rootView.findViewById(R.id.lvExp);
+				listAdapter = new ExpandableListAdapter( this.getActivity().getApplicationContext(),string,listDataChild);
+			   expListView = (ExpandableListView) rootView.findViewById(R.id.lvExp);
 			
-		
 			
-			expListView.setOnGroupClickListener(new OnGroupClickListener() {
-
-				@Override
-				public boolean onGroupClick(ExpandableListView parent, View v,
-						int groupPosition, long id) {
-					
-					parent.expandGroup(groupPosition);
-					Log.e("", "CIAOOOOO");
-					
-					return true;
-				}
-			});
+			
+		//	expListView.setAdapter(listAdapter);
 
 		
-			expListView.setAdapter(adapter);
+			expListView.setAdapter(listAdapter);
 		
 			
 			
@@ -111,6 +111,9 @@ public class WatchingListFragment extends Fragment {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -127,7 +130,49 @@ public class WatchingListFragment extends Fragment {
 
 
 		return rootView;
-		
+			
+	}
+	
+	
+	
+	
+	private void prepareListData() {
+		listDataHeader = new ArrayList<String>();
+		listDataChild = new HashMap<String, List<String>>();
+
+		// Adding child data
+		listDataHeader.add("Top 250");
+		listDataHeader.add("Now Showing");
+		listDataHeader.add("Coming Soon..");
+
+		// Adding child data
+		List<String> top250 = new ArrayList<String>();
+		top250.add("The Shawshank Redemption");
+		top250.add("The Godfather");
+		top250.add("The Godfather: Part II");
+		top250.add("Pulp Fiction");
+		top250.add("The Good, the Bad and the Ugly");
+		top250.add("The Dark Knight");
+		top250.add("12 Angry Men");
+
+		List<String> nowShowing = new ArrayList<String>();
+		nowShowing.add("The Conjuring");
+		nowShowing.add("Despicable Me 2");
+		nowShowing.add("Turbo");
+		nowShowing.add("Grown Ups 2");
+		nowShowing.add("Red 2");
+		nowShowing.add("The Wolverine");
+
+		List<String> comingSoon = new ArrayList<String>();
+		comingSoon.add("2 Guns");
+		comingSoon.add("The Smurfs 2");
+		comingSoon.add("The Spectacular Now");
+		comingSoon.add("The Canyons");
+		comingSoon.add("Europa Report");
+
+		listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
+		listDataChild.put(listDataHeader.get(1), nowShowing);
+		listDataChild.put(listDataHeader.get(2), comingSoon);
 	}
 
 	

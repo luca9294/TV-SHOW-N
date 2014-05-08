@@ -19,7 +19,7 @@ public class TvShow_result {
 	public String title, year, nation, image_link;
 	TraktAPI api;
 	Context parent;
-	// public JSONArray genres;
+	 public JSONArray genres;
 	public String id;
 	public Vector<String> episodesVector;
 
@@ -59,7 +59,8 @@ public class TvShow_result {
 		title = myTvShow.getString("title");
 		year = myTvShow.getString("year");
 		nation = myTvShow.getString("country");
-		image_link =myTvShow.getJSONObject("images").getString("poster").replace(".jpg", "-300.jpg");
+		genres = myTvShow.getJSONArray("genres"); 
+		image_link = myTvShow.getJSONObject("images").getString("poster").replace(".jpg", "-300.jpg");
 		
 		JSONArray episodes = new JSONArray();
 		episodes = myTvShow.getJSONArray("episodes");
@@ -71,8 +72,10 @@ public class TvShow_result {
 
 			String season = object.getString("season");
 			String title = object.getString("title");
+			
+			
 
-			String result = "#" + id + " Season:"+ season+ " " + title;
+			String result = "<b>#" + id1 + " " + title + "</b><br>Season "+ season ;
 			
 		
 			episodesVector.add(result);

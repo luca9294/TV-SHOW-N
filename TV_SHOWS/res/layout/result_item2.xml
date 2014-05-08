@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TITLE"
-                android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+            android:textColor="#000"
             android:textSize="20dp"
             android:textStyle="bold" />
 
@@ -31,6 +31,7 @@
             android:layout_width="150dp"
              android:textSize="20dp"
             android:layout_height="wrap_content"
+             android:textColor="#000"
             android:text="year" />
 
         <TextView
@@ -38,6 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp"
+            
+             android:textColor="#000"
             android:text="nation" />
         
          <TextView
@@ -45,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="italic"
+             android:textColor="#000"
             android:textSize="18dp"
             android:text="nation" />
          
@@ -60,7 +64,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="right" >
-    <WebView
+    <ImageView
         android:layout_gravity="right"
         android:id="@+id/web"
         android:layout_width="110dp"
