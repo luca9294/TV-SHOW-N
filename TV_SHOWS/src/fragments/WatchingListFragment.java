@@ -61,6 +61,7 @@ public class WatchingListFragment extends Fragment {
 	ExpandableListAdapter listAdapter;
 	ExpandableListView expListView;
 	List<String> listDataHeader;
+	View p;
 	Vector<String> codes = new Vector<String>();
 	HashMap<String, List<String>> listDataChild;
 	Context context;

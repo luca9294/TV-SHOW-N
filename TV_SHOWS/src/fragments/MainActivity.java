@@ -1,5 +1,6 @@
 package fragments;
 
+import engine.Calendar;
 import fragments.HomeFragment;
 import fragments.LoginFragment;
 import fragments.SearchFragment;
@@ -14,13 +15,17 @@ import java.util.Vector;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.CalendarContract;
+import android.provider.CalendarContract.Calendars;
 import android.provider.SyncStateContract.Constants;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentTransaction;
@@ -58,9 +63,10 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
+	
 		mTitle = mDrawerTitle = getTitle();
-
+		
 		// load slide menu items
 		navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
 		// nav drawer icons from resources

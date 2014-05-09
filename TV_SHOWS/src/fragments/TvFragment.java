@@ -34,6 +34,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import engine.Calendar;
 import engine.Season;
 import engine.Tv_Show;
 import fragments.EpisodeFragment.MyDialogFragment10;
@@ -63,7 +64,7 @@ public class TvFragment extends Fragment {
 		setHasOptionsMenu(true);
 
 		this.getActivity().setTitle("SUGGESTIONS");
-
+	
 		View rootView = inflater
 				.inflate(R.layout.tv_fragment, container, false);
 		context = this.getActivity().getApplicationContext();
@@ -71,7 +72,11 @@ public class TvFragment extends Fragment {
 
 		String toSearch = bundle.getString("toSearch");
 		String[] strings;
+		
+	Calendar c = new Calendar (context, this.getActivity());
 
+		
+		
 		// TextView title =(TextView)findViewById(R.id.title);
 		TextView premiere = (TextView) rootView.findViewById(R.id.premiere);
 		TextView country = (TextView) rootView.findViewById(R.id.country);
