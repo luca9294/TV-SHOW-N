@@ -60,10 +60,9 @@ public class Calendar {
 
 				calName = managedCursor.getString(nameColumn);
 
-				Log.e("NAME", calName);
 				calId = managedCursor.getString(idColumn);
 
-				Log.e("ID", calId);
+			
 
 				if (calName.equals("TV-SHOWS Calendar")) {
 
@@ -101,9 +100,19 @@ public class Calendar {
 
 		GregorianCalendar cal = new GregorianCalendar(Integer.parseInt(year),
 				Integer.parseInt(month) - 1, Integer.parseInt(day));
-		cal.setTimeZone(TimeZone.getTimeZone("UTC"));
-		cal.set(java.util.Calendar.HOUR, 21);
-		cal.set(java.util.Calendar.MINUTE, 0);
+		
+	    //  "first_aired_iso":"2009-10-29T22:30:00-05:00",
+		
+		String complete = e.complete;
+		
+		complete = complete.substring(complete.indexOf("T") + 1);
+		
+		
+	
+		
+		cal.setTimeZone(TimeZone.getTimeZone("GMT" + complete.substring(8,11)));
+		cal.set(java.util.Calendar.HOUR, Integer.parseInt(complete.substring(0, 2)));
+		cal.set(java.util.Calendar.MINUTE, Integer.parseInt(complete.substring(3, 5)));
 		cal.set(java.util.Calendar.SECOND, 0);
 		cal.set(java.util.Calendar.MILLISECOND, 0);
 		long start = cal.getTimeInMillis();
@@ -112,8 +121,8 @@ public class Calendar {
 		values.put(Events.DTEND, start);
 		values.put(Events.TITLE, e.title + " - " + e.show);
 		values.put(Events.CALENDAR_ID, id);
-		values.put(Events.EVENT_TIMEZONE, "Europe/Berlin");
-		values.put(Events.DESCRIPTION, e.overview);
+		values.put(Events.EVENT_TIMEZONE, (TimeZone.getTimeZone("GMT" + complete.substring(8,11)).getID()));
+		values.put(Events.DESCRIPTION, "Channel: " + e.network + "\n" + e.overview);
 		// reasonable defaults exist:
 		values.put(Events.ACCESS_LEVEL, Events.ACCESS_PRIVATE);
 

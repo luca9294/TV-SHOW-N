@@ -599,31 +599,55 @@ public class EpisodeFragment extends Fragment {
 			// if like and dislike buttons are selected
 			case R.id.selection:
 			Calendar c = new Calendar(context, this.getActivity());
-				if (!calendar){
 				try {
-					c.addToCalendar(episode);
+					if(episode.isFuture()){	
+					
+					if (!calendar){
+						try {
+							c.addToCalendar(episode);
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						new MyDialogFragment1().show(getFragmentManager(),
+								"MyDialog");
+
+						}
+					
+					
+					else{
+						c.removeFromCalendar(episode);
+						new MyDialogFragment0().show(getFragmentManager(),
+								"MyDialog");
+
+						
+						
+						
+					}
+					
+					}
+					else{
+						
+						new MyDialogFragment111().show(getFragmentManager(),
+								"MyDialog");
+
+						
+						
+					}
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				new MyDialogFragment1().show(getFragmentManager(),
-						"MyDialog");
-
-				}
 			
 			
-			else{
-				c.removeFromCalendar(episode);
-				new MyDialogFragment0().show(getFragmentManager(),
-						"MyDialog");
-
-				
-				
-				
+			
+			
 			}
 			
-			}
+			
+			
+			
 			return true;}
 
 	// dialog fragments
@@ -640,7 +664,18 @@ public class EpisodeFragment extends Fragment {
 		}
 		
 		
-		
+
+		public class MyDialogFragment111 extends DialogFragment {
+
+			@Override
+			public Dialog onCreateDialog(Bundle savedInstanceState) {
+				return new AlertDialog.Builder(getActivity())
+
+				.setMessage("This episode has already been broadcoast! ")
+						.setPositiveButton("Ok", null).create();
+			}
+
+		}
 		
 		
 		public class MyDialogFragment1 extends DialogFragment {

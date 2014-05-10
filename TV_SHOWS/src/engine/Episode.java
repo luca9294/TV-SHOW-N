@@ -30,7 +30,7 @@ public class Episode {
 
 	private TraktAPI api;
 	public String id, season_n, title, first_aired_date, overview, image,
-			percentage, code, rating, show;
+			percentage, code, rating, show,network,complete;
 	public boolean love, hate, watched, wish;
 	private JSONObject rate, seen, watching;
 	public Vector<Comment> comments = new Vector<Comment>();
@@ -125,7 +125,10 @@ public class Episode {
 		}
 
 		show = object.getJSONObject("show").getString("title");
+		network = object.getJSONObject("show").getString("network");
 		title = object.getJSONObject("episode").getString("title");
+		complete = object.getJSONObject("episode")
+				.getString("first_aired_iso");
 		first_aired_date = object.getJSONObject("episode")
 				.getString("first_aired_iso").replace("T", " ");
 		if (first_aired_date.length() > 10) {
