@@ -2,6 +2,7 @@ package fragments;
 
 import info.androidhive.slidingmenu.R;
 
+import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
@@ -13,6 +14,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,11 +41,14 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
+import engine.Calendar;
 import engine.Comment;
 import engine.MainActivity;
 import engine.Season;
 import engine.Episode;
 import fragments.LoginFragment.MyDialogFragment;
+import fragments.TvFragment.MyDialogFragment0;
+import fragments.TvFragment.MyDialogFragment2;
 
 ;
 
@@ -54,7 +59,7 @@ public class EpisodeFragment extends Fragment {
 	String code;
 	Context context;
 	Episode episode;
-
+    boolean calendar;
 	boolean love;
 	boolean hate;
 
@@ -69,9 +74,10 @@ public class EpisodeFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		// load fragment and all its informations
-
+		
 		View rootView = inflater.inflate(R.layout.fragment_episode, container,
 				false);
+		setHasOptionsMenu(true);
 		context = this.getActivity().getApplicationContext();
 		Bundle bundle = getArguments();
 		id = bundle.getString("id");
@@ -542,8 +548,117 @@ public class EpisodeFragment extends Fragment {
 		return rootView;
 
 	}
+	
+	
+	// loads option menu
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		inflater.inflate(R.menu.main_activity3, menu);
+
+	}
+	
+	
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		// menu.removeItem(R.id.action_like)
+		Calendar c = new Calendar(context, this.getActivity());
+		if (c.isInCalendar(episode)){
+			calendar = true;
+			menu.findItem(R.id.selection).setTitle(
+					"Remove from the calendar");
+			
+		}
+		else{
+			calendar = false;
+			menu.findItem(R.id.selection).setTitle(
+					"Add to the calendar");
+			
+		}
+		
+		
+		
+	}
+	
+	
+	
+	
+	// handles selection of an option item
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(context);
+
+			String user = prefs.getString("user", "");
+			String pass = prefs.getString("passed", "");
+
+			// Handles item selection
+			switch (item.getItemId()) {
+
+			// if like and dislike buttons are selected
+			case R.id.selection:
+			Calendar c = new Calendar(context, this.getActivity());
+				if (!calendar){
+				try {
+					c.addToCalendar(episode);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				new MyDialogFragment1().show(getFragmentManager(),
+						"MyDialog");
+
+				}
+			
+			
+			else{
+				c.removeFromCalendar(episode);
+				new MyDialogFragment0().show(getFragmentManager(),
+						"MyDialog");
+
+				
+				
+				
+			}
+			
+			}
+			return true;}
 
 	// dialog fragments
+		public class MyDialogFragment0 extends DialogFragment {
+
+			@Override
+			public Dialog onCreateDialog(Bundle savedInstanceState) {
+				return new AlertDialog.Builder(getActivity())
+
+				.setMessage("The episode has been removed from the Calendar")
+						.setPositiveButton("Ok", null).create();
+			}
+
+		}
+		
+		
+		
+		
+		
+		public class MyDialogFragment1 extends DialogFragment {
+
+			@Override
+			public Dialog onCreateDialog(Bundle savedInstanceState) {
+				return new AlertDialog.Builder(getActivity())
+
+				.setMessage("The episode has been added to the Calendar")
+						.setPositiveButton("Ok", null).create();
+			}
+
+		}
+		
+		
+		
+		
+		
 	public class MyDialogFragment2 extends DialogFragment {
 
 		@Override

@@ -30,7 +30,7 @@ public class Episode {
 
 	private TraktAPI api;
 	public String id, season_n, title, first_aired_date, overview, image,
-			percentage, code, rating;
+			percentage, code, rating, show;
 	public boolean love, hate, watched, wish;
 	private JSONObject rate, seen, watching;
 	public Vector<Comment> comments = new Vector<Comment>();
@@ -76,7 +76,9 @@ public class Episode {
 		String strCurrDate = sdfDate.format(now);
 
 		Date currentDate;
+		
 		Date result = sdfDate.parse(first_aired_date);
+		
 		currentDate = sdfDate.parse(strCurrDate);
 
 		if (currentDate.before(result)) {
@@ -122,6 +124,7 @@ public class Episode {
 
 		}
 
+		show = object.getJSONObject("show").getString("title");
 		title = object.getJSONObject("episode").getString("title");
 		first_aired_date = object.getJSONObject("episode")
 				.getString("first_aired_iso").replace("T", " ");

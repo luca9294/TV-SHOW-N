@@ -73,7 +73,6 @@ public class TvFragment extends Fragment {
 		String toSearch = bundle.getString("toSearch");
 		String[] strings;
 		
-	Calendar c = new Calendar (context, this.getActivity());
 
 		
 		
