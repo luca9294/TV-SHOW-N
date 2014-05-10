@@ -18,6 +18,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.ContentProviderClient;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -129,6 +130,18 @@ public class Calendar {
 		Uri uri = context.getContentResolver().insert(Events.CONTENT_URI,
 				values);
 		long eventId = new Long(uri.getLastPathSegment());
+		
+		
+		
+		Uri reminders = Uri.parse("content://com.android.calendar/reminders");
+		ContentResolver cr = context.getContentResolver();
+		ContentValues values1= new ContentValues();
+		values1.put( "event_id", eventId);
+		values1.put( "method", 1 );
+		values1.put( "minutes", 40 );
+		cr.insert( reminders, values1);
+		
+		
 
 	}
 
@@ -157,6 +170,11 @@ public class Calendar {
 				"true");
 		Uri uri1 = context.getContentResolver()
 				.insert(builder.build(), values1);
+		
+		
+
+		
+		
 
 	}
 	
@@ -186,9 +204,7 @@ public class Calendar {
 			    }
 			    
 			    
-			    Log.e("TEST", calName);
-			   // calId = managedCursor.getString(idColumn);
-			   // Log.e("", calId);
+			
 			 } while (managedCursor.moveToNext());
 		
 		
@@ -265,7 +281,8 @@ public class Calendar {
 				    
 				 } while (managedCursor.moveToNext());
 				}
-		
+			
+			Log.e("", String.valueOf(result));
 		return result;
 		
 		
