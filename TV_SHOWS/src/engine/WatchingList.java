@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,10 +20,13 @@ public class WatchingList {
 	TraktAPI api;
 	public JSONArray data;
 	public Vector<Tv_Show> tvshows;
+	public Activity a;
 
-	public WatchingList(Context context) throws InterruptedException,
+	public WatchingList(Context context, Activity a) throws InterruptedException,
 			ExecutionException, JSONException, ParseException {
 		this.context = context;
+		this.a=a;
+		
 		getArrayJSON();
 		makeVector();
 
@@ -34,7 +38,7 @@ public class WatchingList {
 		for (int i = 0; i < data.length(); i++) {
 			JSONObject object = data.getJSONObject(i);
 			String id = object.getString("tvdb_id");
-			Tv_Show tv = new Tv_Show(id,context);
+			Tv_Show tv = new Tv_Show(id,context,a);
 			tvshows.add(tv);
 
 		}

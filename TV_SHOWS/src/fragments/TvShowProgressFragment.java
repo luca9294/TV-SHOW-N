@@ -100,7 +100,7 @@ public class TvShowProgressFragment extends Fragment {
 				progress.setTextColor(Color.parseColor("#008000"));
 			}
 
-			Tv_Show show = new Tv_Show(code, context);
+			Tv_Show show = new Tv_Show(code, context, this.getActivity());
 
 			final Vector<Season> vector = show.getSeasons();
 

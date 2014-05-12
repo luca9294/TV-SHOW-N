@@ -63,8 +63,6 @@ public class Calendar {
 
 				calId = managedCursor.getString(idColumn);
 
-			
-
 				if (calName.equals("TV-SHOWS Calendar")) {
 
 					id = calId;
@@ -90,59 +88,60 @@ public class Calendar {
 
 	@SuppressWarnings("deprecation")
 	public void addToCalendar(Episode e) throws ParseException {
-		SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-		Date result = sdfDate.parse(e.first_aired_date);
+		if (this.isInCalendar(e) == false) {
+			SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd",
+					Locale.US);
+			Date result = sdfDate.parse(e.first_aired_date);
 
-		String year = e.first_aired_date.substring(0, 4);
-		String month = e.first_aired_date.substring(5, 7);
+			String year = e.first_aired_date.substring(0, 4);
+			String month = e.first_aired_date.substring(5, 7);
+			String day = e.first_aired_date.substring(8);
+			Log.e("year", year);
 
-		String day = e.first_aired_date.substring(8);
-		Log.e("year", year);
+			GregorianCalendar cal = new GregorianCalendar(
+					Integer.parseInt(year), Integer.parseInt(month) - 1,
+					Integer.parseInt(day));
 
-		GregorianCalendar cal = new GregorianCalendar(Integer.parseInt(year),
-				Integer.parseInt(month) - 1, Integer.parseInt(day));
-		
-	    //  "first_aired_iso":"2009-10-29T22:30:00-05:00",
-		
-		String complete = e.complete;
-		
-		complete = complete.substring(complete.indexOf("T") + 1);
-		
-		
-	
-		
-		cal.setTimeZone(TimeZone.getTimeZone("GMT" + complete.substring(8,11)));
-		cal.set(java.util.Calendar.HOUR, Integer.parseInt(complete.substring(0, 2)));
-		cal.set(java.util.Calendar.MINUTE, Integer.parseInt(complete.substring(3, 5)));
-		cal.set(java.util.Calendar.SECOND, 0);
-		cal.set(java.util.Calendar.MILLISECOND, 0);
-		long start = cal.getTimeInMillis();
-		ContentValues values = new ContentValues();
-		values.put(Events.DTSTART, start);
-		values.put(Events.DTEND, start);
-		values.put(Events.TITLE, e.title + " - " + e.show);
-		values.put(Events.CALENDAR_ID, id);
-		values.put(Events.EVENT_TIMEZONE, (TimeZone.getTimeZone("GMT" + complete.substring(8,11)).getID()));
-		values.put(Events.DESCRIPTION, "Channel: " + e.network + "\n" + e.overview);
-		// reasonable defaults exist:
-		values.put(Events.ACCESS_LEVEL, Events.ACCESS_PRIVATE);
+			// "first_aired_iso":"2009-10-29T22:30:00-05:00",
 
-		Uri uri = context.getContentResolver().insert(Events.CONTENT_URI,
-				values);
-		long eventId = new Long(uri.getLastPathSegment());
-		
-		
-		
-		Uri reminders = Uri.parse("content://com.android.calendar/reminders");
-		ContentResolver cr = context.getContentResolver();
-		ContentValues values1= new ContentValues();
-		values1.put( "event_id", eventId);
-		values1.put( "method", 1 );
-		values1.put( "minutes", 40 );
-		cr.insert( reminders, values1);
-		
-		
+			String complete = e.complete;
 
+			complete = complete.substring(complete.indexOf("T") + 1);
+
+			cal.setTimeZone(TimeZone.getTimeZone("GMT"
+					+ complete.substring(8, 11)));
+			cal.set(java.util.Calendar.HOUR,
+					Integer.parseInt(complete.substring(0, 2)));
+			cal.set(java.util.Calendar.MINUTE,
+					Integer.parseInt(complete.substring(3, 5)));
+			cal.set(java.util.Calendar.SECOND, 0);
+			cal.set(java.util.Calendar.MILLISECOND, 0);
+			long start = cal.getTimeInMillis();
+			ContentValues values = new ContentValues();
+			values.put(Events.DTSTART, start);
+			values.put(Events.DTEND, start);
+			values.put(Events.TITLE, e.title + " - " + e.show);
+			values.put(Events.CALENDAR_ID, id);
+			values.put(Events.EVENT_TIMEZONE, (TimeZone.getTimeZone("GMT"
+					+ complete.substring(8, 11)).getID()));
+			values.put(Events.DESCRIPTION, "Channel: " + e.network + "\n"
+					+ e.overview);
+			// reasonable defaults exist:
+			values.put(Events.ACCESS_LEVEL, Events.ACCESS_PRIVATE);
+
+			Uri uri = context.getContentResolver().insert(Events.CONTENT_URI,
+					values);
+			long eventId = new Long(uri.getLastPathSegment());
+
+			Uri reminders = Uri
+					.parse("content://com.android.calendar/reminders");
+			ContentResolver cr = context.getContentResolver();
+			ContentValues values1 = new ContentValues();
+			values1.put("event_id", eventId);
+			values1.put("method", 1);
+			values1.put("minutes", 600);
+			cr.insert(reminders, values1);
+		}
 	}
 
 	public void createCalendar() {
@@ -158,135 +157,108 @@ public class Calendar {
 		values1.put(Calendars.CALENDAR_DISPLAY_NAME, "TV-SHOWS Calendar");
 		values1.put(Calendars.CALENDAR_COLOR, 0x0066FF);
 		values1.put(Calendars.CALENDAR_ACCESS_LEVEL, Calendars.CAL_ACCESS_OWNER);
-		values1.put(Calendars.OWNER_ACCOUNT, "some.account@googlemail.com");
+		values1.put(Calendars.OWNER_ACCOUNT, "youraccount@gmail.com");
 		values1.put(Calendars.CALENDAR_TIME_ZONE, "USA/NewYork");
 		Uri.Builder builder = CalendarContract.Calendars.CONTENT_URI
 				.buildUpon();
-		builder.appendQueryParameter(Calendars.ACCOUNT_NAME,
-				"com.grokkingandroid");
+		builder.appendQueryParameter(Calendars.ACCOUNT_NAME, user);
 		builder.appendQueryParameter(Calendars.ACCOUNT_TYPE,
 				CalendarContract.ACCOUNT_TYPE_LOCAL);
 		builder.appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER,
 				"true");
 		Uri uri1 = context.getContentResolver()
 				.insert(builder.build(), values1);
-		
-		
-
-		
-		
 
 	}
-	
-	
-	public boolean isInCalendar(Episode e){
+
+	public boolean isInCalendar(Episode e) {
 		boolean result = false;
-		String[] projection = new String[] {"title" };
+		String[] projection = new String[] { "title" };
 		Uri calendars = Uri.parse("content://com.android.calendar/events");
-		     
-		Cursor managedCursor =
-		   a.managedQuery(calendars, projection,
-		   "calendar_id=5", null, null);
-		
-		if (managedCursor.moveToFirst()) {
-			 String calName;
-			 String calId; 
-			 int nameColumn = managedCursor.getColumnIndex("title"); 
-			
-		
-			 do {
-			    calName = managedCursor.getString(nameColumn);
-			    if (calName.equals(e.title + " - " + e.show)){
-			    	result = true;
-			    	break;
-			    
-			    
-			    }
-			    
-			    
-			
-			 } while (managedCursor.moveToNext());
-		
-		
-		
-		}
-		
-		
-		
-		return result;
-		
 
-}
-	
-	public void removeFromCalendar(Episode e){
-		int id = getIndexEpisode(e);
-		Uri uri = ContentUris.withAppendedId(Events.CONTENT_URI, id).buildUpon()
-		        .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
-		        .appendQueryParameter(Calendars.ACCOUNT_NAME, "com.grokkingandroid")
-		        .appendQueryParameter(Calendars.ACCOUNT_TYPE, CalendarContract.ACCOUNT_TYPE_LOCAL)
-		        .build();
-		    
-		    ContentProviderClient client = a.getContentResolver().acquireContentProviderClient(CalendarContract.AUTHORITY);
-		    try {
-				client.delete(uri, null, null);
-			} catch (RemoteException exception) {
-				// TODO Auto-generated catch block
-				exception.printStackTrace();
-			}
-		
-		    client.release();
-		
-		
-		
-		
-		
-		
-		
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public int getIndexEpisode(Episode e){
-		
-		int result = 0;
-		String[] projection = new String[] {"title", "_id" };
-		Uri calendars = Uri.parse("content://com.android.calendar/events");
-			     
-			Cursor managedCursor =
-			   a.managedQuery(calendars, projection,
-			   "calendar_id=5", null, null);
-			
-			if (managedCursor.moveToFirst()) {
-				 String calName;
-				 String calId; 
-				 int nameColumn = managedCursor.getColumnIndex("title"); 
-				
-				 int idColumn = managedCursor.getColumnIndex("_id");
-				 do {
-				    calName = managedCursor.getString(nameColumn);	
-				    calId = managedCursor.getString(idColumn);
-				
-				    if (calName.equals(e.title + " - " + e.show)){
-				    	result = Integer.parseInt(calId);
-				    	
-				    }
-				    
-				 } while (managedCursor.moveToNext());
+		Cursor managedCursor = a.managedQuery(calendars, projection,
+				"calendar_id=" + id, null, null);
+
+		if (managedCursor.moveToFirst()) {
+			String calName;
+			String calId;
+			int nameColumn = managedCursor.getColumnIndex("title");
+
+			do {
+				calName = managedCursor.getString(nameColumn);
+				if (calName.equals(e.title + " - " + e.show)) {
+					result = true;
+					break;
+
 				}
-			
-			Log.e("", String.valueOf(result));
+
+			} while (managedCursor.moveToNext());
+
+		}
+
 		return result;
-		
-		
+
 	}
-	
+
+	public void removeFromCalendar(Episode e) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+		String user = prefs.getString("user", "");
+
+		int id = getIndexEpisode(e);
+
+		Uri uri = ContentUris
+				.withAppendedId(Events.CONTENT_URI, id)
+				.buildUpon()
+				.appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER,
+						"true")
+				.appendQueryParameter(Calendars.ACCOUNT_NAME, user)
+				.appendQueryParameter(Calendars.ACCOUNT_TYPE,
+						CalendarContract.ACCOUNT_TYPE_LOCAL).build();
+
+		ContentProviderClient client = a.getContentResolver()
+				.acquireContentProviderClient(CalendarContract.AUTHORITY);
+		try {
+			client.delete(uri, null, null);
+		} catch (RemoteException exception) {
+			// TODO Auto-generated catch block
+			exception.printStackTrace();
+		}
+
+		client.release();
+
+	}
+
+	public int getIndexEpisode(Episode e) {
+
+		int result = 0;
+		String[] projection = new String[] { "title", "_id" };
+		Uri calendars = Uri.parse("content://com.android.calendar/events");
+
+		Cursor managedCursor = a.managedQuery(calendars, projection,
+				"calendar_id=" + id, null, null);
+
+		if (managedCursor.moveToFirst()) {
+			String calName;
+			String calId;
+			int nameColumn = managedCursor.getColumnIndex("title");
+
+			int idColumn = managedCursor.getColumnIndex("_id");
+			do {
+				calName = managedCursor.getString(nameColumn);
+				calId = managedCursor.getString(idColumn);
+
+				if (calName.equals(e.title + " - " + e.show)) {
+					result = Integer.parseInt(calId);
+					break;
+				}
+
+			} while (managedCursor.moveToNext());
+		}
+
+		Log.e("", String.valueOf(result));
+		return result;
+
+	}
 
 }

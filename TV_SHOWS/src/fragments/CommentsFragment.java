@@ -39,7 +39,7 @@ public class CommentsFragment extends Fragment {
 		Episode episode;
 		try {
 			episode = new Episode(id, code, season_n, this.getActivity()
-					.getApplicationContext());
+					.getApplicationContext(),this.getActivity());
 			episode.getEpisode();
 			episode.getComments();
 			Log.e("", episode.comments.toString());

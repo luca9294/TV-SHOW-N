@@ -59,7 +59,7 @@ public class EpisodeFragment extends Fragment {
 	String code;
 	Context context;
 	Episode episode;
-    boolean calendar;
+	boolean calendar;
 	boolean love;
 	boolean hate;
 
@@ -74,7 +74,7 @@ public class EpisodeFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		// load fragment and all its informations
-		
+
 		View rootView = inflater.inflate(R.layout.fragment_episode, container,
 				false);
 		setHasOptionsMenu(true);
@@ -86,7 +86,7 @@ public class EpisodeFragment extends Fragment {
 
 		try {
 			episode = new Episode(id, code, season_n, this.getActivity()
-					.getApplicationContext());
+					.getApplicationContext(), this.getActivity());
 			episode.getComments();
 
 			TextView season_n_e = (TextView) rootView
@@ -488,6 +488,9 @@ public class EpisodeFragment extends Fragment {
 						} catch (ExecutionException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
 						new MyDialogFragment11().show(getFragmentManager(),
 								"MyDialog");
@@ -505,6 +508,9 @@ public class EpisodeFragment extends Fragment {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
@@ -548,8 +554,7 @@ public class EpisodeFragment extends Fragment {
 		return rootView;
 
 	}
-	
-	
+
 	// loads option menu
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -557,143 +562,116 @@ public class EpisodeFragment extends Fragment {
 		inflater.inflate(R.menu.main_activity3, menu);
 
 	}
-	
-	
+
+	// checks if episode has already been added to the calendar
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		// menu.removeItem(R.id.action_like)
 		Calendar c = new Calendar(context, this.getActivity());
-		if (c.isInCalendar(episode)){
+		if (c.isInCalendar(episode)) {
 			calendar = true;
-			menu.findItem(R.id.selection).setTitle(
-					"Remove from the calendar");
-			
-		}
-		else{
+			menu.findItem(R.id.selection).setTitle("Remove from the calendar");
+
+		} else {
 			calendar = false;
-			menu.findItem(R.id.selection).setTitle(
-					"Add to the calendar");
-			
+			menu.findItem(R.id.selection).setTitle("Add to the calendar");
+
 		}
-		
-		
-		
+
 	}
-	
-	
-	
-	
+
 	// handles selection of an option item
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
 
-			SharedPreferences prefs = PreferenceManager
-					.getDefaultSharedPreferences(context);
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
 
-			String user = prefs.getString("user", "");
-			String pass = prefs.getString("passed", "");
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("passed", "");
 
-			// Handles item selection
-			switch (item.getItemId()) {
+		// Handles item selection
+		switch (item.getItemId()) {
 
-			// if like and dislike buttons are selected
-			case R.id.selection:
+		// if add to/remove from calendar buttons are pressed 
+		case R.id.selection:
 			Calendar c = new Calendar(context, this.getActivity());
-				try {
-					if(episode.isFuture()){	
-					
-					if (!calendar){
+			try {
+				if (episode.isFuture()) {
+
+					if (!calendar) {
 						try {
 							c.addToCalendar(episode);
 						} catch (ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						
+
 						new MyDialogFragment1().show(getFragmentManager(),
 								"MyDialog");
 
-						}
-					
-					
-					else{
+					}
+
+					else {
 						c.removeFromCalendar(episode);
 						new MyDialogFragment0().show(getFragmentManager(),
 								"MyDialog");
 
-						
-						
-						
 					}
-					
-					}
-					else{
-						
-						new MyDialogFragment111().show(getFragmentManager(),
-								"MyDialog");
 
-						
-						
-					}
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} else {
+
+					new MyDialogFragment111().show(getFragmentManager(),
+							"MyDialog");
+
 				}
-			
-			
-			
-			
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
-			
-			
-			
-			return true;}
+
+		}
+
+		return true;
+	}
 
 	// dialog fragments
-		public class MyDialogFragment0 extends DialogFragment {
+	public class MyDialogFragment0 extends DialogFragment {
 
-			@Override
-			public Dialog onCreateDialog(Bundle savedInstanceState) {
-				return new AlertDialog.Builder(getActivity())
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
 
-				.setMessage("The episode has been removed from the Calendar")
-						.setPositiveButton("Ok", null).create();
-			}
-
+			.setMessage("The episode has been removed from the Calendar")
+					.setPositiveButton("Ok", null).create();
 		}
-		
-		
 
-		public class MyDialogFragment111 extends DialogFragment {
+	}
 
-			@Override
-			public Dialog onCreateDialog(Bundle savedInstanceState) {
-				return new AlertDialog.Builder(getActivity())
+	public class MyDialogFragment111 extends DialogFragment {
 
-				.setMessage("This episode has already been broadcoast! ")
-						.setPositiveButton("Ok", null).create();
-			}
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
 
+			.setMessage("This episode has already been broadcast! ")
+					.setPositiveButton("Ok", null).create();
 		}
-		
-		
-		public class MyDialogFragment1 extends DialogFragment {
 
-			@Override
-			public Dialog onCreateDialog(Bundle savedInstanceState) {
-				return new AlertDialog.Builder(getActivity())
+	}
 
-				.setMessage("The episode has been added to the Calendar")
-						.setPositiveButton("Ok", null).create();
-			}
+	public class MyDialogFragment1 extends DialogFragment {
 
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("The episode has been added to the Calendar")
+					.setPositiveButton("Ok", null).create();
 		}
-		
-		
-		
-		
-		
+
+	}
+
 	public class MyDialogFragment2 extends DialogFragment {
 
 		@Override

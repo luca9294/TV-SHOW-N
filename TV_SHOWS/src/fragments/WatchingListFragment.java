@@ -1,6 +1,5 @@
 package fragments;
 
-
 import info.androidhive.slidingmenu.R;
 import info.androidhive.slidingmenu.R.id;
 import info.androidhive.slidingmenu.R.layout;
@@ -26,7 +25,7 @@ import engine.WatchingList;
 import fragments.SeasonProgressFragment.MyDialogFragment2;
 import adapters.ExpandableListAdapter;
 import adapters.SearchAdapter;
-
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -57,7 +56,7 @@ import android.widget.Toast;
 
 public class WatchingListFragment extends Fragment {
 	TraktAPI api;
-	Vector<TvShow_result> string; 
+	Vector<TvShow_result> string;
 	ExpandableListAdapter listAdapter;
 	ExpandableListView expListView;
 	List<String> listDataHeader;
@@ -67,7 +66,8 @@ public class WatchingListFragment extends Fragment {
 	Context context;
 	int position, position2;
 	Fragment fragment;
-	
+	Activity a;
+
 	public WatchingListFragment() {
 	}
 
@@ -75,126 +75,102 @@ public class WatchingListFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		a = this.getActivity();
 		View rootView = inflater.inflate(R.layout.fragment_watching, container,
 				false);
 		listDataChild = new HashMap<String, List<String>>();
 		String mySeenList = "MyWatchingList";
-	
-		DataGrabber3 data2 = new DataGrabber3(this.getActivity().getApplicationContext());
+
+		DataGrabber3 data2 = new DataGrabber3(this.getActivity()
+				.getApplicationContext());
 		data2.execute();
-		string= new Vector<TvShow_result>();
+		string = new Vector<TvShow_result>();
 		context = this.getActivity().getApplicationContext();
 		fragment = this;
-			try {
-				JSONArray array;
-				array = data2.get();
-				for (int i = 0; i < array.length(); i++){
-					JSONObject object = array.getJSONObject(i);
-					String code = object.getString("tvdb_id");
-					codes.add(code);
-					TvShow_result show = new TvShow_result(code, this.getActivity().getApplicationContext());
-				
+		try {
+			JSONArray array;
+			array = data2.get();
+			for (int i = 0; i < array.length(); i++) {
+				JSONObject object = array.getJSONObject(i);
+				String code = object.getString("tvdb_id");
+				codes.add(code);
+				TvShow_result show = new TvShow_result(code, this.getActivity()
+						.getApplicationContext());
+
+				show.getEpisodesWatching();
+				string.add(show);
+
+				listDataChild.put(show.id, show.episodesVector);
+
+			}
+
+			DataGrabber4 data1 = new DataGrabber4(this.getActivity()
+					.getApplicationContext());
+			data1.execute();
+
+			JSONArray array1;
+			array1 = data1.get();
+
+			for (int i = 0; i < array1.length(); i++) {
+				JSONObject object = array1.getJSONObject(i);
+				String code = object.getString("tvdb_id");
+				TvShow_result show = new TvShow_result(code, this.getActivity()
+						.getApplicationContext());
+
+				if (!codes.contains(code)) {
 					show.getEpisodesWatching();
 					string.add(show);
-					
-					listDataChild.put(show.id, show.episodesVector);
-					
-					
+					List<String> d = new Vector<String>();
+
+					listDataChild.put(show.id, d);
+
 				}
-				
 
-				DataGrabber4 data1 = new DataGrabber4(this.getActivity().getApplicationContext());
-				data1.execute();
-			
-				JSONArray array1;
-				array1 = data1.get();
-					
-					
-					
-					for (int i = 0; i < array1.length(); i++){
-						JSONObject object = array1.getJSONObject(i);
-						String code = object.getString("tvdb_id");
-						TvShow_result show = new TvShow_result(code, this.getActivity().getApplicationContext());
-					   
-						if (!codes.contains(code)){
-						show.getEpisodesWatching();
-						string.add(show);
-						List <String> d = new Vector <String>(); 
-				
-						listDataChild.put(show.id, d);
-					
-						}
-						
-						
-						
 			}
-				
-				
-				
-				
-				
-				
-				
-				
-				
-			   listAdapter = new ExpandableListAdapter( this.getActivity().getApplicationContext(),string,listDataChild);
-			   expListView = (ExpandableListView) rootView.findViewById(R.id.lvExp);
-			
-			
-	
 
-		
+			listAdapter = new ExpandableListAdapter(this.getActivity()
+					.getApplicationContext(), string, listDataChild);
+			expListView = (ExpandableListView) rootView
+					.findViewById(R.id.lvExp);
+
 			expListView.setAdapter(listAdapter);
-			expListView.setOnChildClickListener(new OnChildClickListener(){
+			expListView.setOnChildClickListener(new OnChildClickListener() {
 
 				@Override
 				public boolean onChildClick(ExpandableListView parent, View v,
-				int groupPosition, int childPosition, long id) {
-				
-				position = groupPosition;
-				position2 = childPosition;
-				
-				new MyDialogFragment2().show(getFragmentManager(),
-						"MyDialog");
-				
-				
-				
-				return false;
-	
-				}});
-			
-			
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			
-			
-		
-		
+						int groupPosition, int childPosition, long id) {
+
+					position = groupPosition;
+					position2 = childPosition;
+
+					new MyDialogFragment2().show(getFragmentManager(),
+							"MyDialog");
+
+					return false;
+
+				}
+			});
+
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		this.getActivity().setTitle(mySeenList);
 
-
-
 		return rootView;
-			
-	}
-	
-	
-	
 
-	
-	
+	}
+
 	private class DataGrabber3 extends AsyncTask<String, Void, JSONArray> {
 		private ProgressDialog progressdialog;
 		private Context parent;
@@ -214,28 +190,23 @@ public class WatchingListFragment extends Fragment {
 
 		@Override
 		protected JSONArray doInBackground(String... params) {
-			
+
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(parent);
 
 			String user = prefs.getString("user", "");
 			api = new TraktAPI(parent);
 			data = new JSONArray();
-			
-			
-			
-			data = api.getDataArrayFromJSON("user/watchlist/episodes.json/%k/" + user, false);
-		
+
+			data = api.getDataArrayFromJSON("user/watchlist/episodes.json/%k/"
+					+ user, false);
 
 			return data;
-			
-			
 
 		}
 
 	}
-	
-	
+
 	class DataGrabber4 extends AsyncTask<String, Void, JSONArray> {
 		private ProgressDialog progressdialog;
 		private Context parent;
@@ -255,35 +226,31 @@ public class WatchingListFragment extends Fragment {
 
 		@Override
 		protected JSONArray doInBackground(String... params) {
-			
+
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(parent);
 
 			String user = prefs.getString("user", "");
 			api = new TraktAPI(parent);
 			data = new JSONArray();
-			
-			
-			
-			data = api.getDataArrayFromJSON("user/watchlist/shows.json/%k/" + user, false);
-		
+
+			data = api.getDataArrayFromJSON("user/watchlist/shows.json/%k/"
+					+ user, false);
 
 			return data;
-			
-			
 
 		}
 
 	}
-	
-	
+
 	public class MyDialogFragment2 extends DialogFragment {
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			return new AlertDialog.Builder(getActivity())
 
-					.setMessage("Do you confirm to remove \nthe episode from your WatchList")
+					.setMessage(
+							"Do you confirm to remove \nthe episode from your WatchList")
 					.setNegativeButton("Confirm",
 							new DialogInterface.OnClickListener() {
 
@@ -292,22 +259,31 @@ public class WatchingListFragment extends Fragment {
 										int which) {
 									try {
 
-										TvShow_result tvr = string.get(position);
+										TvShow_result tvr = string
+												.get(position);
 										tvr.getEpisodesWatching();
 
-										String str = tvr.episodesVector.get(position2);
-										str = str.replace("<b>", "").replace("</b>", "").replace("<br>", "").replace("</br>", "");
+										String str = tvr.episodesVector
+												.get(position2);
+										str = str.replace("<b>", "")
+												.replace("</b>", "")
+												.replace("<br>", "")
+												.replace("</br>", "");
 
-										String idFinal = ""+str.charAt(1)+str.charAt(2);
+										String idFinal = "" + str.charAt(1)
+												+ str.charAt(2);
 										idFinal = idFinal.replace(" ", "");
 
-										String season_nFinal = ""+str.charAt(str.length()-2)+str.charAt(str.length()-1);
-										season_nFinal = season_nFinal.replace(" ","");
+										String season_nFinal = ""
+												+ str.charAt(str.length() - 2)
+												+ str.charAt(str.length() - 1);
+										season_nFinal = season_nFinal.replace(
+												" ", "");
 
-								
-										Episode e = new Episode(idFinal, tvr.id, season_nFinal, context);
+										Episode e = new Episode(idFinal,
+												tvr.id, season_nFinal, context, a);
 										e.addToWatching(true, null);
-										
+
 										FragmentTransaction ft = getFragmentManager()
 												.beginTransaction();
 										ft.detach(fragment);
@@ -333,10 +309,4 @@ public class WatchingListFragment extends Fragment {
 		}
 	}
 
-	
-	
-	
-	
-	
-	
 }

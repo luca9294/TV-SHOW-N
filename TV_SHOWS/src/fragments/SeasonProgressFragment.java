@@ -83,7 +83,7 @@ public class SeasonProgressFragment extends Fragment {
 				}
 			}).start();
 			season = new Season(id, null, null, code, this.getActivity()
-					.getApplicationContext());
+					.getApplicationContext(), this.getActivity());
 			season.getEpisodes();
 			TextView title = (TextView) rootView
 					.findViewById(R.id.season_title);

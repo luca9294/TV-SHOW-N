@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import engine.Episode.DataGrabber3;
 import engine.Episode.DataGrabber4;
 import engine.Episode.DataGrabber5;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -38,6 +39,7 @@ public class Tv_Show {
 	public String seasons_n;
 	public boolean in_watching, loves, hates;
 	private JSONObject seen, watch, rate;
+	public Activity a;
 
 	JSONObject summary;
 	JSONArray season;
@@ -46,10 +48,12 @@ public class Tv_Show {
 
 	public Vector<Season> seasons;
 
-	public Tv_Show(String title, Context context) throws InterruptedException,
+	public Tv_Show(String title, Context context, Activity a) throws InterruptedException,
 			ExecutionException, JSONException, ParseException {
 		this.title = title;
 		this.context = context;
+		this.a = a;
+		
 		getTvShowJSON();
 		hates = false;
 		loves = false;
@@ -121,7 +125,7 @@ public class Tv_Show {
 			String id = object.getString("season");
 			String episodes = object.getString("episodes");
 			String image = object.getJSONObject("images").getString("poster");
-			Season s = new Season(id, episodes, image, title, context);
+			Season s = new Season(id, episodes, image, title, context,a);
 			seasons.add(s);
 
 		}

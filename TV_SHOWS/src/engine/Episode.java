@@ -19,6 +19,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.*;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -30,16 +31,17 @@ public class Episode {
 
 	private TraktAPI api;
 	public String id, season_n, title, first_aired_date, overview, image,
-			percentage, code, rating, show,network,complete;
+			percentage, code, rating, show, network, complete;
 	public boolean love, hate, watched, wish;
 	private JSONObject rate, seen, watching;
 	public Vector<Comment> comments = new Vector<Comment>();
 	public Context parent;
+	public Activity a;
 
 	public Episode(String id, String season_n, String title,
 			String first_aired_date, String overview, String image,
 			String percentage, String code, Context parent, boolean watched,
-			boolean wish) {
+			boolean wish, Activity a) {
 		this.id = id;
 		this.season_n = season_n;
 		this.title = title;
@@ -51,16 +53,19 @@ public class Episode {
 		this.parent = parent;
 		this.watched = watched;
 		this.wish = wish;
+		this.a = a;
 		love = false;
 		hate = false;
 	}
 
-	public Episode(String id, String code, String season_n, Context parent)
-			throws InterruptedException, ExecutionException, JSONException {
+	public Episode(String id, String code, String season_n, Context parent,
+			Activity a) throws InterruptedException, ExecutionException,
+			JSONException {
 		this.id = id;
 		this.code = code;
 		this.season_n = season_n;
 		this.parent = parent;
+		this.a = a;
 
 		getEpisode();
 
@@ -76,9 +81,9 @@ public class Episode {
 		String strCurrDate = sdfDate.format(now);
 
 		Date currentDate;
-		
+
 		Date result = sdfDate.parse(first_aired_date);
-		
+
 		currentDate = sdfDate.parse(strCurrDate);
 
 		if (currentDate.before(result)) {
@@ -127,8 +132,7 @@ public class Episode {
 		show = object.getJSONObject("show").getString("title");
 		network = object.getJSONObject("show").getString("network");
 		title = object.getJSONObject("episode").getString("title");
-		complete = object.getJSONObject("episode")
-				.getString("first_aired_iso");
+		complete = object.getJSONObject("episode").getString("first_aired_iso");
 		first_aired_date = object.getJSONObject("episode")
 				.getString("first_aired_iso").replace("T", " ");
 		if (first_aired_date.length() > 10) {
@@ -270,7 +274,7 @@ public class Episode {
 	}
 
 	public void addToWatching(boolean w, JSONObject o) throws JSONException,
-			InterruptedException, ExecutionException {
+			InterruptedException, ExecutionException, ParseException {
 
 		if (o == null) {
 
@@ -293,20 +297,29 @@ public class Episode {
 			array.put(object);
 			watching.put("episodes", array);
 
-			DataGrabber5 grabber = new DataGrabber5(w);
+			DataGrabber5 grabber = new DataGrabber5(w, this);
 
 			grabber.execute();
 			grabber.get();
+			
+			if(w == false){
+				Calendar c = new Calendar(parent, a);
+				c.addToCalendar(this);
+			}else{
+				Calendar c = new Calendar(parent, a);
+				c.removeFromCalendar(this);
+			}
 		}
 
 		else {
 			watching = new JSONObject();
 			watching = o;
 
-			DataGrabber5 grabber = new DataGrabber5(w);
+			DataGrabber5 grabber = new DataGrabber5(w, this);
 
 			grabber.execute();
 			grabber.get();
+
 		}
 
 	}
@@ -556,9 +569,11 @@ public class Episode {
 		private String id;
 		private JSONObject data;
 		private boolean w;
+		private Episode e;
 
-		public DataGrabber5(boolean w) {
+		public DataGrabber5(boolean w, Episode e) {
 			this.w = w;
+			this.e = e;
 		}
 
 		@Override
@@ -576,6 +591,7 @@ public class Episode {
 					data = getDataFromJSON(
 							"http://api.trakt.tv/show/episode/watchlist/361cd031c2473b06997c87c25ec9c057",
 							true, "", watching);
+
 				} else {
 					data = getDataFromJSON(
 							"http://api.trakt.tv/show/episode/unwatchlist/361cd031c2473b06997c87c25ec9c057",

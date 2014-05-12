@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import engine.Episode.DataGrabber4;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -40,15 +41,17 @@ public class Season {
 	public boolean watched, wish;
 	public boolean watchedn;
 	private JSONObject seen;
+	public Activity a;
 
 	public Season(String id, String n_episode, String image, String code,
-			Context parent) throws InterruptedException, ExecutionException,
+			Context parent, Activity a) throws InterruptedException, ExecutionException,
 			JSONException {
 		this.id = id;
 		this.n_episode = n_episode;
 		this.image = image;
 		this.code = code;
 		this.parent = parent;
+		this.a=a;
 
 		// getEpisodes();
 	}
@@ -121,14 +124,14 @@ public class Season {
 				if (user.isEmpty()) {
 					Episode e = new Episode(id_e, id, title, first_aired,
 							overview, image, percentage, code, parent, false,
-							false);
+							false,a);
 					episodes.add(e);
 
 				} else {
 
 					Episode e = new Episode(id_e, id, title, first_aired,
 							overview, image, percentage, code, parent, true,
-							true);
+							true,a);
 					episodes.add(e);
 				}
 
@@ -136,14 +139,14 @@ public class Season {
 				if (user.isEmpty()) {
 					Episode e = new Episode(id_e, id, title, first_aired,
 							overview, image, percentage, code, parent, false,
-							false);
+							false,a);
 					episodes.add(e);
 
 				} else {
 
 					Episode e = new Episode(id_e, id, title, first_aired,
 							overview, image, percentage, code, parent,
-							watchedn, wish);
+							watchedn, wish,a);
 					episodes.add(e);
 				}
 			}
@@ -187,7 +190,7 @@ public class Season {
 
 			String season = object.getString("season");
 		
-				Episode e = new Episode(id1, code, season, parent);
+				Episode e = new Episode(id1, code, season, parent,a);
 				inWacthList.add(e);
 
 			
@@ -288,7 +291,7 @@ public class Season {
 	}
 
 	public void addToWatch(boolean bol) throws JSONException,
-			InterruptedException, ExecutionException {
+			InterruptedException, ExecutionException, ParseException {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(parent);
 		String user = prefs.getString("user", "");
@@ -305,6 +308,16 @@ public class Season {
 			object.put("season", episodes.get(i).season_n);
 			object.put("episode", episodes.get(i).id);
 			array.put(object);
+			Calendar c = new Calendar(parent, a);
+			if(bol == false){
+					Episode e = episodes.get(i);
+					e.getEpisode();
+					c.addToCalendar(e);
+			}else{
+				Episode e = episodes.get(i);
+				e.getEpisode();
+				c.removeFromCalendar(episodes.get(i));
+			}
 
 		}
 		seen.put("episodes", array);

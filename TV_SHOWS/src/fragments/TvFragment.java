@@ -88,7 +88,7 @@ public class TvFragment extends Fragment {
 
 		try {
 
-			prova = new Tv_Show(toSearch, getActivity().getApplicationContext());
+			prova = new Tv_Show(toSearch, getActivity().getApplicationContext(), this.getActivity());
 			loves = prova.loves;
 			hates = prova.hates;
 			getActivity().setTitle(prova.title_n);

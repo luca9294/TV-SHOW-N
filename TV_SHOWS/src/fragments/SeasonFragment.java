@@ -73,7 +73,7 @@ public class SeasonFragment extends Fragment {
 		setHasOptionsMenu(true);
 		try {
 			season = new Season(id, n_episode, image, code, this.getActivity()
-					.getApplicationContext());
+					.getApplicationContext(), this.getActivity());
 
 			try {
 				season.getEpisodes();
@@ -285,6 +285,9 @@ public class SeasonFragment extends Fragment {
 						} catch (ExecutionException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
 						new MyDialogFragment2().show(getFragmentManager(),
 								"MyDialog");
@@ -316,6 +319,9 @@ public class SeasonFragment extends Fragment {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (ExecutionException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
