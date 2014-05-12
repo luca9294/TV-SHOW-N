@@ -17,6 +17,7 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import android.widget.EditText;
 
 public class LoginFragment extends Fragment {
 	private Context contextN;
+	public Activity a;
 
 	public LoginFragment() {
 	}
@@ -36,12 +38,17 @@ public class LoginFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
+		a = this.getActivity();
+		
 		View rootView = inflater.inflate(R.layout.fragment_login, container,
 				false);
 
 		final EditText user = (EditText) rootView.findViewById(R.id.user);
 		final EditText pass = (EditText) rootView.findViewById(R.id.passwd);
+		
 		Button button = (Button) rootView.findViewById(R.id.login);
+		Button button2 = (Button) rootView.findViewById(R.id.signup);
+		
 		final Context context = this.getActivity().getApplicationContext();
 		contextN = this.getActivity().getApplicationContext();
 		;
@@ -65,8 +72,6 @@ public class LoginFragment extends Fragment {
 
 						new MyDialogFragment2().show(getFragmentManager(),
 								"MyDialog");
-
-						Log.e("", "GIUSTO");
 					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -81,6 +86,16 @@ public class LoginFragment extends Fragment {
 
 			}
 
+		});
+		
+		button2.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://trakt.tv"));
+				a.startActivity(browserIntent);
+			}
+			
 		});
 
 		this.getActivity().setTitle("LOGIN");
