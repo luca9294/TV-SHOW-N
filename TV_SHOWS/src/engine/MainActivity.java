@@ -22,6 +22,7 @@ import org.json.JSONException;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -225,7 +226,10 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 			//fragment = new CopyOfLoginFragment();
 			break;
 		case 4:
-			fragment = new LoginFragment();
+			Intent i = new Intent();
+			ComponentName cn = new ComponentName("com.android.calendar", "com.android.calendar.LaunchActivity");
+			i.setComponent(cn);
+			startActivity(i);
 			break;
 		case 5:
 
