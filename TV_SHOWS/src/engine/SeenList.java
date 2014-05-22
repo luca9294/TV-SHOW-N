@@ -46,7 +46,7 @@ public class SeenList {
 		String user = prefs.getString("user", "");
 
 		if (!user.isEmpty()) {
-			Log.e("", "DONO NELL IF");
+			Log.e("", "SONO NELL IF");
 			for (int i = 0; i < data.length(); i++) {
 				JSONObject object = data.getJSONObject(i);
 				String title_n = object.getString("title");

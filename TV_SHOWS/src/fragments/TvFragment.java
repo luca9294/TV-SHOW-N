@@ -35,6 +35,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import engine.Calendar;
+import engine.Episode;
 import engine.MyDatabase;
 import engine.Season;
 import engine.Tv_Show;
@@ -64,23 +65,21 @@ public class TvFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-a = this.getActivity();
+
+		a = this.getActivity();
 		setHasOptionsMenu(true);
 
 		this.getActivity().setTitle("SUGGESTIONS");
-	
+
 		View rootView = inflater
 				.inflate(R.layout.tv_fragment, container, false);
 		context = this.getActivity().getApplicationContext();
 		Bundle bundle = getArguments();
 
 		String toSearch = bundle.getString("toSearch");
-		id = Integer.parseInt(    toSearch);
+		id = Integer.parseInt(toSearch);
 		String[] strings;
-		
 
-		
-		
 		// TextView title =(TextView)findViewById(R.id.title);
 		TextView premiere = (TextView) rootView.findViewById(R.id.premiere);
 		TextView country = (TextView) rootView.findViewById(R.id.country);
@@ -93,7 +92,8 @@ a = this.getActivity();
 
 		try {
 
-			prova = new Tv_Show(toSearch, getActivity().getApplicationContext(), this.getActivity());
+			prova = new Tv_Show(toSearch,
+					getActivity().getApplicationContext(), this.getActivity());
 			loves = prova.loves;
 			hates = prova.hates;
 			getActivity().setTitle(prova.title_n);
@@ -343,9 +343,9 @@ a = this.getActivity();
 				}
 
 			}
-		break;
+			break;
 
-			// if UNRATE item is selected
+		// if UNRATE item is selected
 		case R.id.action_unrate:
 			if (user.isEmpty()) {
 				new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
@@ -371,34 +371,75 @@ a = this.getActivity();
 				ft.detach(this);
 				ft.attach(this);
 				ft.commit();
-				
+
 			}
 			break;
 
-			// if SEEN LIST item is selected
+		// if SEEN LIST item is selected
 		case R.id.action_seenlist: // dialog 2
 
 			if (user.isEmpty()) {
-				
-				MyDatabase db = new MyDatabase(context, a);
-				db.insertTvShows(id);
-		
-				db.print();
-				new MyDialogFragment3().show(getFragmentManager(),
-						"MyDialog");
-				
-				
-				break;
-				
-				
-				//prova.addToSeen(seenBool, null);
 
-			/*	FragmentTransaction ft = getFragmentManager()
-						.beginTransaction();
-				ft.detach(this);
-				ft.attach(this);
-				ft.commit();*/
-				
+				MyDatabase db = new MyDatabase(context, a);
+				seenBool = db.containsTvShow(id);
+
+				if (!seenBool) {
+
+					db.insertTvShows(id);
+					db.print();
+					new MyDialogFragment3().show(getFragmentManager(),
+							"MyDialog");
+
+					Tv_Show show;
+
+					try {
+						show = new Tv_Show(String.valueOf(id), context, a);
+						for (Season se : show.getSeasons()) {
+							se.getEpisodes();
+							for (Episode e : se.episodes) {
+								db.insertEpisodes(e.title,
+										Integer.parseInt(e.season_n),
+										Integer.parseInt(e.id), id);
+
+							}
+
+						}
+						new MyDialogFragment3().show(getFragmentManager(),
+								"MyDialog");
+						db.print();
+
+						break;
+
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (ExecutionException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (JSONException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (ParseException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else {
+					db.deleteTvShow(id);
+					db.print();
+					new MyDialogFragment4().show(getFragmentManager(),
+							"MyDialog");
+
+					break;
+				}
+
+				// prova.addToSeen(seenBool, null);
+
+				/*
+				 * FragmentTransaction ft = getFragmentManager()
+				 * .beginTransaction(); ft.detach(this); ft.attach(this);
+				 * ft.commit();
+				 */
+
 			}
 
 			else {
@@ -475,7 +516,7 @@ a = this.getActivity();
 					// seen.setTextColor(Color.WHITE);
 					seenBool = false;
 				}
-				
+
 				break;
 			}
 
@@ -527,21 +568,28 @@ a = this.getActivity();
 				ft.attach(this);
 				ft.commit();
 
-			break;
+				break;
 			}
 
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 
-	return true;
+		return true;
 	}
 
 	// changes names of the option menu
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		// menu.removeItem(R.id.action_like)
+
+		MyDatabase db = new MyDatabase(context, a);
 		if (isSeen()) {
+			menu.findItem(R.id.action_seenlist).setTitle(
+					"Remove from seen list");
+		}
+
+		if (db.containsTvShow(id)) {
 			menu.findItem(R.id.action_seenlist).setTitle(
 					"Remove from seen list");
 		}
@@ -663,7 +711,7 @@ a = this.getActivity();
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			return new AlertDialog.Builder(getActivity())
 
-			.setMessage("Show removed to the Watchlist")
+			.setMessage("Show removed from the Watchlist")
 					.setPositiveButton("Ok", null).create();
 		}
 

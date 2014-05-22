@@ -11,7 +11,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import engine.MyDatabase;
 import engine.TraktAPI;
 
 import adapters.CustomAdapter;
