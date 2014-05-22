@@ -4,6 +4,7 @@ import info.androidhive.slidingmenu.R;
 import info.androidhive.slidingmenu.R.id;
 import info.androidhive.slidingmenu.R.layout;
 
+import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
@@ -45,6 +46,7 @@ public class SeenListFragment extends Fragment {
 
 		try {
 			seenList = new SeenList(this.getActivity().getApplicationContext());
+			
 			SearchAdapter adapter = new SearchAdapter(seenList.getResults(),
 					this.getActivity().getApplicationContext(),
 					this.getFragmentManager());
@@ -80,6 +82,9 @@ public class SeenListFragment extends Fragment {
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		return rootView;

@@ -35,6 +35,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import engine.Calendar;
+import engine.MyDatabase;
 import engine.Season;
 import engine.Tv_Show;
 import fragments.EpisodeFragment.MyDialogFragment10;
@@ -50,6 +51,9 @@ public class TvFragment extends Fragment {
 	public boolean watchBool = false;
 	public boolean loves = false;
 	public boolean hates = false;
+	MyDatabase db;
+	Activity a;
+	int id;
 
 	Vector<Season> vector;
 	private Menu menu;
@@ -60,7 +64,7 @@ public class TvFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+a = this.getActivity();
 		setHasOptionsMenu(true);
 
 		this.getActivity().setTitle("SUGGESTIONS");
@@ -71,6 +75,7 @@ public class TvFragment extends Fragment {
 		Bundle bundle = getArguments();
 
 		String toSearch = bundle.getString("toSearch");
+		id = Integer.parseInt(    toSearch);
 		String[] strings;
 		
 
@@ -338,7 +343,7 @@ public class TvFragment extends Fragment {
 				}
 
 			}
-			return true;
+		break;
 
 			// if UNRATE item is selected
 		case R.id.action_unrate:
@@ -366,15 +371,30 @@ public class TvFragment extends Fragment {
 				ft.detach(this);
 				ft.attach(this);
 				ft.commit();
-
+				
 			}
-			return true;
+			break;
 
 			// if SEEN LIST item is selected
 		case R.id.action_seenlist: // dialog 2
 
 			if (user.isEmpty()) {
-				new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
+				
+				MyDatabase db = new MyDatabase(context, a);
+				db.insertTvShows(id);
+				new MyDialogFragment3().show(getFragmentManager(),
+						"MyDialog");
+				break;
+				
+				
+				//prova.addToSeen(seenBool, null);
+
+			/*	FragmentTransaction ft = getFragmentManager()
+						.beginTransaction();
+				ft.detach(this);
+				ft.attach(this);
+				ft.commit();*/
+				
 			}
 
 			else {
@@ -451,8 +471,8 @@ public class TvFragment extends Fragment {
 					// seen.setTextColor(Color.WHITE);
 					seenBool = false;
 				}
-
-				return true;
+				
+				break;
 			}
 
 			// if WATCHLIST item is selected
@@ -503,13 +523,14 @@ public class TvFragment extends Fragment {
 				ft.attach(this);
 				ft.commit();
 
-				return true;
+			break;
 			}
 
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 
+	return true;
 	}
 
 	// changes names of the option menu

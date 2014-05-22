@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import engine.MyDatabase;
 import engine.TraktAPI;
 
 import adapters.CustomAdapter;
@@ -39,7 +40,7 @@ public class HomeFragment extends Fragment {
 
 		View rootView = inflater.inflate(R.layout.fragment_home, container,
 				false);
-
+	
 		ListView listView = (ListView) rootView.findViewById(R.id.sample);
 		CustomAdapter customAdapter;
 

@@ -1,5 +1,6 @@
 package engine;
 
+import java.text.ParseException;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
@@ -7,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,37 +22,60 @@ public class SeenList {
 	public Vector<Search_result> vector;
 
 	public SeenList(Context context) throws InterruptedException,
-			ExecutionException, JSONException {
+			ExecutionException, JSONException, ParseException {
 		this.context = context;
 		getArrayJSON();
 		makeVector();
 
 	}
 
-	public void makeVector() throws JSONException {
+	public void makeVector() throws JSONException, InterruptedException, ExecutionException, ParseException {
 		vector = new Vector<Search_result>();
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
 
-		for (int i = 0; i < data.length(); i++) {
-			JSONObject object = data.getJSONObject(i);
-			String title_n = object.getString("title");
-			String country = object.getString("country");
-			String year = object.getString("year");
-			String poster = object.getJSONObject("images").getString("poster");
-			String status = object.getString("status");
-			boolean ended = false;
-			if (status.equals("Ended")) {
-				ended = true;
+		String user = prefs.getString("user", "");
+
+		if (!user.isEmpty()) {
+			for (int i = 0; i < data.length(); i++) {
+				JSONObject object = data.getJSONObject(i);
+				String title_n = object.getString("title");
+				String country = object.getString("country");
+				String year = object.getString("year");
+				String poster = object.getJSONObject("images").getString(
+						"poster");
+				String status = object.getString("status");
+				boolean ended = false;
+				if (status.equals("Ended")) {
+					ended = true;
+				}
+				JSONArray array = object.getJSONArray("genres");
+				String id = object.getString("tvdb_id");
+
+				poster = poster.replace(".jpg", "-300.jpg");
+				Search_result result = new Search_result(title_n, year,
+						country, poster, array, id, ended);
+
+				vector.add(result);
+
 			}
-			JSONArray array = object.getJSONArray("genres");
-			String id = object.getString("tvdb_id");
-
-			poster = poster.replace(".jpg", "-300.jpg");
-			Search_result result = new Search_result(title_n, year, country,
-					poster, array, id, ended);
-
-			vector.add(result);
-
 		}
+
+		else {
+			MyDatabase db = new MyDatabase(context,new Activity());
+			for (Tv_Show show : db.getTvShows()){
+				JSONArray array = new JSONArray();
+				
+				Search_result result = new Search_result(show.title_n, show.year,
+						show.country, show.image.replace(".jpg", "-300.jpg"), array, show.title, false);
+				vector.add(result);
+				
+			}
+			
+			
+			
+		}
+
 	}
 
 	public void getArrayJSON() throws InterruptedException, ExecutionException {
