@@ -21,7 +21,7 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 public class MyDatabase extends SQLiteAssetHelper {
 
-	private static final String DATABASE_NAME = "TvShows1";
+	private static final String DATABASE_NAME = "TvShows2";
 	private static final int DATABASE_VERSION = 1;
 	Context context;
 	Activity a;
@@ -48,7 +48,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-		String[] sqlSelect = { "id" };
+
 
 		qb.setTables("SeenTvShow");
 		// qb.setTables(sqlTables);
@@ -61,15 +61,47 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 		while (!c.isAfterLast()) {
 			String code = String.valueOf(c.getInt(0));
+			Log.e("test", code);
 			Tv_Show tvs = new Tv_Show(code,context,a);
 			results.add(tvs);
 			c.moveToNext();
-			Log.e("code", code);
+			
 		}
 
 		return results;
 
 	}
+	
+	
+	public void print(){
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+
+
+		qb.setTables("SeenTvShow");
+		// qb.setTables(sqlTables);
+
+		Cursor c;
+
+		c = db.query("SeenTvShow", null, null, null, null, null, null);
+
+		c.moveToFirst();
+
+		while (!c.isAfterLast()) {
+			String code = String.valueOf(c.getInt(0));
+			Log.e("test", code);
+
+	
+			c.moveToNext();
+			
+		}
+		
+		
+		
+	}
+	
+	
 
 	public void insertTvShows(int i) {
 		String query = "INSERT INTO  SeenTvShow VALUES (" + i + ");";
@@ -79,6 +111,15 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	public void deleteAll() {
+		String query = "DELETE FROM  SeenTvShow;";
+		// String query = "DELETE FROM SeenTvShow";
+		SQLiteDatabase db = getWritableDatabase();
+		db.execSQL(query);
+
+	}
+	
+	
 	public Cursor getWine(String nome, String produttore, String Vendemmia) {
 
 		SQLiteDatabase db = getReadableDatabase();

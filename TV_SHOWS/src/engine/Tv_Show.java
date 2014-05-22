@@ -42,21 +42,23 @@ public class Tv_Show {
 	public Activity a;
 
 	JSONObject summary;
-	JSONArray season;
+	JSONArray season, genres;
 	TraktAPI api;
 	Context context;
 
 	public Vector<Season> seasons;
 
-	public Tv_Show(String title, Context context, Activity a) throws InterruptedException,
-			ExecutionException, JSONException, ParseException {
+	public Tv_Show(String title, Context context, Activity a)
+			throws InterruptedException, ExecutionException, JSONException,
+			ParseException {
 		this.title = title;
 		this.context = context;
 		this.a = a;
-		
+
 		getTvShowJSON();
 		hates = false;
 		loves = false;
+		genres = summary.getJSONArray("genres");
 		title_n = summary.getString("title");
 		year = summary.getString("year");
 		first_aired_iso = summary.getString("first_aired_iso").substring(0, 10);
@@ -125,7 +127,7 @@ public class Tv_Show {
 			String id = object.getString("season");
 			String episodes = object.getString("episodes");
 			String image = object.getJSONObject("images").getString("poster");
-			Season s = new Season(id, episodes, image, title, context,a);
+			Season s = new Season(id, episodes, image, title, context, a);
 			seasons.add(s);
 
 		}
@@ -308,7 +310,7 @@ public class Tv_Show {
 
 		@Override
 		protected JSONArray doInBackground(String... params) {
-		
+
 			data = api.getDataArrayFromJSON(
 					"show/seasons.json/361cd031c2473b06997c87c25ec9c057/" + id,
 					false);

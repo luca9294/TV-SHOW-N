@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class SeenList {
 	Context context;
@@ -24,12 +25,20 @@ public class SeenList {
 	public SeenList(Context context) throws InterruptedException,
 			ExecutionException, JSONException, ParseException {
 		this.context = context;
-		getArrayJSON();
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+
+		String user = prefs.getString("user", "");
+		if (!user.isEmpty()) {
+
+			getArrayJSON();
+		}
 		makeVector();
 
 	}
 
-	public void makeVector() throws JSONException, InterruptedException, ExecutionException, ParseException {
+	public void makeVector() throws JSONException, InterruptedException,
+			ExecutionException, ParseException {
 		vector = new Vector<Search_result>();
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(context);
@@ -37,6 +46,7 @@ public class SeenList {
 		String user = prefs.getString("user", "");
 
 		if (!user.isEmpty()) {
+			Log.e("", "DONO NELL IF");
 			for (int i = 0; i < data.length(); i++) {
 				JSONObject object = data.getJSONObject(i);
 				String title_n = object.getString("title");
@@ -62,18 +72,23 @@ public class SeenList {
 		}
 
 		else {
-			MyDatabase db = new MyDatabase(context,new Activity());
-			for (Tv_Show show : db.getTvShows()){
+			boolean ended = false;
+			Log.e("", "SONO nell else");
+			MyDatabase db = new MyDatabase(context, new Activity());
+			for (Tv_Show show : db.getTvShows()) {
 				JSONArray array = new JSONArray();
-				
-				Search_result result = new Search_result(show.title_n, show.year,
-						show.country, show.image.replace(".jpg", "-300.jpg"), array, show.title, false);
+
+				if(show.status.equals("Ended")){
+					ended=true;
+				}
+				Search_result result = new Search_result(show.title_n,
+						show.year, show.country, show.image.replace(".jpg",
+								"-300.jpg"), show.genres, show.title, ended);
+				Log.e("coa", show.title_n);
 				vector.add(result);
-				
+
 			}
-			
-			
-			
+
 		}
 
 	}

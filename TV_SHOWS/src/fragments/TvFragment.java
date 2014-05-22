@@ -382,8 +382,12 @@ a = this.getActivity();
 				
 				MyDatabase db = new MyDatabase(context, a);
 				db.insertTvShows(id);
+		
+				db.print();
 				new MyDialogFragment3().show(getFragmentManager(),
 						"MyDialog");
+				
+				
 				break;
 				
 				
