@@ -104,6 +104,14 @@ public class Season {
 
 				wish = object.getBoolean("in_watchlist");
 			}
+			
+			else{
+				MyDatabase mdb = new MyDatabase(parent, new Activity());
+				watchedn = mdb.containsTvShow(Integer.valueOf(code), Integer.valueOf(id_e), Integer.valueOf(id));
+				
+				
+				
+			}
 
 			String first = first_aired;
 			// SimpleDateFormat df = new
@@ -130,7 +138,7 @@ public class Season {
 				} else {
 
 					Episode e = new Episode(id_e, id, title, first_aired,
-							overview, image, percentage, code, parent, true,
+							overview, image, percentage, code, parent, false,
 							true,a);
 					episodes.add(e);
 				}
@@ -138,7 +146,7 @@ public class Season {
 			} else {
 				if (user.isEmpty()) {
 					Episode e = new Episode(id_e, id, title, first_aired,
-							overview, image, percentage, code, parent, false,
+							overview, image, percentage, code, parent, watchedn,
 							false,a);
 					episodes.add(e);
 

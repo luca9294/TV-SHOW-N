@@ -91,6 +91,30 @@ public class MyDatabase extends SQLiteAssetHelper {
 		}
 
 	}
+	
+	
+	public void printAll() {
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+		qb.setTables("SeenEpisodes");
+		// qb.setTables(sqlTables);
+
+		Cursor c;
+
+		c = db.query("SeenEpisodes", null, null, null, null, null, null);
+
+		c.moveToFirst();
+
+		while (!c.isAfterLast()) {
+			String code = c.getString(0);
+			Log.e("title", code);
+
+			c.moveToNext();
+
+		}
+
+	}
 
 	public boolean containsTvShow(int id) {
 		boolean result = false;
@@ -117,6 +141,78 @@ public class MyDatabase extends SQLiteAssetHelper {
 		}
 		return result;
 	}
+	
+	
+	public boolean containsTvShow(int idTvShow, int id, int season_n) {
+		boolean result = false;
+
+		SQLiteDatabase db = getReadableDatabase();
+
+		// qb.setTables(sqlTables);
+
+		Cursor c= db.rawQuery("select idTvShow from SeenEpisodes where idTvShow=" + idTvShow +" AND season_n = "+ season_n +" AND id = "+id+";", null);
+
+	
+
+		c.moveToFirst();
+       if (c.getCount() > 0){
+		
+			if (c.getInt(0) == idTvShow) {
+				result = true;
+			 
+			}
+       }
+
+		return result;
+	}
+	
+	
+	public boolean containsOneEpisode(int idTvShow) {
+		boolean result = false;
+
+		SQLiteDatabase db = getReadableDatabase();
+
+		// qb.setTables(sqlTables);
+
+		Cursor c= db.rawQuery("select idTvShow from SeenEpisodes where idTvShow=" + idTvShow +";", null);
+
+	
+
+		c.moveToFirst();
+       if (c.getCount() > 0){
+		
+			if (c.getInt(0) == idTvShow) {
+				result = true;
+			 
+			}
+       }
+
+		return result;
+	}
+	
+	
+	
+	
+	public void insertTvEpisodes(String title, int idTvShow, int id, int season_n) {
+		if (!containsTvShow(idTvShow)){
+			this.insertTvShows(idTvShow);
+			
+		}
+		String query = "INSERT INTO SeenEpisodes VALUES ('" + title + "', "+season_n+", "+id+", "+idTvShow+");";
+		// String query = "DELETE FROM SeenTvShow";
+		SQLiteDatabase db = getWritableDatabase();
+		db.execSQL(query);
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	public void insertTvShows(int i) {
 		String query = "INSERT INTO  SeenTvShow VALUES (" + i + ");";
@@ -148,7 +244,70 @@ public class MyDatabase extends SQLiteAssetHelper {
 		String query = "DELETE FROM  SeenTvShow WHERE id = " + i + ";";
 		SQLiteDatabase db = getWritableDatabase();
 		db.execSQL(query);
+		
+		String query1 = "DELETE FROM  SeenEpisodes WHERE idTvShow = " + i + ";";
+		SQLiteDatabase db1 = getWritableDatabase();
+		db1.execSQL(query1);
+
 
 	}
+	
+	
+	public void deleteEpisode(int season_n, int id, int idTvShow) {
+		String query = "DELETE FROM  SeenEpisodes WHERE idTvShow = " + idTvShow + " AND season_n ="+season_n+" AND id = "+id+";";
+		SQLiteDatabase db = getWritableDatabase();
+		db.execSQL(query);
+		
+		if (!this.containsOneEpisode(idTvShow)){
+			this.deleteTvShow(idTvShow);
+			
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	public int getCount(int i){
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor mCount= db.rawQuery("select count(*) from SeenEpisodes where idTvShow=" + i +";", null);
+		mCount.moveToFirst();
+		int count= mCount.getInt(0);
+		mCount.close();
+		Log.e("COUNT", String.valueOf(count));
+		
+		
+		return count;
+	}
+	
+	
+	public int getCountPerSeason(int idTvShow, int idSeason){
+		SQLiteDatabase db = getReadableDatabase();
+		Cursor mCount= db.rawQuery("select count(*) from SeenEpisodes where idTvShow=" + idTvShow +" AND season_n = "+ idSeason +";", null);
+		mCount.moveToFirst();
+		int count= mCount.getInt(0);
+		mCount.close();
+		Log.e("COUNT2", String.valueOf(count));
+		
+		
+		return count;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

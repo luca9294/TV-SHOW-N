@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import adapters.SeasonAdapter;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -44,6 +45,7 @@ import android.widget.TextView;
 import engine.Calendar;
 import engine.Comment;
 import engine.MainActivity;
+import engine.MyDatabase;
 import engine.Season;
 import engine.Episode;
 import fragments.LoginFragment.MyDialogFragment;
@@ -57,6 +59,7 @@ public class EpisodeFragment extends Fragment {
 	String id;
 	String season_n;
 	String code;
+	String titles;
 	Context context;
 	Episode episode;
 	boolean calendar;
@@ -105,7 +108,7 @@ public class EpisodeFragment extends Fragment {
 			web.setFocusable(false);
 			web.setClickable(false);
 			web.setVisibility(View.VISIBLE);
-
+			titles = episode.title;
 			season_n_e.setText(episode.season_n);
 			id_e.setText(episode.id);
 			title.setText(episode.title);
@@ -400,9 +403,31 @@ public class EpisodeFragment extends Fragment {
 				String pass = prefs.getString("passed", "");
 
 				if (user.isEmpty()) {
-
-					new MyDialogFragment9().show(getFragmentManager(),
+					if (seenBool == false) {
+					MyDatabase mdb = new	MyDatabase( context, new Activity() );
+					mdb.insertTvEpisodes(episode.title, Integer.valueOf(episode.code), Integer.valueOf(episode.id),Integer.valueOf(episode.season_n ));
+					new MyDialogFragment10().show(getFragmentManager(),
 							"MyDialog");
+					seen.setText("SEEN");
+					seen.setTextColor(Color.GREEN);
+					seenBool = true;
+		
+					}	
+					else{
+						
+						MyDatabase mdb = new	MyDatabase( context, new Activity() );
+						mdb.deleteEpisode( Integer.valueOf(episode.season_n), Integer.valueOf(episode.id),Integer.valueOf(episode.code ));
+						new MyDialogFragment12().show(getFragmentManager(),
+								"MyDialog");
+
+						seen.setText("ADD\nSEEN\nLIST");
+						seen.setTextColor(Color.WHITE);
+						seenBool = false;
+						
+					}
+					
+					
+				 
 				}
 
 				else {

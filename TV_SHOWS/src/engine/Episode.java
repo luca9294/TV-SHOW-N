@@ -109,9 +109,9 @@ public class Episode {
 				.getDefaultSharedPreferences(parent);
 
 		String user = prefs.getString("user", "");
-		String pass = prefs.getString("pass", "");
+		
 
-		if (user != "") {
+		if (!user.isEmpty()) {
 			rating = object.getJSONObject("episode").getString("rating");
 
 			if (rating.equals("love")) {
@@ -127,6 +127,14 @@ public class Episode {
 			watched = object.getJSONObject("episode").getBoolean("watched");
 			wish = object.getJSONObject("episode").getBoolean("in_watchlist");
 
+		}
+		
+		else{
+			
+			
+			MyDatabase mdb = new MyDatabase(parent, new Activity());
+			watched = mdb.containsTvShow(Integer.valueOf(code), Integer.valueOf(id), Integer.valueOf(season_n));
+			
 		}
 
 		show = object.getJSONObject("show").getString("title");

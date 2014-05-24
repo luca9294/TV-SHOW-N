@@ -8,12 +8,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import engine.Episode;
+import engine.MyDatabase;
 import engine.Season;
 import engine.SeenObject;
 import engine.TvShowProgress;
 import info.androidhive.slidingmenu.R;
 import info.androidhive.slidingmenu.R.layout;
 import adapters.ProgressSeasonAdapter;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -22,11 +24,13 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +48,7 @@ public class SeasonProgressFragment extends Fragment {
 	TvShowProgress tsp = null;
 	String id = "";
 	View rootView = null;
+	Context context;
 	Handler mHandler = new Handler();
 
 	public SeasonProgressFragment() {
@@ -55,7 +60,7 @@ public class SeasonProgressFragment extends Fragment {
 
 		rootView = inflater.inflate(R.layout.fragment_seasonprogress,
 				container, false);
-
+context = this.getActivity().getApplicationContext();
 		Bundle bundle = getArguments();
 
 		String code = bundle.getString("code");
@@ -201,8 +206,24 @@ public class SeasonProgressFragment extends Fragment {
 										int which) {
 									try {
 
+										SharedPreferences prefs = PreferenceManager
+												.getDefaultSharedPreferences(context);
+
+										String user = prefs.getString("user", "");
+										
+										if (!user.isEmpty()){
+										
 										season.episodes.get(index).addToSeen(
-												false, null);
+												false, null);}
+										
+										else{
+											Episode e = season.episodes.get(index);
+											MyDatabase mdb = new MyDatabase(context,new Activity()) ;
+											mdb.insertEpisodes(e.title, Integer.valueOf(e.season_n),Integer.valueOf( e.id), Integer.valueOf(e.code));
+											
+											
+											
+										}
 										FragmentTransaction ft = getFragmentManager()
 												.beginTransaction();
 										ft.detach(fragment);

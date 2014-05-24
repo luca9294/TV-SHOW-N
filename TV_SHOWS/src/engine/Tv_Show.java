@@ -139,6 +139,41 @@ public class Tv_Show {
 		return seasons;
 
 	}
+	
+	
+	public int totalNEpisodes() throws InterruptedException, ExecutionException, JSONException, ParseException{
+		int result = 0;
+		int number = Integer.parseInt(seasons_n);
+		for (Season s : this.getSeasons()){
+			if (!(s.id.equals("0")) && !(s.id.equals(seasons_n))){
+		result += Integer.parseInt(s.n_episode);
+			
+			}
+			
+		if (s.id.equals(seasons_n))	{
+			s.getEpisodes();
+			for (Episode e : s.episodes){
+				if (!e.isFuture()){
+					result++;
+				}
+				
+				
+			}
+			
+		}
+			
+			
+		}
+		
+		
+		
+		return result;
+		
+	}
+	
+	
+	
+	
 
 	// adds tv show to the watchlist
 	public void addToWatch(boolean s) throws JSONException,

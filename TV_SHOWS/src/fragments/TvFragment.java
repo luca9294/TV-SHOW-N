@@ -386,9 +386,7 @@ public class TvFragment extends Fragment {
 				if (!seenBool) {
 
 					db.insertTvShows(id);
-					db.print();
-					new MyDialogFragment3().show(getFragmentManager(),
-							"MyDialog");
+		
 
 					Tv_Show show;
 
@@ -396,19 +394,30 @@ public class TvFragment extends Fragment {
 						show = new Tv_Show(String.valueOf(id), context, a);
 						for (Season se : show.getSeasons()) {
 							se.getEpisodes();
+							if (!se.id.equals("0")){
 							for (Episode e : se.episodes) {
+								if (!e.isFuture()){
+							
 								db.insertEpisodes(e.title,
 										Integer.parseInt(e.season_n),
 										Integer.parseInt(e.id), id);
-
+								
+							}}
 							}
 
 						}
+						
+						
+						
+						
+						
+						
 						new MyDialogFragment3().show(getFragmentManager(),
 								"MyDialog");
-						db.print();
-
-						break;
+						
+						
+				
+					
 
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
@@ -423,6 +432,11 @@ public class TvFragment extends Fragment {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					db.getCount(id);
+					db.print();
+					db.printAll();
+
+					break;
 				} else {
 					db.deleteTvShow(id);
 					db.print();
@@ -592,6 +606,11 @@ public class TvFragment extends Fragment {
 		if (db.containsTvShow(id)) {
 			menu.findItem(R.id.action_seenlist).setTitle(
 					"Remove from seen list");
+		}else{
+			menu.findItem(R.id.action_seenlist).setTitle(
+					"Add to seen list");
+			
+			
 		}
 
 		if (prova.in_watching) {
