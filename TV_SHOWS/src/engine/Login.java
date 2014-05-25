@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -51,6 +52,9 @@ public class Login {
 			editor.putBoolean("logged", true);
 			api.setCred(user, passwd);
 			editor.commit();
+			
+			MyDatabase mdb = new MyDatabase( context, new Activity());
+			mdb.sync();
 
 		}
 

@@ -6,13 +6,17 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
@@ -277,7 +281,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 		mCount.moveToFirst();
 		int count= mCount.getInt(0);
 		mCount.close();
-		Log.e("COUNT", String.valueOf(count));
+		
 		
 		
 		return count;
@@ -290,10 +294,57 @@ public class MyDatabase extends SQLiteAssetHelper {
 		mCount.moveToFirst();
 		int count= mCount.getInt(0);
 		mCount.close();
-		Log.e("COUNT2", String.valueOf(count));
-		
+	
 		
 		return count;
+	}
+	
+	
+	public void sync() throws JSONException, InterruptedException, ExecutionException{
+		Cursor c;
+		SQLiteDatabase db = getReadableDatabase();
+		c = db.query("SeenTvShow", null, null, null, null, null, null);
+
+		c.moveToFirst();
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
+
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("pass", "");
+		
+
+		while (!c.isAfterLast()) {
+			String code = String.valueOf(c.getInt(0));
+			Cursor c2 = db.rawQuery("SELECT * from SeenEpisodes where idTvShow=" + code +";", null);
+			JSONObject ob = new JSONObject();
+			ob.put("username", user);
+			ob.put("password", pass);
+			ob.put("tvdb_id", code);
+			JSONArray episodes = new JSONArray();
+			c2.moveToFirst();
+			while(!c2.isAfterLast()){
+			JSONObject episode = new JSONObject();
+			episode.put("season", String.valueOf(c2.getInt(1)));
+			episode.put("episode", String.valueOf(c2.getInt(2)));
+				
+			c2.moveToNext();
+			episodes.put(episode);
+				
+			}
+			ob.put("episodes", episodes);
+			Episode e = new Episode ("1","164951" , "1", context,new Activity ()) ;
+			e.addToSeen(false, ob);
+			this.deleteTvShow(Integer.valueOf(code));
+			
+			
+		c.moveToNext();
+
+		}
+		
+		
+		
+		
+		
 	}
 	
 	
