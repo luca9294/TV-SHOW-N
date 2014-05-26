@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -33,7 +34,16 @@ public class TvShow_result {
 
 	public void getEpisodesWatching() throws InterruptedException,
 			ExecutionException, JSONException, ParseException {
-        boolean found = false;
+        
+
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(parent);
+
+		String user = prefs.getString("user", "");
+		
+		if (!user.isEmpty()){
+		
+		boolean found = false;
 		api = new TraktAPI(parent);
 
 		DataGrabber3 dg = new DataGrabber3(parent);
@@ -96,7 +106,6 @@ public class TvShow_result {
     		
     		dg1.execute();
     		JSONArray array1 = dg1.get();
-    		Log.e("cdd", array1.toString());
     		JSONObject myTvShow1 = new JSONObject();
         	
     		for (int i = 0; i < array1.length(); i++) {
@@ -120,7 +129,41 @@ public class TvShow_result {
         	
         	
         	
-        }
+        }}
+		
+		
+		else{
+			MyDatabase mdb = new MyDatabase(parent, new Activity());
+			if (mdb.containsTvShow2(Integer.valueOf(id))){
+				Tv_Show tvs = new Tv_Show(id,parent, new Activity());
+				
+				title = tvs.title_n;
+	    		year = tvs.year;
+	    		nation = tvs.country;
+	    		genres = tvs.genres;
+	    		image_link = tvs.image.replace(".jpg", "-300.jpg");
+	        	
+				if (mdb.isInEpisode(Integer.valueOf(id))){
+					
+					episodesVector = mdb.getStrings(Integer.valueOf(id));
+					
+				}
+				else{
+					
+					episodesVector = new Vector<String>();
+					
+				}
+
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+		}
 	}
 
 	class DataGrabber3 extends AsyncTask<String, Void, JSONArray> {

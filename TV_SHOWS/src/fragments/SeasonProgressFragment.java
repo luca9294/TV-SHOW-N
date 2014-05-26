@@ -262,7 +262,15 @@ context = this.getActivity().getApplicationContext();
 								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
+									
+									
+									SharedPreferences prefs = PreferenceManager
+											.getDefaultSharedPreferences(context);
+
+									String user = prefs.getString("user", "");
 									try {
+									if (!user.isEmpty()){
+								
 
 										season.episodes.get(index).addToSeen(
 												true, null);
@@ -285,7 +293,26 @@ context = this.getActivity().getApplicationContext();
 													fragment);
 											ft.addToBackStack("");
 											ft.commit();
-										}
+										}}
+									
+									else{
+										
+										
+										Episode e = season.episodes.get(index);
+										MyDatabase mdb = new MyDatabase(context,new Activity()) ;
+										mdb.deleteEpisode(Integer.valueOf(e.season_n),Integer.valueOf( e.id), Integer.valueOf(e.code));
+										
+										FragmentTransaction ft = getFragmentManager()
+												.beginTransaction();
+										ft.detach(fragment);
+										ft.attach(fragment);
+										ft.commit();
+										
+										
+										
+										
+										
+									}
 
 									} catch (JSONException e) {
 										// TODO Auto-generated catch block

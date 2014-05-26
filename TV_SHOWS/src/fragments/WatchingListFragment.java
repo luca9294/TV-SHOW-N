@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import engine.Episode;
+import engine.MyDatabase;
 import engine.Search;
 import engine.SeenList;
 import engine.TraktAPI;
@@ -74,10 +75,16 @@ public class WatchingListFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this.getActivity().getApplicationContext());
 
-		a = this.getActivity();
+		String user = prefs.getString("user", "");
 		View rootView = inflater.inflate(R.layout.fragment_watching, container,
 				false);
+		if (!user.isEmpty()){
+		
+		a = this.getActivity();
+
 		listDataChild = new HashMap<String, List<String>>();
 		String mySeenList = "MyWatchingList";
 
@@ -165,7 +172,60 @@ public class WatchingListFragment extends Fragment {
 			e.printStackTrace();
 		}
 
-		this.getActivity().setTitle(mySeenList);
+		this.getActivity().setTitle(mySeenList);}
+		
+		
+		else{
+			context = this.getActivity().getApplicationContext();
+			MyDatabase mdb = new MyDatabase(this.getActivity().getApplicationContext(), this.getActivity()); 
+            Vector<String> shows = mdb.getTvShows2();
+				
+            string = new Vector<TvShow_result>();
+            listDataChild = new HashMap<String, List<String>>();
+            
+			for (String code : shows){	
+				
+        	TvShow_result show = new TvShow_result(code, this.getActivity().getApplicationContext());
+
+			try {
+				show.getEpisodesWatching();
+				string.add(show);
+	            Vector<String> s = show.episodesVector;
+		
+				listDataChild.put(show.id, s);
+				
+				
+		
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			}
+			listAdapter = new ExpandableListAdapter(this.getActivity()
+					.getApplicationContext(), string, listDataChild);
+			expListView = (ExpandableListView) rootView
+					.findViewById(R.id.lvExp);
+
+			expListView.setAdapter(listAdapter);
+		
+			
+			
+			
+			
+			
+			
+			
+		}
 
 		return rootView;
 

@@ -537,7 +537,30 @@ public class TvFragment extends Fragment {
 			// if WATCHLIST item is selected
 		case R.id.action_watchlist:
 			if (user.isEmpty()) {
-				new MyDialogFragment2().show(getFragmentManager(), "MyDialog");
+				MyDatabase db = new MyDatabase(context, a);
+			    watchBool = db.containsTvShow2(id);
+
+			    
+			    if (!watchBool){
+			    	db.insertTvShows2(id);
+			    	new MyDialogFragment6().show(getFragmentManager(),
+							"MyDialog");
+
+			    	
+			    }
+			    
+			    else{
+			    	
+			    	
+			    	db.deleteTvShows2(id);
+			    	new MyDialogFragment5().show(getFragmentManager(),
+							"MyDialog");
+			    }
+			    
+			
+				
+				
+		
 			} else {
 				if (watchBool) {
 					try {
@@ -617,6 +640,18 @@ public class TvFragment extends Fragment {
 			menu.findItem(R.id.action_watchlist).setTitle(
 					"Remove from watch list");
 
+		}
+		
+		if (db.containsTvShow2(id)) {
+			menu.findItem(R.id.action_watchlist).setTitle(
+					"Remove from watch list");
+
+		}
+		
+		else{
+			menu.findItem(R.id.action_watchlist).setTitle(
+					"Add to watch list");
+			
 		}
 
 		if (prova.loves) {

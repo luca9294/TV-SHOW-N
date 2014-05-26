@@ -126,6 +126,8 @@ public class Episode {
 
 			watched = object.getJSONObject("episode").getBoolean("watched");
 			wish = object.getJSONObject("episode").getBoolean("in_watchlist");
+			
+			
 
 		}
 		
@@ -134,6 +136,7 @@ public class Episode {
 			
 			MyDatabase mdb = new MyDatabase(parent, new Activity());
 			watched = mdb.containsTvShow(Integer.valueOf(code), Integer.valueOf(id), Integer.valueOf(season_n));
+			wish = mdb.containsTvShow2(Integer.valueOf(code), Integer.valueOf(id), Integer.valueOf(season_n));
 			
 		}
 

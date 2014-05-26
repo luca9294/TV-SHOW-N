@@ -11,9 +11,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import engine.MyDatabase;
 import engine.TraktAPI;
 
 import adapters.CustomAdapter;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -36,12 +38,24 @@ public class HomeFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
+		
 
 		View rootView = inflater.inflate(R.layout.fragment_home, container,
 				false);
 	
 		ListView listView = (ListView) rootView.findViewById(R.id.sample);
 		CustomAdapter customAdapter;
+		
+		
+		
+		MyDatabase mdb = new MyDatabase(this.getActivity().getApplicationContext(), new Activity());
+		
+
+		mdb.printAll();
+		
+		
+		
 
 		this.getActivity().setTitle("SUGGESTIONS");
 

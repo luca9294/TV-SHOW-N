@@ -46,7 +46,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 					this._listDataHeader.get(groupPosition).id).get(
 					childPosititon);
 		}
-		// return null;
+	
 	}
 
 	@Override
@@ -56,8 +56,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public View getChildView(int groupPosition, final int childPosition,
-			boolean isLastChild, View convertView, ViewGroup parent) {
-
+			boolean isLastChild, View convertView, ViewGroup parent) {	
+		
+		
+		
 		final String childText = (String) getChild(groupPosition, childPosition);
 
 		if (convertView == null) {
@@ -74,8 +76,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		return this._listDataChild.get(_listDataHeader.get(groupPosition).id)
-				.size();
+
+
+		return this._listDataChild.get(_listDataHeader.get(groupPosition).id).size();
 	}
 
 	@Override

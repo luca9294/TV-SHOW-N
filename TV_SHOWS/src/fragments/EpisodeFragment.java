@@ -494,9 +494,31 @@ public class EpisodeFragment extends Fragment {
 				String pass = prefs.getString("passed", "");
 
 				if (user.isEmpty()) {
-
-					new MyDialogFragment9().show(getFragmentManager(),
+					MyDatabase mdb = new MyDatabase( context,  new Activity());
+					watchBool =mdb.containsTvShow2(Integer.valueOf(episode.code), Integer.valueOf(episode.id), Integer.valueOf(episode.season_n));
+					
+					if (!watchBool){
+					mdb.insertTvEpisodes2(episode.title, Integer.valueOf(episode.code), Integer.valueOf(episode.id), Integer.valueOf(episode.season_n));
+					watching.setText("IN\nWATCHING\nLIST");
+					watching.setTextColor(Color.GREEN);
+		
+					new MyDialogFragment11().show(getFragmentManager(),
 							"MyDialog");
+
+					}
+					
+					else{
+						
+						mdb.deleteEpisode2(Integer.valueOf(episode.season_n), Integer.valueOf(episode.id), Integer.valueOf(episode.code));
+						new MyDialogFragment12().show(getFragmentManager(),
+								"MyDialog");
+
+						watching.setText("ADD\nWATCHING\nLIST");
+						watching.setTextColor(Color.WHITE);
+				
+					}
+					
+					
 				}
 
 				else {
@@ -587,7 +609,6 @@ public class EpisodeFragment extends Fragment {
 		inflater.inflate(R.menu.main_activity3, menu);
 
 	}
-
 	// checks if episode has already been added to the calendar
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
