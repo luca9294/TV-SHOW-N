@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpResponse;
@@ -35,7 +36,7 @@ public class Login {
 	JSONObject object;
 
 	public Login(String user, String passwd, Context context)
-			throws InterruptedException, ExecutionException, JSONException {
+			throws InterruptedException, ExecutionException, JSONException, ParseException {
 		this.user = user;
 		this.passwd = passwd;
 		this.context = context;
@@ -55,6 +56,7 @@ public class Login {
 			
 			MyDatabase mdb = new MyDatabase( context, new Activity());
 			mdb.sync();
+			mdb.sync2();
 
 		}
 

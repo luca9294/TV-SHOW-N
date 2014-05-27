@@ -507,6 +507,75 @@ public class MyDatabase extends SQLiteAssetHelper {
 		}
 
 	}
+	
+	
+	public void sync2() throws JSONException, InterruptedException,
+	ExecutionException, ParseException {
+Cursor c;
+SQLiteDatabase db = getReadableDatabase();
+c = db.query("WatchTvShow", null, null, null, null, null, null);
+
+c.moveToFirst();
+SharedPreferences prefs = PreferenceManager
+		.getDefaultSharedPreferences(context);
+
+String user = prefs.getString("user", "");
+String pass = prefs.getString("pass", "");
+JSONObject ob1 = new JSONObject();
+JSONArray shows = new JSONArray();
+ob1.put("username", user);
+ob1.put("password", pass);
+JSONObject show; 
+
+while (!c.isAfterLast()) {
+	String code = String.valueOf(c.getInt(0));
+	
+	if (this.containsOneEpisode2(Integer.valueOf(code))){
+	Cursor c2 = db.rawQuery(
+			"SELECT * from WatchEpisodes where idTvShow=" + code + ";",
+			null);
+	JSONObject ob = new JSONObject();
+	ob.put("username", user);
+	ob.put("password", pass);
+	ob.put("tvdb_id", code);
+	JSONArray episodes = new JSONArray();
+	c2.moveToFirst();
+	while (!c2.isAfterLast()) {
+		JSONObject episode = new JSONObject();
+		episode.put("season", String.valueOf(c2.getInt(1)));
+		episode.put("episode", String.valueOf(c2.getInt(2)));
+
+		c2.moveToNext();
+		episodes.put(episode);
+	    deleteEpisode2(c2.getInt(1), c2.getInt(2), c2.getInt(3));
+	}
+	ob.put("episodes", episodes);
+	Episode e = new Episode("1", "164951", "1", context, new Activity());
+	e.addToWatching(false, ob);
+	this.deleteTvShows2(Integer.valueOf(code));}
+	
+	else{
+	show = new JSONObject();
+	show.put("tvdb_id", code);	
+	shows.put(show);
+	this.deleteTvShows2(Integer.valueOf(code));	
+	}
+	
+	c.moveToNext();
+	Tv_Show tvs = new Tv_Show(code,context, new Activity());
+	tvs.addToWatch(true);
+	
+
+}
+
+
+
+	
+	}
+	
+	
+	
+	
 
 	public Vector<String> getStrings(int id) {
 		Vector<String> results = new Vector<String>();

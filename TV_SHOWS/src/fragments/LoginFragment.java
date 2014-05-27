@@ -1,5 +1,6 @@
 package fragments;
 
+import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
@@ -80,6 +81,9 @@ public class LoginFragment extends Fragment {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
