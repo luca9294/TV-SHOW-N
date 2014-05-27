@@ -239,6 +239,13 @@ public class SeasonFragment extends Fragment {
 					seen.setText("ADD\nSEEN\nLIST");
 					seen.setTextColor(Color.WHITE);
 					seenBool = false;
+					
+					
+					FragmentTransaction ft = getFragmentManager()
+							.beginTransaction();
+					ft.detach(fragment);
+					ft.attach(fragment);
+					ft.commit();
 						
 						
 						
