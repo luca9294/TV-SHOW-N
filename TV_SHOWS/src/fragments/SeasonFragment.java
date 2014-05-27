@@ -331,9 +331,62 @@ public class SeasonFragment extends Fragment {
 
 				if (user.isEmpty()) {
 
-					new MyDialogFragment().show(getFragmentManager(),
+					if (watchBool == false) {
+					
+						for (Episode e : season.episodes){
+							MyDatabase mdb = new MyDatabase( context, new Activity ());
+	                        mdb.insertTvEpisodes2(e.title,Integer.parseInt(e.code), Integer.parseInt(e.id), Integer.parseInt(e.season_n));
+						
+						
+						
+						
+						
+						}
+				
+					
+					new MyDialogFragment2().show(getFragmentManager(),
 							"MyDialog");
+
+					// watching.setText("SEASON SEEN");
+					// watching.setTextColor(Color.GREEN);
+					watchBool = true;
+
+					FragmentTransaction ft = getFragmentManager()
+							.beginTransaction();
+					ft.detach(fragment);
+					ft.attach(fragment);
+					ft.commit();
+
 				}
+								
+					
+					
+					
+					else{
+						
+						for (Episode e : season.episodes){
+							MyDatabase mdb = new MyDatabase( context, new Activity ());
+	                        mdb.deleteEpisode2(Integer.parseInt(e.season_n), Integer.parseInt(e.id), Integer.parseInt(e.code));
+
+						
+						}
+				
+					
+						FragmentTransaction ft = getFragmentManager()
+								.beginTransaction();
+						ft.detach(fragment);
+						ft.attach(fragment);
+						ft.commit();
+
+				
+					new MyDialogFragment3().show(getFragmentManager(),
+							"MyDialog");
+
+					watchBool = false;
+					
+					
+					}
+					}
 
 				else {
 

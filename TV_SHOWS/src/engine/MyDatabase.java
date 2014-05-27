@@ -35,8 +35,6 @@ public class MyDatabase extends SQLiteAssetHelper {
 		this.context = context;
 		this.a = a;
 
-
-
 	}
 
 	public Vector<String> getTvShows2() {
@@ -64,12 +62,9 @@ public class MyDatabase extends SQLiteAssetHelper {
 		return results;
 
 	}
-	
-	
-	
-	public boolean checkSeen(Season s){
+
+	public boolean checkSeen(Season s) {
 		boolean result = false;
-		
 
 		SQLiteDatabase db = getReadableDatabase();
 
@@ -77,27 +72,22 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 		Cursor c = db.rawQuery(
 				"select idTvShow from SeenEpisodes where idTvShow=" + s.code
-						+ " AND season_n = " + s.id 
-						+ ";", null);
+						+ " AND season_n = " + s.id + ";", null);
 
 		c.moveToFirst();
-		
-		if (c.getCount() == s.count){
-	
+
+		if (c.getCount() == s.count) {
+
 			result = true;
-			
+
 		}
-		
-		
+
 		return result;
-		
+
 	}
-	
-	
-	
-	public boolean checkWatch(Season s){
+
+	public boolean checkWatch(Season s) {
 		boolean result = false;
-		
 
 		SQLiteDatabase db = getReadableDatabase();
 
@@ -105,22 +95,19 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 		Cursor c = db.rawQuery(
 				"select idTvShow from WatchEpisodes where idTvShow=" + s.code
-						+ " AND season_n = " + s.id 
-						+ ";", null);
+						+ " AND season_n = " + s.id + ";", null);
 
 		c.moveToFirst();
-		
-		if (c.getCount() == Integer.valueOf(s.n_episode)){
-	
+
+		if (c.getCount() == Integer.valueOf(s.n_episode)) {
+
 			result = true;
-			
+
 		}
-		
-		
+
 		return result;
-		
+
 	}
-	
 
 	public Vector<Tv_Show> getTvShows() throws InterruptedException,
 			ExecutionException, JSONException, ParseException {
@@ -286,16 +273,13 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 		c.moveToFirst();
 		if (c.getCount() > 0) {
-	
+
 			if (c.getInt(0) == idTvShow) {
 				result = true;
-		
-				
+
 			}
 		}
 
-	
-		this.printAll();
 		return result;
 	}
 
@@ -388,6 +372,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 			this.insertTvShows2(idTvShow);
 			Log.e("f", "SONO DENTO L IF");
 		}
+		title = title.replace("'", "''");
 		String query = "INSERT INTO WatchEpisodes VALUES ('" + title + "', "
 				+ season_n + ", " + id + ", " + idTvShow + ");";
 		// String query = "DELETE FROM SeenTvShow";
@@ -482,17 +467,11 @@ public class MyDatabase extends SQLiteAssetHelper {
 				+ ";";
 		SQLiteDatabase db = getWritableDatabase();
 		db.execSQL(query);
-		
-		
-		if (!this.containsOneEpisode2(idTvShow)){
+
+		if (!this.containsOneEpisode2(idTvShow)) {
 			this.deleteTvShows2(idTvShow);
-			
+
 		}
-		
-		
-		
-		
-		
 
 	}
 
@@ -563,75 +542,75 @@ public class MyDatabase extends SQLiteAssetHelper {
 		}
 
 	}
-	
-	
+
 	public void sync2() throws JSONException, InterruptedException,
-	ExecutionException, ParseException {
-Cursor c;
-SQLiteDatabase db = getReadableDatabase();
-c = db.query("WatchTvShow", null, null, null, null, null, null);
+			ExecutionException, ParseException {
+		Cursor c;
+		SQLiteDatabase db = getReadableDatabase();
+		c = db.query("WatchTvShow", null, null, null, null, null, null);
 
-c.moveToFirst();
-SharedPreferences prefs = PreferenceManager
-		.getDefaultSharedPreferences(context);
+		c.moveToFirst();
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context);
 
-String user = prefs.getString("user", "");
-String pass = prefs.getString("pass", "");
-JSONObject ob1 = new JSONObject();
-JSONArray shows = new JSONArray();
-ob1.put("username", user);
-ob1.put("password", pass);
-JSONObject show; 
+		String user = prefs.getString("user", "");
+		String pass = prefs.getString("pass", "");
+		JSONObject ob1 = new JSONObject();
+		JSONArray shows = new JSONArray();
+		ob1.put("username", user);
+		ob1.put("password", pass);
+		JSONObject show;
 
-while (!c.isAfterLast()) {
-	String code = String.valueOf(c.getInt(0));
-	
-	if (this.containsOneEpisode2(Integer.valueOf(code))){
-	Cursor c2 = db.rawQuery(
-			"SELECT * from WatchEpisodes where idTvShow=" + code + ";",
-			null);
-	JSONObject ob = new JSONObject();
-	ob.put("username", user);
-	ob.put("password", pass);
-	ob.put("tvdb_id", code);
-	JSONArray episodes = new JSONArray();
-	c2.moveToFirst();
-	while (!c2.isAfterLast()) {
-		JSONObject episode = new JSONObject();
-		episode.put("season", String.valueOf(c2.getInt(1)));
-		episode.put("episode", String.valueOf(c2.getInt(2)));
+		while (!c.isAfterLast()) {
+			String code = String.valueOf(c.getInt(0));
 
-		c2.moveToNext();
-		episodes.put(episode);
-					deleteEpisode2(c2.getInt(1), c2.getInt(2), c2.getInt(3));
+			if (this.containsOneEpisode2(Integer.valueOf(code))) {
+				Cursor c2 = db.rawQuery(
+						"SELECT * from WatchEpisodes where idTvShow=" + code
+								+ ";", null);
+				JSONObject ob = new JSONObject();
+				ob.put("username", user);
+				ob.put("password", pass);
+				ob.put("tvdb_id", code);
+				JSONArray episodes = new JSONArray();
+				c2.moveToFirst();
+				while (!c2.isAfterLast()) {
+					JSONObject episode = new JSONObject();
+					episode.put("season", String.valueOf(c2.getInt(1)));
+					episode.put("episode", String.valueOf(c2.getInt(2)));
+
+					c2.moveToNext();
+					episodes.put(episode);
+					//deleteEpisode2(c2.getInt(1), c2.getInt(2), c2.getInt(3));
+				}
+				ob.put("episodes", episodes);
+				
+				
+				
+				Episode e = new Episode("1", "164951", "1", context,
+						new Activity());
+				e.addToWatching(false, ob);
+				this.deleteTvShows2(Integer.valueOf(code));
+			}
+
+			else {
+				show = new JSONObject();
+				show.put("tvdb_id", code);
+				shows.put(show);
+				this.deleteTvShows2(Integer.valueOf(code));
+			}
+
+			c.moveToNext();
+			Tv_Show tvs = new Tv_Show(code, context, new Activity());
+			tvs.addToWatch(true);
+
+		}
+		SQLiteDatabase dbq = getWritableDatabase();
+		dbq.execSQL("DELETE from WatchEpisodes" + ";");
+
+		
+
 	}
-	ob.put("episodes", episodes);
-	Episode e = new Episode("1", "164951", "1", context, new Activity());
-	e.addToWatching(false, ob);
-	this.deleteTvShows2(Integer.valueOf(code));}
-	
-	else{
-	show = new JSONObject();
-	show.put("tvdb_id", code);	
-	shows.put(show);
-	this.deleteTvShows2(Integer.valueOf(code));	
-	}
-	
-	c.moveToNext();
-	Tv_Show tvs = new Tv_Show(code,context, new Activity());
-	tvs.addToWatch(true);
-	
-
-}
-
-
-
-	
-	}
-	
-	
-	
-	
 
 	public Vector<String> getStrings(int id) {
 		Vector<String> results = new Vector<String>();
