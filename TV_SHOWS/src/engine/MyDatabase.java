@@ -25,7 +25,7 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 public class MyDatabase extends SQLiteAssetHelper {
 
-	private static final String DATABASE_NAME = "TvShows1";
+	private static final String DATABASE_NAME = "TvShows";
 	private static final int DATABASE_VERSION = 1;
 	Context context;
 	Activity a;
@@ -70,6 +70,63 @@ public class MyDatabase extends SQLiteAssetHelper {
 		return results;
 
 	}
+	
+	
+	
+	public boolean checkSeen(Season s){
+		boolean result = false;
+		
+
+		SQLiteDatabase db = getReadableDatabase();
+
+		// qb.setTables(sqlTables);
+
+		Cursor c = db.rawQuery(
+				"select idTvShow from SeenEpisodes where idTvShow=" + s.code
+						+ " AND season_n = " + s.id 
+						+ ";", null);
+
+		c.moveToFirst();
+		
+		if (c.getCount() == s.count){
+	
+			result = true;
+			
+		}
+		
+		
+		return result;
+		
+	}
+	
+	
+	
+	public boolean checkWatch(Season s){
+		boolean result = false;
+		
+
+		SQLiteDatabase db = getReadableDatabase();
+
+		// qb.setTables(sqlTables);
+
+		Cursor c = db.rawQuery(
+				"select idTvShow from WatchEpisodes where idTvShow=" + s.code
+						+ " AND season_n = " + s.id 
+						+ ";", null);
+
+		c.moveToFirst();
+		
+		if (c.getCount() == Integer.valueOf(s.n_episode)){
+	
+			result = true;
+			
+		}
+		
+		
+		return result;
+		
+	}
+	
 
 	public Vector<Tv_Show> getTvShows() throws InterruptedException,
 			ExecutionException, JSONException, ParseException {
@@ -235,14 +292,15 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 		c.moveToFirst();
 		if (c.getCount() > 0) {
-			Log.e("ewfe", c.getString(0));
+	
 			if (c.getInt(0) == idTvShow) {
 				result = true;
-				Log.e("", "VEROOO");
+		
+				
 			}
 		}
 
-		Log.e("", "FALSO");
+	
 		this.printAll();
 		return result;
 	}
@@ -383,6 +441,10 @@ public class MyDatabase extends SQLiteAssetHelper {
 		// String query = "DELETE FROM SeenTvShow";
 		SQLiteDatabase db = getWritableDatabase();
 		db.execSQL(query);
+		if (!containsTvShow(idTvShow)) {
+			this.insertTvShows(idTvShow);
+
+		}
 
 	}
 
@@ -547,7 +609,7 @@ while (!c.isAfterLast()) {
 
 		c2.moveToNext();
 		episodes.put(episode);
-	    deleteEpisode2(c2.getInt(1), c2.getInt(2), c2.getInt(3));
+					deleteEpisode2(c2.getInt(1), c2.getInt(2), c2.getInt(3));
 	}
 	ob.put("episodes", episodes);
 	Episode e = new Episode("1", "164951", "1", context, new Activity());

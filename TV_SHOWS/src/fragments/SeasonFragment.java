@@ -8,11 +8,14 @@ import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 
+import engine.Episode;
+import engine.MyDatabase;
 import engine.Season;
 import fragments.EpisodeFragment.MyDialogFragment10;
 import fragments.EpisodeFragment.MyDialogFragment12;
 import fragments.EpisodeFragment.MyDialogFragment9;
 import adapters.SeasonAdapter;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -97,18 +100,12 @@ public class SeasonFragment extends Fragment {
 
 			String user = prefs.getString("user", "");
 			String pass = prefs.getString("passed", "");
-
-			if (user.isEmpty()) {
-
-				LinearLayout l = (LinearLayout) rootView
-						.findViewById(R.id.linear);
-
-				l.setVisibility(View.GONE);
-			}
-
+			
+			MyDatabase mdb = new MyDatabase( context, new Activity ());
+	   
 			Button seen = (Button) rootView.findViewById(R.id.seenListSeason);
 			Button watch = (Button) rootView.findViewById(R.id.watchingList);
-			if (season.checkSeen() == true) {
+			if (season.checkSeen() || mdb.checkSeen(season)) {
 				seen.setText("SEASON SEEN");
 				seen.setTextColor(Color.GREEN);
 				seenBool = true;
@@ -119,7 +116,7 @@ public class SeasonFragment extends Fragment {
 				seenBool = false;
 			}
 
-			if (season.checkWatch() == true) {
+			if (season.checkWatch() ||  mdb.checkWatch(season)) {
 				watch.setText("IN WATCHLIST");
 				watch.setTextColor(Color.GREEN);
 				watchBool = true;
@@ -185,10 +182,71 @@ public class SeasonFragment extends Fragment {
 				String pass = prefs.getString("passed", "");
 
 				if (user.isEmpty()) {
+					if (seenBool == false){
+						try {
+							season.getEpisodes();
+							for (Episode e : season.episodes){
+								if (!e.isFuture()){
+								MyDatabase mdb = new MyDatabase( context, new Activity ());
+		                        mdb.insertEpisodes(e.title, Integer.parseInt(e.season_n), Integer.parseInt(e.id), Integer.parseInt(e.code));}
+						
+							}
+							
+							
+							new MyDialogFragment1().show(getFragmentManager(),
+									"MyDialog");
 
-					new MyDialogFragment().show(getFragmentManager(),
+						} catch (InterruptedException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (ExecutionException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (JSONException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (ParseException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					
+					// seen.setText("SEASON SEEN");
+					// seen.setTextColor(Color.GREEN);
+					seenBool = true;
+
+					FragmentTransaction ft = getFragmentManager()
+							.beginTransaction();
+					ft.detach(fragment);
+					ft.attach(fragment);
+					ft.commit();
+					}
+					
+					
+					else{
+						
+						for (Episode e : season.episodes){
+							MyDatabase mdb = new MyDatabase( context, new Activity ());
+	                        mdb.deleteEpisode(Integer.parseInt(e.season_n), Integer.parseInt(e.id), Integer.parseInt(e.code));
+						
+						}
+						
+						
+			
+		
+					new MyDialogFragment3().show(getFragmentManager(),
 							"MyDialog");
-				}
+
+					seen.setText("ADD\nSEEN\nLIST");
+					seen.setTextColor(Color.WHITE);
+					seenBool = false;
+						
+						
+						
+					}
+						
+					
+					}
+				
 
 				else {
 

@@ -42,6 +42,7 @@ public class Season {
 	public boolean watchedn;
 	private JSONObject seen;
 	public Activity a;
+	int count = 0;
 
 	public Season(String id, String n_episode, String image, String code,
 			Context parent, Activity a) throws InterruptedException, ExecutionException,
@@ -149,6 +150,7 @@ public class Season {
 							overview, image, percentage, code, parent, watchedn,
 							false,a);
 					episodes.add(e);
+					if (!e.isFuture()){count++;}
 
 				} else {
 
