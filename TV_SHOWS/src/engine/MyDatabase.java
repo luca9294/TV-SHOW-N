@@ -61,7 +61,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 		while (!c.isAfterLast()) {
 			String code = String.valueOf(c.getInt(0));
-	
+
 			results.add(code);
 			c.moveToNext();
 
@@ -72,40 +72,33 @@ public class MyDatabase extends SQLiteAssetHelper {
 	}
 
 	public Vector<Tv_Show> getTvShows() throws InterruptedException,
-	ExecutionException, JSONException, ParseException {
-Vector<Tv_Show> results = new Vector<Tv_Show>();
-SQLiteDatabase db = getReadableDatabase();
-SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+			ExecutionException, JSONException, ParseException {
+		Vector<Tv_Show> results = new Vector<Tv_Show>();
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-qb.setTables("SeenTvShow");
-// qb.setTables(sqlTables);
+		qb.setTables("SeenTvShow");
+		// qb.setTables(sqlTables);
 
-Cursor c;
+		Cursor c;
 
-c = db.query("SeenTvShow", null, null, null, null, null, null);
+		c = db.query("SeenTvShow", null, null, null, null, null, null);
 
-c.moveToFirst();
+		c.moveToFirst();
 
-while (!c.isAfterLast()) {
-	String code = String.valueOf(c.getInt(0));
+		while (!c.isAfterLast()) {
+			String code = String.valueOf(c.getInt(0));
 
-	Tv_Show tvs = new Tv_Show(code, context, a);
-	results.add(tvs);
-	c.moveToNext();
+			Tv_Show tvs = new Tv_Show(code, context, a);
+			results.add(tvs);
+			c.moveToNext();
 
-}
+		}
 
-return results;
+		return results;
 
-}
-	
-	
-	
-	
-	
-	
-	
-	
+	}
+
 	public void print() {
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -227,9 +220,7 @@ return results;
 
 		return result;
 	}
-	
-	
-	
+
 	public boolean containsTvShow2(int idTvShow, int id, int season_n) {
 		boolean result = false;
 
@@ -244,22 +235,18 @@ return results;
 
 		c.moveToFirst();
 		if (c.getCount() > 0) {
-Log.e("ewfe", c.getString(0));
+			Log.e("ewfe", c.getString(0));
 			if (c.getInt(0) == idTvShow) {
 				result = true;
 				Log.e("", "VEROOO");
 			}
 		}
-		
+
 		Log.e("", "FALSO");
 		this.printAll();
 		return result;
 	}
-	
-	
-	
-	
-	
+
 	public boolean isInEpisode(int id) {
 		boolean result = false;
 
@@ -267,8 +254,9 @@ Log.e("ewfe", c.getString(0));
 
 		// qb.setTables(sqlTables);
 
-		Cursor c = db.rawQuery(
-				"select idTvShow from WatchEpisodes where idTvShow=" + id+ ";", null);
+		Cursor c = db
+				.rawQuery("select idTvShow from WatchEpisodes where idTvShow="
+						+ id + ";", null);
 
 		c.moveToFirst();
 		if (c.getCount() > 0) {
@@ -281,17 +269,6 @@ Log.e("ewfe", c.getString(0));
 
 		return result;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	public boolean containsOneEpisode(int idTvShow) {
 		boolean result = false;
@@ -315,9 +292,7 @@ Log.e("ewfe", c.getString(0));
 
 		return result;
 	}
-	
-	
-	
+
 	public boolean containsOneEpisode2(int idTvShow) {
 		boolean result = false;
 
@@ -326,8 +301,8 @@ Log.e("ewfe", c.getString(0));
 		// qb.setTables(sqlTables);
 
 		Cursor c = db.rawQuery(
-				"select idTvShow from WatchEpisodes where idTvShow=" + idTvShow
-						+ ";", null);
+				"select idTvShow from WatchEpisodes where idTvShow ="
+						+ idTvShow + ";", null);
 
 		c.moveToFirst();
 		if (c.getCount() > 0) {
@@ -359,7 +334,7 @@ Log.e("ewfe", c.getString(0));
 			int season_n) {
 		if (!containsTvShow2(idTvShow)) {
 			this.insertTvShows2(idTvShow);
-				Log.e("f", "SONO DENTO L IF");
+			Log.e("f", "SONO DENTO L IF");
 		}
 		String query = "INSERT INTO WatchEpisodes VALUES ('" + title + "', "
 				+ season_n + ", " + id + ", " + idTvShow + ");";
@@ -451,6 +426,17 @@ Log.e("ewfe", c.getString(0));
 				+ ";";
 		SQLiteDatabase db = getWritableDatabase();
 		db.execSQL(query);
+		
+		
+		if (!this.containsOneEpisode2(idTvShow)){
+			this.deleteTvShows2(idTvShow);
+			
+		}
+		
+		
+		
+		
+		
 
 	}
 
@@ -521,41 +507,32 @@ Log.e("ewfe", c.getString(0));
 		}
 
 	}
-	
-public Vector<String> getStrings(int id){
-	Vector<String> results = new 	Vector<String>();
-	
-	
-	SQLiteDatabase db = getReadableDatabase();
-	SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-	qb.setTables("WatchEpisodes");
-	// qb.setTables(sqlTables);
+	public Vector<String> getStrings(int id) {
+		Vector<String> results = new Vector<String>();
 
+		SQLiteDatabase db = getReadableDatabase();
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
+		qb.setTables("WatchEpisodes");
+		// qb.setTables(sqlTables);
 
-	Cursor c = db.rawQuery(
-			"select * from WatchEpisodes where idTvShow=" + id
-					+ ";", null);
-	
-	c.moveToFirst();
+		Cursor c = db.rawQuery("select * from WatchEpisodes where idTvShow="
+				+ id + ";", null);
 
-	while (!c.isAfterLast()) {
-		String result = "<b>#" + c.getInt(2) + " " + c.getString(0) + "</b><br>Season "+ c.getInt(1) ;
+		c.moveToFirst();
 
-		results.add(result);
+		while (!c.isAfterLast()) {
+			String result = "<b>#" + c.getInt(2) + " " + c.getString(0)
+					+ "</b><br>Season " + c.getInt(1);
 
-		c.moveToNext();
+			results.add(result);
+
+			c.moveToNext();
+
+		}
+
+		return results;
 
 	}
-
-	return results;
-	
-	
-	
-	
-	
-
-	
-
-}}
+}

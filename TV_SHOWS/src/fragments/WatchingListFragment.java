@@ -81,6 +81,7 @@ public class WatchingListFragment extends Fragment {
 		String user = prefs.getString("user", "");
 		View rootView = inflater.inflate(R.layout.fragment_watching, container,
 				false);
+		fragment = this;
 		if (!user.isEmpty()){
 		
 		a = this.getActivity();
@@ -93,7 +94,7 @@ public class WatchingListFragment extends Fragment {
 		data2.execute();
 		string = new Vector<TvShow_result>();
 		context = this.getActivity().getApplicationContext();
-		fragment = this;
+		
 		try {
 			JSONArray array;
 			array = data2.get();
@@ -221,7 +222,22 @@ public class WatchingListFragment extends Fragment {
 			
 			
 			
-			
+			expListView.setOnChildClickListener(new OnChildClickListener() {
+
+				@Override
+				public boolean onChildClick(ExpandableListView parent, View v,
+						int groupPosition, int childPosition, long id) {
+
+					position = groupPosition;
+					position2 = childPosition;
+
+					new MyDialogFragment2().show(getFragmentManager(),
+							"MyDialog");
+
+					return false;
+
+				}
+			});
 			
 			
 			
@@ -339,10 +355,24 @@ public class WatchingListFragment extends Fragment {
 												+ str.charAt(str.length() - 1);
 										season_nFinal = season_nFinal.replace(
 												" ", "");
+										
+										SharedPreferences prefs = PreferenceManager
+												.getDefaultSharedPreferences(context);
 
+										String user = prefs.getString("user", "");
+										
+										
+										if (!user.isEmpty()){
 										Episode e = new Episode(idFinal,
 												tvr.id, season_nFinal, context, a);
-										e.addToWatching(true, null);
+										e.addToWatching(true, null);}
+										
+										
+										else{
+											MyDatabase mdb = new MyDatabase( context, new Activity ());
+											mdb.deleteEpisode2(Integer.valueOf(season_nFinal), Integer.valueOf(idFinal), Integer.valueOf(tvr.id));
+											
+										}
 
 										FragmentTransaction ft = getFragmentManager()
 												.beginTransaction();

@@ -109,7 +109,6 @@ public class Episode {
 				.getDefaultSharedPreferences(parent);
 
 		String user = prefs.getString("user", "");
-		
 
 		if (!user.isEmpty()) {
 			rating = object.getJSONObject("episode").getString("rating");
@@ -126,18 +125,17 @@ public class Episode {
 
 			watched = object.getJSONObject("episode").getBoolean("watched");
 			wish = object.getJSONObject("episode").getBoolean("in_watchlist");
-			
-			
 
 		}
-		
-		else{
-			
-			
+
+		else {
+
 			MyDatabase mdb = new MyDatabase(parent, new Activity());
-			watched = mdb.containsTvShow(Integer.valueOf(code), Integer.valueOf(id), Integer.valueOf(season_n));
-			wish = mdb.containsTvShow2(Integer.valueOf(code), Integer.valueOf(id), Integer.valueOf(season_n));
-			
+			watched = mdb.containsTvShow(Integer.valueOf(code),
+					Integer.valueOf(id), Integer.valueOf(season_n));
+			wish = mdb.containsTvShow2(Integer.valueOf(code),
+					Integer.valueOf(id), Integer.valueOf(season_n));
+
 		}
 
 		show = object.getJSONObject("show").getString("title");
@@ -312,11 +310,11 @@ public class Episode {
 
 			grabber.execute();
 			grabber.get();
-			
-			if(w == false){
+
+			if (w == false) {
 				Calendar c = new Calendar(parent, a);
 				c.addToCalendar(this);
-			}else{
+			} else {
 				Calendar c = new Calendar(parent, a);
 				c.removeFromCalendar(this);
 			}
@@ -619,7 +617,7 @@ public class Episode {
 				e.printStackTrace();
 			}
 
-			Log.e("watchlist", data.toString());
+		
 
 			return data;
 

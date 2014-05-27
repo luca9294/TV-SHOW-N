@@ -510,11 +510,12 @@ public class EpisodeFragment extends Fragment {
 					else{
 						
 						mdb.deleteEpisode2(Integer.valueOf(episode.season_n), Integer.valueOf(episode.id), Integer.valueOf(episode.code));
+					
+						watching.setText("ADD\nWATCHING\nLIST");
+						watching.setTextColor(Color.WHITE);
 						new MyDialogFragment12().show(getFragmentManager(),
 								"MyDialog");
 
-						watching.setText("ADD\nWATCHING\nLIST");
-						watching.setTextColor(Color.WHITE);
 				
 					}
 					
