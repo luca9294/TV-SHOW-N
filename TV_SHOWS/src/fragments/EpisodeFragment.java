@@ -95,6 +95,7 @@ public class EpisodeFragment extends Fragment {
 					.getApplicationContext(), this.getActivity());
 			episode.getComments();
 
+		
 			TextView season_n_e = (TextView) rootView
 					.findViewById(R.id.season_n);
 			TextView id_e = (TextView) rootView.findViewById(R.id.id);
@@ -337,7 +338,8 @@ public class EpisodeFragment extends Fragment {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 
+	
 
 		// handles action when the "send comment" button is pressed
 		Button comment = (Button) rootView.findViewById(R.id.sendComment);
@@ -690,10 +692,9 @@ public class EpisodeFragment extends Fragment {
 	
 			try {
 				r=episode.f();
-				Log.e("", r);
+			
 				
 				if (!r.isEmpty()){
-
 					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"+r.replace("sx", "at")));
 					a = this.getActivity();
 					a.startActivity(browserIntent);
@@ -710,6 +711,9 @@ public class EpisodeFragment extends Fragment {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

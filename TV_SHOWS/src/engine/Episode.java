@@ -142,11 +142,10 @@ public class Episode {
 				
 				
 				if (found1 == false){
-					Log.e("", "SONO QUA");
+				
 					while ((line = rd.readLine()) != null) {
 				
 						result += "\n" + line;
-						Log.e("2", result);
 						break;
 						
 					
@@ -159,6 +158,49 @@ public class Episode {
 			}
 			return result;
 		}
+		
+		
+	public  String getHTML2(String urlToRead) {
+			
+
+			URL url; // The URL to read
+			HttpURLConnection conn; // The actual connection to the web page
+			BufferedReader rd; // Used to read results from the web page
+			String line; // An individual line of the web page HTML
+			String result = ""; // A long string containing all the HTML
+			try {
+				url = new URL(urlToRead);
+				conn = (HttpURLConnection) url.openConnection();
+				conn.setRequestMethod("GET");
+				rd = new BufferedReader(
+						new InputStreamReader(conn.getInputStream()));
+			
+			
+				while ((line = rd.readLine()) != null) {
+					if (line.contains("/serie/")){
+					result += "\n" + line;
+					Log.e("", result);
+				
+					break;
+					}
+					
+							
+					}
+				
+
+						
+					
+		
+				
+				rd.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return result;
+		}
+		
+		
+		
 
 
 
@@ -399,11 +441,39 @@ public class Episode {
 
 	}
 	
-	public String f() throws InterruptedException, ExecutionException, JSONException, ParseException {
+	
+	
+	public String getName() throws IOException, InterruptedException, ExecutionException, JSONException, ParseException{
+		
+		Tv_Show tvs = new Tv_Show(code,parent,a);
+		DataGrabber17 db = new DataGrabber17("http://watchseries.lt/search/" + tvs.title_n);
+		db.execute();
+		
+		String nome = db.get();
+		int index = nome.indexOf("href=\"/serie/");
+		nome = nome.substring(index);
+		nome = nome.substring(13,nome.length()-2);
+
+		return nome;
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	public String f() throws InterruptedException, ExecutionException, JSONException, ParseException, IOException {
+		
+		this.getName();
+		
+		
+		
 		Tv_Show tvs = new Tv_Show(code,parent, a);
 		String title = tvs.title_n.toLowerCase().replace(" ", "_");
 		
-		DataGrabber16 db = new DataGrabber16("http://watchseries.lt/episode/" + title + "_s"
+		DataGrabber16 db = new DataGrabber16("http://watchseries.lt/episode/" + getName() + "_s"
 				+ season_n + "_e" + id + ".html");
 
 		//DataGrabber17 db = new DataGrabber17();
@@ -413,14 +483,14 @@ public class Episode {
 		int index2=s.indexOf(".html");
 		s = "http://watchseries.lt" + s.substring(index, index2) + ".html";
 		
-	
+
 		
 		DataGrabber16 db1  =new DataGrabber16(s);
 
 	
 		db1.execute();
 		
-		s = db1.get();
+		 s = db1.get();
 		 index = s.indexOf("www.nowvideo.sx");
 		 s = s.substring(index);
 		 index2=s.indexOf("\"");
@@ -475,9 +545,10 @@ public class Episode {
 
 					@Override
 					protected String doInBackground(String... params) {
-						ArrayList a = pullLinks(str);
-							
-					return (String) a.get(0);
+						String c = getHTML2(str);
+						
+						Log.e("", c);
+						return c;
 					}
 					
 		
