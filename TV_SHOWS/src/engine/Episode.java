@@ -446,7 +446,7 @@ public class Episode {
 	public String getName() throws IOException, InterruptedException, ExecutionException, JSONException, ParseException{
 		
 		Tv_Show tvs = new Tv_Show(code,parent,a);
-		DataGrabber17 db = new DataGrabber17("http://watchseries.lt/search/" + tvs.title_n);
+		DataGrabber17 db = new DataGrabber17("http://watchseries.lt/search/" + tvs.title_n.replace(".", ""));
 		db.execute();
 		
 		String nome = db.get();
@@ -481,6 +481,7 @@ public class Episode {
 		String s = db.get();
 		int index = s.indexOf("/open/cale/");
 		int index2=s.indexOf(".html");
+		if (index !=-1){
 		s = "http://watchseries.lt" + s.substring(index, index2) + ".html";
 		
 
@@ -491,12 +492,24 @@ public class Episode {
 		db1.execute();
 		
 		 s = db1.get();
+		
 		 index = s.indexOf("www.nowvideo.sx");
+		
+		 if (index != -1){
 		 s = s.substring(index);
 		 index2=s.indexOf("\"");
-		 s= s.substring(0, index2);
+		 s= s.substring(0, index2);}
+		 
+		 else{
+			 s="";
+		 }
 		
-
+		}
+		
+		else{
+			
+			s="";
+		}
 		
 		return s;
 		

@@ -694,11 +694,20 @@ public class EpisodeFragment extends Fragment {
 				r=episode.f();
 			
 				
-				if (!r.isEmpty()){
+				if (r.length() > 5){
 					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"+r.replace("sx", "at")));
 					a = this.getActivity();
 					a.startActivity(browserIntent);
 					
+					
+				}
+				
+				
+				else{
+					
+
+					new MyDialogFragment110().show(getFragmentManager(),
+							"MyDialog");
 					
 				}
 			} catch (InterruptedException e) {
@@ -751,6 +760,25 @@ public class EpisodeFragment extends Fragment {
 		}
 
 	}
+	
+	
+	
+	public class MyDialogFragment110 extends DialogFragment {
+
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+			return new AlertDialog.Builder(getActivity())
+
+			.setMessage("Unfortunatly this episode is not available for the streaming!")
+					.setPositiveButton("Ok", null).create();
+		}
+
+	}
+	
+	
+	
+	
+	
 
 	public class MyDialogFragment1 extends DialogFragment {
 

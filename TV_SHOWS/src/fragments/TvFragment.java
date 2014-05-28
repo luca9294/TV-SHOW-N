@@ -543,8 +543,9 @@ public class TvFragment extends Fragment {
 			    
 			    if (!watchBool){
 			    	db.insertTvShows2(id);
-			    	new MyDialogFragment6().show(getFragmentManager(),
+			    	new MyDialogFragment5().show(getFragmentManager(),
 							"MyDialog");
+			    	break;
 
 			    	
 			    }
@@ -553,8 +554,9 @@ public class TvFragment extends Fragment {
 			    	
 			    	
 			    	db.deleteTvShows2(id);
-			    	new MyDialogFragment5().show(getFragmentManager(),
+			    	new MyDialogFragment6().show(getFragmentManager(),
 							"MyDialog");
+			    	break;
 			    }
 			    
 			

@@ -6,6 +6,7 @@ import fragments.LoginFragment;
 import fragments.SearchFragment;
 import fragments.CommentsFragment;
 import fragments.SeenListFragment;
+import fragments.TvFragment;
 import fragments.WatchingListFragment;
 import info.androidhive.slidingmenu.R;
 import info.androidhive.slidingmenu.R.menu;
@@ -253,9 +254,13 @@ public class MainActivity extends Activity implements OnQueryTextListener {
 
 		if (fragment != null) {
 			FragmentManager fragmentManager = getFragmentManager();
-			fragmentManager.beginTransaction().addToBackStack("");
-			fragmentManager.beginTransaction()
-					.replace(R.id.frame_container, fragment).commit();
+			
+			android.app.FragmentTransaction ft = fragmentManager.beginTransaction();
+			ft.replace(R.id.frame_container, fragment);
+			ft.addToBackStack("");
+			ft.commit();
+
+			
 
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);
