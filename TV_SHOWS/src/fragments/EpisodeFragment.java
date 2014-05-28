@@ -2,6 +2,7 @@ package fragments;
 
 import info.androidhive.slidingmenu.R;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.concurrent.ExecutionException;
 
@@ -22,6 +23,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
@@ -65,6 +67,7 @@ public class EpisodeFragment extends Fragment {
 	boolean calendar;
 	boolean love;
 	boolean hate;
+	Activity a;
 
 	public boolean seenBool = false;
 	public boolean watchBool = false;
@@ -86,7 +89,7 @@ public class EpisodeFragment extends Fragment {
 		id = bundle.getString("id");
 		season_n = bundle.getString("season_n");
 		code = bundle.getString("code");
-
+		a = this.getActivity();
 		try {
 			episode = new Episode(id, code, season_n, this.getActivity()
 					.getApplicationContext(), this.getActivity());
@@ -677,6 +680,44 @@ public class EpisodeFragment extends Fragment {
 				e.printStackTrace();
 			}
 
+		break;
+		
+		
+		
+		case R.id.selection2:
+			String r = "";
+			
+	
+			try {
+				r=episode.f();
+				Log.e("", r);
+				
+				if (!r.isEmpty()){
+
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"+r.replace("sx", "at")));
+					a = this.getActivity();
+					a.startActivity(browserIntent);
+					
+					
+				}
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+			
+		break;
+		
 		}
 
 		return true;

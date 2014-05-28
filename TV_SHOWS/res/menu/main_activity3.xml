@@ -10,6 +10,12 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
         android:orderInCategory="0"
 
         />
+        
+    <item android:id="@+id/selection2" 
+        android:title="Try to see it in streaming" 
+        android:orderInCategory="0"
+
+        />
     
 
 

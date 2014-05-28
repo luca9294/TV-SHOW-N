@@ -4,12 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -96,6 +102,65 @@ public class Episode {
 		}
 
 	}
+	
+	 
+		public  String getHTML(String urlToRead) {
+			
+			Log.e("URL", urlToRead);
+			URL url; // The URL to read
+			HttpURLConnection conn; // The actual connection to the web page
+			BufferedReader rd; // Used to read results from the web page
+			String line; // An individual line of the web page HTML
+			String result = ""; // A long string containing all the HTML
+			try {
+				url = new URL(urlToRead);
+				conn = (HttpURLConnection) url.openConnection();
+				conn.setRequestMethod("GET");
+				rd = new BufferedReader(
+						new InputStreamReader(conn.getInputStream()));
+				boolean found1 = false;
+			
+				while ((line = rd.readLine()) != null) {
+					if (line.contains("<span>nowvideo</span>")){
+					result += "\n" + line;
+					found1 = true;
+					Log.e("1", result);
+					break;
+					}
+					
+					
+					else if (line.contains("http://www.nowvideo.sx/video/")){
+						result += "\n" + line;
+						found1 = true;
+						Log.e("2", result);
+						break;
+						
+						
+					}
+							
+					}
+				
+				
+				if (found1 == false){
+					Log.e("", "SONO QUA");
+					while ((line = rd.readLine()) != null) {
+				
+						result += "\n" + line;
+						Log.e("2", result);
+						break;
+						
+					
+					
+				}}
+				
+				rd.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return result;
+		}
+
+
 
 	public void getEpisode() throws InterruptedException, ExecutionException,
 			JSONException {
@@ -192,6 +257,7 @@ public class Episode {
 
 	}
 
+	
 	public void getComments() throws InterruptedException, ExecutionException,
 			JSONException {
 		api = new TraktAPI(parent);
@@ -332,8 +398,175 @@ public class Episode {
 		}
 
 	}
+	
+	public String f() throws InterruptedException, ExecutionException, JSONException, ParseException {
+		Tv_Show tvs = new Tv_Show(code,parent, a);
+		String title = tvs.title_n.toLowerCase().replace(" ", "_");
+		
+		DataGrabber16 db = new DataGrabber16("http://watchseries.lt/episode/" + title + "_s"
+				+ season_n + "_e" + id + ".html");
+
+		//DataGrabber17 db = new DataGrabber17();
+		db.execute();
+		String s = db.get();
+		int index = s.indexOf("/open/cale/");
+		int index2=s.indexOf(".html");
+		s = "http://watchseries.lt" + s.substring(index, index2) + ".html";
+		
+	
+		
+		DataGrabber16 db1  =new DataGrabber16(s);
+
+	
+		db1.execute();
+		
+		s = db1.get();
+		 index = s.indexOf("www.nowvideo.sx");
+		 s = s.substring(index);
+		 index2=s.indexOf("\"");
+		 s= s.substring(0, index2);
+		
+
+		
+		return s;
+		
+		
+		
+	}
 
 	// data grabbers
+	
+	
+	 class DataGrabber16 extends AsyncTask<String, Void, String> {
+	String str;
+
+		public DataGrabber16(String str) {
+		this.str = str;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// progressdialog = ProgressDialog.show(parent,"",
+			// "Retrieving data ...", true);
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+				
+		String c = getHTML(str);
+			
+
+		return c;
+		}
+	 }
+		
+		 class DataGrabber17 extends AsyncTask<String, Void, String> {
+				String str;
+
+					public DataGrabber17(String str) {
+					this.str = str;
+					}
+
+					@Override
+					protected void onPreExecute() {
+						// progressdialog = ProgressDialog.show(parent,"",
+						// "Retrieving data ...", true);
+					}
+
+					@Override
+					protected String doInBackground(String... params) {
+						ArrayList a = pullLinks(str);
+							
+					return (String) a.get(0);
+					}
+					
+		
+
+		
+		private  ArrayList pullLinks(String text) {
+			ArrayList links = new ArrayList();
+
+			String regex = "/open/cale/[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
+			Pattern p = Pattern.compile(regex);
+			Matcher m = p.matcher(text);
+			while (m.find()) {
+				String urlStr = m.group();
+				if (urlStr.startsWith("(") && urlStr.endsWith(")")) {
+					urlStr = urlStr.substring(1, urlStr.length() - 1);
+				}
+				links.add(urlStr);
+			}
+			return links;
+		}
+
+		private ArrayList pullLinks2(String text) {
+			ArrayList links = new ArrayList();
+
+			String regex = "\\(?\\b(http://|www[.])[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
+			Pattern p = Pattern.compile(regex);
+			Matcher m = p.matcher(text);
+			while (m.find()) {
+				String urlStr = m.group();
+				if (urlStr.startsWith("(") && urlStr.endsWith(")")) {
+					urlStr = urlStr.substring(1, urlStr.length() - 1);
+				}
+				links.add(urlStr);
+			}
+			return links;
+		}
+
+		public String getString() throws IOException, InterruptedException, ExecutionException, JSONException, ParseException {
+			Tv_Show tvs = new Tv_Show(code,parent,a);
+			String titlen = tvs.title_n.toLowerCase().replace(" ", "_");
+			String URL = "http://watchseries.lt/episode/" + titlen + "_s"
+					+ season_n + "_e" + id + ".html";
+			DataGrabber16 dbg = new DataGrabber16("http://watchseries.lt/episode/" + "revenge" + "_s"
+					+ "1" + "_e" + "1" + ".html");
+			dbg.execute();
+		
+			BufferedReader bufReader = new BufferedReader(new StringReader(dbg.get()));
+			String result = "";
+			String result2 = "";
+			String line = null;
+			int i = 0;
+			while ((line = bufReader.readLine()) != null) {
+				if (line.contains("<span>nowvideo</span>")) {
+					result = result + "\n" + line;
+					break;
+				}
+				i++;
+			}
+
+			/*ArrayList a = pullLinks(result);
+
+			String result3 = "";
+			for (int ie = 0; ie < a.size(); ie++) {
+				// System.out.println(a.get(ie));
+				result2 = (String) a.get(ie);
+				// System.out.println(result2); break;
+			}
+
+			bufReader = new BufferedReader(new StringReader(
+					getHTML("http://watchseries.lt" + result2)));
+
+			while ((line = bufReader.readLine()) != null) {
+				if (line.contains("nowvideo")) {
+					result3 = line;
+					break;
+				}
+			}
+			a = pullLinks2(result3);
+			String re = (String) a.get(0);
+			re = re.replace("sx", "at");
+			Log.e("e", re);*/
+			return bufReader.readLine();
+
+		}}
+		
+		 
+	
+
+	
 	private class DataGrabber extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
 		private Context parent;
@@ -616,8 +849,6 @@ public class Episode {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-		
 
 			return data;
 
