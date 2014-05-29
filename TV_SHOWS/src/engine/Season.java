@@ -209,13 +209,13 @@ public class Season {
 	}
 
 	public boolean checkSeen() throws InterruptedException, ExecutionException,
-			JSONException {
+			JSONException, ParseException {
 
 		boolean result = true;
 		String r = "";
 		for (int i = 0; i < episodes.size(); i++) {
 			Episode e = episodes.get(i);
-			Log.e("EPISODE", e.title);
+		if (!e.isFuture()){
 			if (e.watched) {
 
 			}
@@ -223,7 +223,9 @@ public class Season {
 				result = false;
 
 				break;
-			}
+			}}
+		
+		
 
 		}
 

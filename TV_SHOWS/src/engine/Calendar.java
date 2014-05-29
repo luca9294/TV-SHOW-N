@@ -74,7 +74,7 @@ public class Calendar {
 
 			} while (managedCursor.moveToNext());
 
-			Log.e("ID FINALE", id);
+			
 			if (!found) {
 
 				createCalendar();
@@ -96,7 +96,7 @@ public class Calendar {
 			String year = e.first_aired_date.substring(0, 4);
 			String month = e.first_aired_date.substring(5, 7);
 			String day = e.first_aired_date.substring(8);
-			Log.e("year", year);
+			
 
 			GregorianCalendar cal = new GregorianCalendar(
 					Integer.parseInt(year), Integer.parseInt(month) - 1,
@@ -256,7 +256,6 @@ public class Calendar {
 			} while (managedCursor.moveToNext());
 		}
 
-		Log.e("", String.valueOf(result));
 		return result;
 
 	}

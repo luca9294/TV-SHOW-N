@@ -87,7 +87,7 @@ public class WatchingListFragment extends Fragment {
 		a = this.getActivity();
 
 		listDataChild = new HashMap<String, List<String>>();
-		String mySeenList = "MyWatchingList";
+		String mySeenList = "MyWatchList";
 
 		DataGrabber3 data2 = new DataGrabber3(this.getActivity()
 				.getApplicationContext());

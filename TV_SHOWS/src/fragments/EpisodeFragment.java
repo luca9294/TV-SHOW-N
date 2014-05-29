@@ -160,7 +160,7 @@ public class EpisodeFragment extends Fragment {
 			// displays watching button in different colors
 			Button watching = (Button) rootView.findViewById(R.id.watchingList);
 			if (episode.wish == true) {
-				watching.setText("IN\nWATCHED\nLIST");
+				watching.setText("IN\nWATCH\nLIST");
 				watching.setTextColor(Color.GREEN);
 				watchBool = true;
 			} else {
@@ -504,7 +504,7 @@ public class EpisodeFragment extends Fragment {
 					
 					if (!watchBool){
 					mdb.insertTvEpisodes2(episode.title, Integer.valueOf(episode.code), Integer.valueOf(episode.id), Integer.valueOf(episode.season_n));
-					watching.setText("IN\nWATCHING\nLIST");
+					watching.setText("IN\nWATCH\nLIST");
 					watching.setTextColor(Color.GREEN);
 		
 					new MyDialogFragment11().show(getFragmentManager(),
@@ -516,7 +516,7 @@ public class EpisodeFragment extends Fragment {
 						
 						mdb.deleteEpisode2(Integer.valueOf(episode.season_n), Integer.valueOf(episode.id), Integer.valueOf(episode.code));
 					
-						watching.setText("ADD\nWATCHING\nLIST");
+						watching.setText("ADD\nWATCH\nLIST");
 						watching.setTextColor(Color.WHITE);
 						new MyDialogFragment12().show(getFragmentManager(),
 								"MyDialog");
@@ -548,7 +548,7 @@ public class EpisodeFragment extends Fragment {
 						new MyDialogFragment11().show(getFragmentManager(),
 								"MyDialog");
 
-						watching.setText("IN\nWATCHING\nLIST");
+						watching.setText("IN\nWATCH\nLIST");
 						watching.setTextColor(Color.GREEN);
 						watchBool = true;
 					} else {
@@ -570,7 +570,7 @@ public class EpisodeFragment extends Fragment {
 						new MyDialogFragment12().show(getFragmentManager(),
 								"MyDialog");
 
-						watching.setText("ADD\nWATCHING\nLIST");
+						watching.setText("ADD\nWATCH\nLIST");
 						watching.setTextColor(Color.WHITE);
 						watchBool = false;
 					}
