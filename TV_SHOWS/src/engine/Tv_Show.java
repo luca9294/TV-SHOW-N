@@ -97,16 +97,8 @@ public class Tv_Show {
 		return title;
 	}
 
-	public void getSeasonsN() throws InterruptedException, ExecutionException {
-		api = new TraktAPI(context);
-		String title_c = title.replace(" ", "-");
-		title_c = title_c.toLowerCase();
-
-		DataGrabber e = new DataGrabber(context, title_c);
-		e.execute();
-
-	}
-
+	
+	//returns the JSONObject regarding the tv show 
 	public void getTvShowJSON() throws InterruptedException,
 			ExecutionException, JSONException, ParseException {
 		api = new TraktAPI(context);
@@ -139,41 +131,34 @@ public class Tv_Show {
 		return seasons;
 
 	}
-	
-	
-	public int totalNEpisodes() throws InterruptedException, ExecutionException, JSONException, ParseException{
+
+	//returns the total number of broadcasted episodes in a tv show
+	public int totalNEpisodes() throws InterruptedException,
+			ExecutionException, JSONException, ParseException {
 		int result = 0;
 		int number = Integer.parseInt(seasons_n);
-		for (Season s : this.getSeasons()){
-			if (!(s.id.equals("0")) && !(s.id.equals(seasons_n))){
-		result += Integer.parseInt(s.n_episode);
-			
+		for (Season s : this.getSeasons()) {
+			if (!(s.id.equals("0")) && !(s.id.equals(seasons_n))) {
+				result += Integer.parseInt(s.n_episode);
+
 			}
-			
-		if (s.id.equals(seasons_n))	{
-			s.getEpisodes();
-			for (Episode e : s.episodes){
-				if (!e.isFuture()){
-					result++;
+
+			if (s.id.equals(seasons_n)) {
+				s.getEpisodes();
+				for (Episode e : s.episodes) { //note: broadcasted!
+					if (!e.isFuture()) {
+						result++;
+					}
+
 				}
-				
-				
+
 			}
-			
+
 		}
-			
-			
-		}
-		
-		
-		
+
 		return result;
-		
+
 	}
-	
-	
-	
-	
 
 	// adds tv show to the watchlist
 	public void addToWatch(boolean s) throws JSONException,
@@ -280,19 +265,9 @@ public class Tv_Show {
 		seen.put("year", year);
 
 		JSONArray array = new JSONArray();
-
-		/*
-		 * for (int i = 0; i < prova.size(); i++) { JSONObject object = new
-		 * JSONObject(); object.put("season", episodes.get(i).season_n);
-		 * object.put("episode", episodes.get(i).id); array.put(object);
-		 * 
-		 * } seen.put("episodes", array);
-		 * 
-		 * episodes.get(0).addToSeen(true, seen);
-		 */
 	}
 
-	// data grabber of the season (summary)
+	// data grabber of the summary of the tv show
 	private class DataGrabber extends AsyncTask<String, Void, JSONObject> {
 		private ProgressDialog progressdialog;
 		private Context context;
@@ -306,8 +281,6 @@ public class Tv_Show {
 
 		@Override
 		protected void onPreExecute() {
-			// progressdialog = ProgressDialog.show(parent,"",
-			// "Retrieving data ...", true);
 		}
 
 		@Override
@@ -574,14 +547,11 @@ public class Tv_Show {
 
 		@Override
 		protected void onPreExecute() {
-			// progressdialog = ProgressDialog.show(parent,"",
-			// "Retrieving data ...", true);
 		}
 
 		@Override
 		protected JSONObject doInBackground(String... params) {
 
-			// api.setCred("luca9294", "1Aa30011992");
 			try {
 				data = getDataFromJSON(
 						"http://api.trakt.tv/rate/show/361cd031c2473b06997c87c25ec9c057",
@@ -596,8 +566,6 @@ public class Tv_Show {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-			Log.e("e", data.toString());
 
 			return data;
 

@@ -80,7 +80,6 @@ public class TvFragment extends Fragment {
 		id = Integer.parseInt(toSearch);
 		String[] strings;
 
-		// TextView title =(TextView)findViewById(R.id.title);
 		TextView premiere = (TextView) rootView.findViewById(R.id.premiere);
 		TextView country = (TextView) rootView.findViewById(R.id.country);
 		TextView percentage = (TextView) rootView.findViewById(R.id.percentage);
@@ -149,9 +148,6 @@ public class TvFragment extends Fragment {
 					ft.addToBackStack("");
 					ft.commit();
 
-					// fm.beginTransaction().replace(R.id.frame_container,
-					// fragment).commit();
-
 				}
 
 			});
@@ -177,7 +173,7 @@ public class TvFragment extends Fragment {
 
 	}
 
-	// for each season of a tv show, it checkes if it is seen.
+	// for each season of a tv show, it checks if it is seen.
 	public boolean isSeen() {
 		boolean result = true;
 		for (Season i : vector) {
@@ -185,7 +181,6 @@ public class TvFragment extends Fragment {
 				i.getEpisodes();
 				if (Integer.parseInt(i.id) != 0) {
 					if (!i.checkSeen()) {
-						Log.e("", "FALSE");
 						result = false;
 						break;
 					}
@@ -385,39 +380,30 @@ public class TvFragment extends Fragment {
 
 				if (!seenBool) {
 
-					db.insertTvShows(id);
-		
+					db.insertTvShows(id); //inserts in the database ther id of the tv show
 
 					Tv_Show show;
 
 					try {
 						show = new Tv_Show(String.valueOf(id), context, a);
-						for (Season se : show.getSeasons()) {
+						for (Season se : show.getSeasons()) { //inserts all the episodes in the SeenEpisodes DB, if broadcasted
 							se.getEpisodes();
-							if (!se.id.equals("0")){
-							for (Episode e : se.episodes) {
-								if (!e.isFuture()){
-							
-								db.insertEpisodes(e.title,
-										Integer.parseInt(e.season_n),
-										Integer.parseInt(e.id), id);
-								
-							}}
+							if (!se.id.equals("0")) {
+								for (Episode e : se.episodes) {
+									if (!e.isFuture()) {
+
+										db.insertEpisodes(e.title, 
+												Integer.parseInt(e.season_n),
+												Integer.parseInt(e.id), id);
+
+									}
+								}
 							}
 
 						}
-						
-						
-						
-						
-						
-						
+
 						new MyDialogFragment3().show(getFragmentManager(),
 								"MyDialog");
-						
-						
-				
-					
 
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
@@ -433,8 +419,6 @@ public class TvFragment extends Fragment {
 						e1.printStackTrace();
 					}
 					db.getCount(id);
-					db.print();
-					db.printAll();
 
 					break;
 				} else {
@@ -445,15 +429,6 @@ public class TvFragment extends Fragment {
 
 					break;
 				}
-
-				// prova.addToSeen(seenBool, null);
-
-				/*
-				 * FragmentTransaction ft = getFragmentManager()
-				 * .beginTransaction(); ft.detach(this); ft.attach(this);
-				 * ft.commit();
-				 */
-
 			}
 
 			else {
@@ -526,8 +501,6 @@ public class TvFragment extends Fragment {
 					ft.attach(this);
 					ft.commit();
 
-					// setOptionTitle(R.id.action_seenlist, "Add to seen list");
-					// seen.setTextColor(Color.WHITE);
 					seenBool = false;
 				}
 
@@ -538,31 +511,24 @@ public class TvFragment extends Fragment {
 		case R.id.action_watchlist:
 			if (user.isEmpty()) {
 				MyDatabase db = new MyDatabase(context, a);
-			    watchBool = db.containsTvShow2(id);
+				watchBool = db.containsTvShow2(id);
 
-			    
-			    if (!watchBool){
-			    	db.insertTvShows2(id);
-			    	new MyDialogFragment5().show(getFragmentManager(),
+				if (!watchBool) {
+					db.insertTvShows2(id); //inserts just the tv show
+					new MyDialogFragment5().show(getFragmentManager(),
 							"MyDialog");
-			    	break;
+					break;
 
-			    	
-			    }
-			    
-			    else{
-			    	
-			    	
-			    	db.deleteTvShows2(id);
-			    	new MyDialogFragment6().show(getFragmentManager(),
+				}
+
+				else {
+
+					db.deleteTvShows2(id); //deletes just the tv show
+					new MyDialogFragment6().show(getFragmentManager(),
 							"MyDialog");
-			    	break;
-			    }
-			    
-			
-				
-				
-		
+					break;
+				}
+
 			} else {
 				if (watchBool) {
 					try {
@@ -631,11 +597,9 @@ public class TvFragment extends Fragment {
 		if (db.containsTvShow(id)) {
 			menu.findItem(R.id.action_seenlist).setTitle(
 					"Remove from seen list");
-		}else{
-			menu.findItem(R.id.action_seenlist).setTitle(
-					"Add to seen list");
-			
-			
+		} else {
+			menu.findItem(R.id.action_seenlist).setTitle("Add to seen list");
+
 		}
 
 		if (prova.in_watching) {
@@ -643,17 +607,16 @@ public class TvFragment extends Fragment {
 					"Remove from watch list");
 
 		}
-		
+
 		if (db.containsTvShow2(id)) {
 			menu.findItem(R.id.action_watchlist).setTitle(
 					"Remove from watch list");
 
 		}
-		
-		else{
-			menu.findItem(R.id.action_watchlist).setTitle(
-					"Add to watch list");
-			
+
+		else {
+			menu.findItem(R.id.action_watchlist).setTitle("Add to watch list");
+
 		}
 
 		if (prova.loves) {

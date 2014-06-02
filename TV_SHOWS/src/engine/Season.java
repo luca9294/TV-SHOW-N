@@ -53,8 +53,6 @@ public class Season {
 		this.code = code;
 		this.parent = parent;
 		this.a=a;
-
-		// getEpisodes();
 	}
 
 	public String toString() {
@@ -63,6 +61,7 @@ public class Season {
 
 	}
 
+	//gets all the episodes of a season
 	public void getEpisodes() throws InterruptedException, ExecutionException,
 			JSONException, ParseException {
 
@@ -73,16 +72,12 @@ public class Season {
 		dg.execute();
 		array = dg.get();
 
-		// watched = object.getJSONObject("season").getBoolean("watched");
-		// wish = object.getJSONObject("episode").getBoolean("in_watchlist");
-
 		episodes = new Vector<Episode>();
 
 		for (int i = 0; i < array.length(); i++) {
 			JSONObject object = array.getJSONObject(i);
 
 			String id_e = object.getString("episode");
-			// String s_n = season_n;
 			String title = object.getString("title");
 			String first_aired = object.getString("first_aired_iso");
 			if (first_aired.length() > 10) {
@@ -115,8 +110,6 @@ public class Season {
 			}
 
 			String first = first_aired;
-			// SimpleDateFormat df = new
-			// SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy", Locale.ENGLISH);
 			Date result;
 
 			Date now = new Date();
@@ -163,7 +156,9 @@ public class Season {
 		}
 
 	}
-
+	
+	
+	//returns all the episodes in the watchlist
 	public void getEpisodesWatching() throws InterruptedException,
 			ExecutionException, JSONException, ParseException {
 
@@ -174,9 +169,6 @@ public class Season {
 		dg.execute();
 		array = dg.get();
 		JSONObject myTvShow = new JSONObject();
-
-		// watched = object.getJSONObject("season").getBoolean("watched");
-		// wish = object.getJSONObject("episode").getBoolean("in_watchlist");
 
 		inWacthList = new Vector<Episode>();
 
@@ -208,6 +200,7 @@ public class Season {
 		}
 	}
 
+	//checks if a season is in the seenlist
 	public boolean checkSeen() throws InterruptedException, ExecutionException,
 			JSONException, ParseException {
 
@@ -232,6 +225,7 @@ public class Season {
 		return result;
 	}
 
+	//checks if a season is in the watchlist
 	public boolean checkWatch() throws InterruptedException,
 			ExecutionException, JSONException {
 
@@ -244,7 +238,6 @@ public class Season {
 			}
 			if (!e.wish) {
 				result = false;
-				Log.e("", "CS");
 
 				break;
 			}
@@ -254,6 +247,7 @@ public class Season {
 		return result;
 	}
 
+	//adds a season to the seen list
 	public void addToSeen(boolean s) throws JSONException,
 			InterruptedException, ExecutionException {
 		seen = new JSONObject();
@@ -276,6 +270,7 @@ public class Season {
 
 	}
 
+	//remove a season from the seen list
 	public void removeFromSeen() throws JSONException, InterruptedException,
 			ExecutionException {
 		SharedPreferences prefs = PreferenceManager
@@ -302,6 +297,7 @@ public class Season {
 
 	}
 
+	//adds/removes a season to the watchlist
 	public void addToWatch(boolean bol) throws JSONException,
 			InterruptedException, ExecutionException, ParseException {
 		SharedPreferences prefs = PreferenceManager
@@ -469,8 +465,6 @@ public class Season {
 
 		@Override
 		protected void onPreExecute() {
-			// progressdialog = ProgressDialog.show(parent,"",
-			// "Retrieving data ...", true);
 		}
 
 		@Override
@@ -483,9 +477,6 @@ public class Season {
 
 			data = api.getDataArrayFromJSON("user/watchlist/episodes.json/%k/"
 					+ user, false);
-
-			// data2 = api.getDataArrayFromJSON("show/season.json/%k/revenge/3",
-			// true);
 
 			return data;
 

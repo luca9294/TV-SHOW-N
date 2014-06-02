@@ -95,7 +95,6 @@ public class EpisodeFragment extends Fragment {
 					.getApplicationContext(), this.getActivity());
 			episode.getComments();
 
-		
 			TextView season_n_e = (TextView) rootView
 					.findViewById(R.id.season_n);
 			TextView id_e = (TextView) rootView.findViewById(R.id.id);
@@ -338,8 +337,7 @@ public class EpisodeFragment extends Fragment {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-	
+		}
 
 		// handles action when the "send comment" button is pressed
 		Button comment = (Button) rootView.findViewById(R.id.sendComment);
@@ -409,30 +407,32 @@ public class EpisodeFragment extends Fragment {
 
 				if (user.isEmpty()) {
 					if (seenBool == false) {
-					MyDatabase mdb = new	MyDatabase( context, new Activity() );
-					mdb.insertTvEpisodes(episode.title, Integer.valueOf(episode.code), Integer.valueOf(episode.id),Integer.valueOf(episode.season_n ));
-					new MyDialogFragment10().show(getFragmentManager(),
-							"MyDialog");
-					seen.setText("SEEN");
-					seen.setTextColor(Color.GREEN);
-					seenBool = true;
-		
-					}	
-					else{
-						
-						MyDatabase mdb = new	MyDatabase( context, new Activity() );
-						mdb.deleteEpisode( Integer.valueOf(episode.season_n), Integer.valueOf(episode.id),Integer.valueOf(episode.code ));
+						MyDatabase mdb = new MyDatabase(context, new Activity());
+						mdb.insertTvEpisodes(episode.title,
+								Integer.valueOf(episode.code),
+								Integer.valueOf(episode.id),
+								Integer.valueOf(episode.season_n));
+						new MyDialogFragment10().show(getFragmentManager(),
+								"MyDialog");
+						seen.setText("SEEN");
+						seen.setTextColor(Color.GREEN);
+						seenBool = true;
+
+					} else {
+
+						MyDatabase mdb = new MyDatabase(context, new Activity());
+						mdb.deleteEpisode(Integer.valueOf(episode.season_n),
+								Integer.valueOf(episode.id),
+								Integer.valueOf(episode.code));
 						new MyDialogFragment12().show(getFragmentManager(),
 								"MyDialog");
 
 						seen.setText("ADD\nSEEN\nLIST");
 						seen.setTextColor(Color.WHITE);
 						seenBool = false;
-						
+
 					}
-					
-					
-				 
+
 				}
 
 				else {
@@ -499,32 +499,38 @@ public class EpisodeFragment extends Fragment {
 				String pass = prefs.getString("passed", "");
 
 				if (user.isEmpty()) {
-					MyDatabase mdb = new MyDatabase( context,  new Activity());
-					watchBool =mdb.containsTvShow2(Integer.valueOf(episode.code), Integer.valueOf(episode.id), Integer.valueOf(episode.season_n));
-					
-					if (!watchBool){
-					mdb.insertTvEpisodes2(episode.title, Integer.valueOf(episode.code), Integer.valueOf(episode.id), Integer.valueOf(episode.season_n));
-					watching.setText("IN\nWATCH\nLIST");
-					watching.setTextColor(Color.GREEN);
-		
-					new MyDialogFragment11().show(getFragmentManager(),
-							"MyDialog");
+					MyDatabase mdb = new MyDatabase(context, new Activity());
+					watchBool = mdb.containsTvShow2(
+							Integer.valueOf(episode.code),
+							Integer.valueOf(episode.id),
+							Integer.valueOf(episode.season_n));
+
+					if (!watchBool) {
+						mdb.insertTvEpisodes2(episode.title,
+								Integer.valueOf(episode.code),
+								Integer.valueOf(episode.id),
+								Integer.valueOf(episode.season_n));
+						watching.setText("IN\nWATCH\nLIST");
+						watching.setTextColor(Color.GREEN);
+
+						new MyDialogFragment11().show(getFragmentManager(),
+								"MyDialog");
 
 					}
-					
-					else{
-						
-						mdb.deleteEpisode2(Integer.valueOf(episode.season_n), Integer.valueOf(episode.id), Integer.valueOf(episode.code));
-					
+
+					else {
+
+						mdb.deleteEpisode2(Integer.valueOf(episode.season_n),
+								Integer.valueOf(episode.id),
+								Integer.valueOf(episode.code));
+
 						watching.setText("ADD\nWATCH\nLIST");
 						watching.setTextColor(Color.WHITE);
 						new MyDialogFragment12().show(getFragmentManager(),
 								"MyDialog");
 
-				
 					}
-					
-					
+
 				}
 
 				else {
@@ -581,29 +587,6 @@ public class EpisodeFragment extends Fragment {
 
 		});
 
-		/*
-		 * SharedPreferences prefs = PreferenceManager
-		 * .getDefaultSharedPreferences(context);
-		 * 
-		 * String user = prefs.getString("user", ""); String pass =
-		 * prefs.getString("passed", ""); JSONObject prova = new JSONObject();
-		 * try { prova.accumulate("username", user);
-		 * prova.accumulate("password", pass); prova.accumulate("tvdb_id",
-		 * code); prova.accumulate("season", season_n);
-		 * prova.accumulate("episode", id); prova.accumulate("comment",
-		 * "SAU GEIL"); prova.accumulate("spoiler", "SAU GEIL");
-		 * prova.accumulate("review", "SAU GEIL");
-		 * 
-		 * 
-		 * } catch (JSONException e1) { // TODO Auto-generated catch block
-		 * e1.printStackTrace(); }
-		 * 
-		 * Comment com = new Comment (prova); try { com.send(); } catch
-		 * (InterruptedException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); } catch (ExecutionException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); }
-		 */
-
 		return rootView;
 
 	}
@@ -615,6 +598,7 @@ public class EpisodeFragment extends Fragment {
 		inflater.inflate(R.menu.main_activity3, menu);
 
 	}
+
 	// checks if episode has already been added to the calendar
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
@@ -645,7 +629,7 @@ public class EpisodeFragment extends Fragment {
 		// Handles item selection
 		switch (item.getItemId()) {
 
-		// if add to/remove from calendar buttons are pressed 
+		// if add to/remove from calendar buttons are pressed
 		case R.id.selection:
 			Calendar c = new Calendar(context, this.getActivity());
 			try {
@@ -682,33 +666,27 @@ public class EpisodeFragment extends Fragment {
 				e.printStackTrace();
 			}
 
-		break;
-		
-		
-		
+			break;
+
 		case R.id.selection2:
 			String r = "";
-			
-	
+
 			try {
-				r=episode.f();
-			
-				
-				if (r.length() > 5){
-					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"+r.replace("sx", "at")));
+				r = episode.f();
+
+				if (r.length() > 5) {
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+							Uri.parse("http://" + r.replace("sx", "at")));
 					a = this.getActivity();
 					a.startActivity(browserIntent);
-					
-					
+
 				}
-				
-				
-				else{
-					
+
+				else {
 
 					new MyDialogFragment110().show(getFragmentManager(),
 							"MyDialog");
-					
+
 				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -727,10 +705,8 @@ public class EpisodeFragment extends Fragment {
 				e.printStackTrace();
 			}
 
+			break;
 
-			
-		break;
-		
 		}
 
 		return true;
@@ -760,25 +736,19 @@ public class EpisodeFragment extends Fragment {
 		}
 
 	}
-	
-	
-	
+
 	public class MyDialogFragment110 extends DialogFragment {
 
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 			return new AlertDialog.Builder(getActivity())
 
-			.setMessage("Unfortunatly this episode is not available for the streaming!")
+					.setMessage(
+							"Unfortunatly this episode is not available for the streaming!")
 					.setPositiveButton("Ok", null).create();
 		}
 
 	}
-	
-	
-	
-	
-	
 
 	public class MyDialogFragment1 extends DialogFragment {
 

@@ -37,6 +37,8 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	
+	//method that returns a vector with all the IDs (codes) of the tv shows in the watchlist
 	public Vector<String> getTvShows2() {
 		Vector<String> results = new Vector<String>();
 		SQLiteDatabase db = getReadableDatabase();
@@ -63,6 +65,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	//method that controls if a season is seen or not
 	public boolean checkSeen(Season s) {
 		boolean result = false;
 
@@ -76,7 +79,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 		c.moveToFirst();
 
-		if (c.getCount() == s.count) {
+		if (c.getCount() == s.count) { //count = broadcasted episodes
 
 			result = true;
 
@@ -86,6 +89,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	//method that controls if a season is in the watchlist or not
 	public boolean checkWatch(Season s) {
 		boolean result = false;
 
@@ -99,7 +103,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 		c.moveToFirst();
 
-		if (c.getCount() == Integer.valueOf(s.n_episode)) {
+		if (c.getCount() == Integer.valueOf(s.n_episode)) { //n_episode = number of episodes, broadcasted or not
 
 			result = true;
 
@@ -108,7 +112,9 @@ public class MyDatabase extends SQLiteAssetHelper {
 		return result;
 
 	}
-
+	
+	
+	//returns a vector of seen Tv_Shows
 	public Vector<Tv_Show> getTvShows() throws InterruptedException,
 			ExecutionException, JSONException, ParseException {
 		Vector<Tv_Show> results = new Vector<Tv_Show>();
@@ -137,6 +143,8 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	
+	//prints logs of all the seen tvshows
 	public void print() {
 		SQLiteDatabase db = getReadableDatabase();
 		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -160,12 +168,9 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	//prints all the episodes in the watchlist
 	public void printAll() {
 		SQLiteDatabase db = getReadableDatabase();
-		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-
-		qb.setTables("WarchEpisodes");
-		// qb.setTables(sqlTables);
 
 		Cursor c;
 
@@ -183,6 +188,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	//checks if a tv show is already in the seen list
 	public boolean containsTvShow(int id) {
 		boolean result = false;
 		String[] sqlSelect = { "id" };
@@ -209,6 +215,8 @@ public class MyDatabase extends SQLiteAssetHelper {
 		return result;
 	}
 
+	
+	//checks if a tv show is already in the watchlist
 	public boolean containsTvShow2(int id) {
 		boolean result = false;
 
@@ -235,6 +243,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 		return result;
 	}
 
+	//checks if an episode is already in the seen list
 	public boolean containsTvShow(int idTvShow, int id, int season_n) {
 		boolean result = false;
 
@@ -259,6 +268,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 		return result;
 	}
 
+	//checks if an episode is already in the watchlist
 	public boolean containsTvShow2(int idTvShow, int id, int season_n) {
 		boolean result = false;
 
@@ -282,7 +292,9 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 		return result;
 	}
-
+	
+	
+	//checks if at least one episode of the the tv show with ID id is in the watchlist. (note: difference episode/episodes in a season)
 	public boolean isInEpisode(int id) {
 		boolean result = false;
 
@@ -306,6 +318,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 		return result;
 	}
 
+	//checks if there is at least one episode of the tv show idTvShow in the SeenEpisodes DB
 	public boolean containsOneEpisode(int idTvShow) {
 		boolean result = false;
 
@@ -329,6 +342,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 		return result;
 	}
 
+	
 	public boolean containsOneEpisode2(int idTvShow) {
 		boolean result = false;
 
@@ -352,6 +366,8 @@ public class MyDatabase extends SQLiteAssetHelper {
 		return result;
 	}
 
+	
+	//inserts the code of a tv show in the SeenTvShow DB, if the code was not inserted, and then inserts episodes in SeenEpisodes DB
 	public void insertTvEpisodes(String title, int idTvShow, int id,
 			int season_n) {
 		if (!containsTvShow(idTvShow)) {
@@ -365,12 +381,13 @@ public class MyDatabase extends SQLiteAssetHelper {
 		db.execSQL(query);
 
 	}
+	
 
+	//inserts the code of a tv show in the WatchTvShow DB, if the code was not inserted, and then inserts episodes in WatchEpisodes DB
 	public void insertTvEpisodes2(String title, int idTvShow, int id,
 			int season_n) {
 		if (!containsTvShow2(idTvShow)) {
 			this.insertTvShows2(idTvShow);
-			Log.e("f", "SONO DENTO L IF");
 		}
 		title = title.replace("'", "''");
 		String query = "INSERT INTO WatchEpisodes VALUES ('" + title + "', "
@@ -381,6 +398,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	//inserts just the tv show in the SeenTvShow DB
 	public void insertTvShows(int i) {
 		String query = "INSERT INTO  SeenTvShow VALUES (" + i + ");";
 		// String query = "DELETE FROM SeenTvShow";
@@ -389,6 +407,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	//inserts just the tv show in the WatchTvShow DB
 	public void insertTvShows2(int i) {
 		String query = "INSERT INTO  WatchTvShow VALUES (" + i + ");";
 		// String query = "DELETE FROM SeenTvShow";
@@ -397,6 +416,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	//deletes the tv show i from the WatchTvShow DB
 	public void deleteTvShows2(int i) {
 		String query = "DELETE FROM  WatchTvShow WHERE id= " + i + ";";
 		// String query = "DELETE FROM SeenTvShow";
@@ -405,6 +425,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	//deletes all tv shows from thw SeenTvShow DB
 	public void deleteAll() {
 		String query = "DELETE FROM  SeenTvShow;";
 		// String query = "DELETE FROM SeenTvShow";
@@ -413,6 +434,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	/**/
 	public void insertEpisodes(String title, int season_n, int id, int idTvShow) {
 		title = title.replace("'", "''");
 		String query = "INSERT INTO  SeenEpisodes VALUES ('" + title + "', "
@@ -427,6 +449,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	/**/
 	public void insertEpisodes2(String title, int season_n, int id, int idTvShow) {
 		title = title.replace("'", "''");
 		String query = "INSERT INTO  WatchEpisodes VALUES ('" + title + "', "
@@ -437,6 +460,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	//deletes both tv show AND all its episodes from the SeenTvShow DB 
 	public void deleteTvShow(int i) {
 		String query = "DELETE FROM  SeenTvShow WHERE id = " + i + ";";
 		SQLiteDatabase db = getWritableDatabase();
@@ -448,6 +472,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	//deletes a single episode from the SeenEpisode DB
 	public void deleteEpisode(int season_n, int id, int idTvShow) {
 		String query = "DELETE FROM  SeenEpisodes WHERE idTvShow = " + idTvShow
 				+ " AND season_n =" + season_n + " AND id = " + id + ";";
@@ -461,6 +486,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	//deletes one episode from the watchlist --> if it's the only episode, it also deletes the tv show from the WatchTvShow DB
 	public void deleteEpisode2(int season_n, int id, int idTvShow) {
 		String query = "DELETE FROM  WatchEpisodes WHERE idTvShow = "
 				+ idTvShow + " AND season_n =" + season_n + " AND id = " + id
@@ -475,6 +501,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	//counts how many seen episodes there are in a tv show
 	public int getCount(int i) {
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor mCount = db.rawQuery(
@@ -487,6 +514,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 		return count;
 	}
 
+	//counts how many seen episodes there are in a season
 	public int getCountPerSeason(int idTvShow, int idSeason) {
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor mCount = db.rawQuery(
@@ -499,6 +527,8 @@ public class MyDatabase extends SQLiteAssetHelper {
 		return count;
 	}
 
+	
+	//synchronizes the local SeenEpisodes DB with the server
 	public void sync() throws JSONException, InterruptedException,
 			ExecutionException {
 		Cursor c;
@@ -543,6 +573,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 	}
 
+	//synchronizes the local WatchEpisodes DB with the server
 	public void sync2() throws JSONException, InterruptedException,
 			ExecutionException, ParseException {
 		Cursor c;
@@ -564,7 +595,7 @@ public class MyDatabase extends SQLiteAssetHelper {
 		while (!c.isAfterLast()) {
 			String code = String.valueOf(c.getInt(0));
 
-			if (this.containsOneEpisode2(Integer.valueOf(code))) {
+			if (this.containsOneEpisode2(Integer.valueOf(code))) { //sends single episodes, not the whole tvshow
 				Cursor c2 = db.rawQuery(
 						"SELECT * from WatchEpisodes where idTvShow=" + code
 								+ ";", null);
@@ -581,19 +612,17 @@ public class MyDatabase extends SQLiteAssetHelper {
 
 					c2.moveToNext();
 					episodes.put(episode);
-					//deleteEpisode2(c2.getInt(1), c2.getInt(2), c2.getInt(3));
+					// deleteEpisode2(c2.getInt(1), c2.getInt(2), c2.getInt(3));
 				}
 				ob.put("episodes", episodes);
-				
-				
-				
+
 				Episode e = new Episode("1", "164951", "1", context,
 						new Activity());
 				e.addToWatching(false, ob);
 				this.deleteTvShows2(Integer.valueOf(code));
 			}
 
-			else {
+			else { //sends the whole tv show
 				show = new JSONObject();
 				show.put("tvdb_id", code);
 				shows.put(show);
@@ -608,10 +637,10 @@ public class MyDatabase extends SQLiteAssetHelper {
 		SQLiteDatabase dbq = getWritableDatabase();
 		dbq.execSQL("DELETE from WatchEpisodes" + ";");
 
-		
-
 	}
 
+	
+	//gets the names of the watched episode, in order to display them tidely in the app
 	public Vector<String> getStrings(int id) {
 		Vector<String> results = new Vector<String>();
 

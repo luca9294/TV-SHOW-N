@@ -550,8 +550,6 @@ public class SeasonFragment extends Fragment {
 
 			return true;
 
-			// case R.id.action_add:
-			// return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
